@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  xp        Int      @default(0)
+  level     Int      @default(1)
+  isPublic  Boolean  @default(true) @map("is_public")
+  bio       String?
+  github    String?
+  linkedin  String?
+  twitter   String?
+  website   String?
+  avatarUrl String?  @map("avatar_url")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  progress   UserProgress[]
+  badges     UserBadge[]
+  challenges Challenge[]
+  reactions  Reaction[]
+
+  @@map("users")
+}
+
+model UserProgress {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  exerciseId  String   @map("exercise_id")
+  completedAt DateTime @default(now()) @map("completed_at")
+  attempts    Int      @default(1)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, exerciseId])
+  @@map("user_progress")
+}
+
+model UserBadge {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  badgeId    String   @map("badge_id")
+  unlockedAt DateTime @default(now()) @map("unlocked_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+  @@map("user_badges")
+}
+
+model Challenge {
+  id          String     @id @default(uuid())
+  title       String
+  description String
+  initialCode String     @map("initial_code")
+  testCases   Json       @map("test_cases")
+  difficulty  String
+  createdAt   DateTime   @default(now()) @map("created_at")
+  authorId    String     @map("author_id")
+  author      User       @relation(fields: [authorId], references: [id])
+  reactions   Reaction[]
+
+  @@map("challenges")
+}
+
+model Reaction {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  challengeId String   @map("challenge_id")
+  type        String   @default("LIKE")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, challengeId])
+  @@map("reactions")
+}
