@@ -1,0 +1,12 @@
+{
+  "name": "sandbox-js",
+  "version": "1.0.0",
+  "description": "Secure Javascript Runner",
+  "main": "runner.js",
+  "scripts": {
+    "start": "node runner.js"
+  },
+  "dependencies": {
+    "vm2": "^3.9.19"
+  }
+}

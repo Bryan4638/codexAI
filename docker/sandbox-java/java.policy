@@ -1,0 +1,10 @@
+grant {
+    // Permitir solo operaciones básicas
+    permission java.lang.RuntimePermission "getProtectionDomain";
+    permission java.util.PropertyPermission "user.dir", "read";
+    permission java.io.FilePermission "/tmp/*", "read,write";
+    permission java.lang.RuntimePermission "createClassLoader";
+    permission java.lang.RuntimePermission "modifyThread";
+    // Necesario para leer clases base
+    permission java.io.FilePermission "${java.home}/-", "read";
+};

@@ -1,0 +1,54 @@
+
+services:
+  # Base de datos (PostgreSQL) - Opcional si usas externa
+  # db:
+  #   image: postgres:15-alpine
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: password
+  #     POSTGRES_DB: codex
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - codex-net
+
+  # Cache & Cola
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - codex-net
+
+  # Sandbox Images (Solo Build)
+  sandbox-js-builder:
+    build: ./docker/sandbox-js
+    image: code-platform-js
+    command: ["true"]
+    networks:
+      - codex-net
+
+  sandbox-python-builder:
+    build: ./docker/sandbox-python
+    image: code-platform-python
+    command: ["true"]
+    networks:
+      - codex-net
+
+  sandbox-java-builder:
+    build: ./docker/sandbox-java
+    image: code-platform-java
+    command: ["true"]
+    networks:
+      - codex-net
+
+  sandbox-csharp-builder:
+    build: ./docker/sandbox-csharp
+    image: code-platform-csharp
+    command: ["true"]
+    networks:
+      - codex-net
+
+networks:
+  codex-net:
+    driver: bridge

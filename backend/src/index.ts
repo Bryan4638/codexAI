@@ -5,6 +5,7 @@ import exerciseRoutes from "./routes/exerciseRoutes";
 import badgeRoutes from "./routes/badgeRoutes";
 import leaderboardRoutes from "./routes/leaderboardRoutes";
 import challengeRoutes from "./routes/challengeRoutes";
+import executionRoutes from "./routes/execution.routes";
 import prisma from "./config/database";
 
 const app = express();
@@ -29,6 +30,7 @@ app.use("/api/exercises", exerciseRoutes);
 app.use("/api/badges", badgeRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 app.use("/api/challenges", challengeRoutes);
+app.use("/api/execute", executionRoutes);
 
 // Ruta de salud
 app.get("/api/health", async (req, res) => {
