@@ -1,8 +1,6 @@
-interface HeroProps {
-  onStartLearning: () => void;
-}
+import { Link } from "react-router-dom";
 
-function Hero({ onStartLearning }: HeroProps) {
+function Hero() {
   return (
     <section className="hero">
       <div className="hero-content">
@@ -13,10 +11,12 @@ function Hero({ onStartLearning }: HeroProps) {
           retroalimentación instantánea y un diseño que te mantendrá motivado.
         </p>
         <div className="hero-buttons">
-          <button className="btn btn-primary" onClick={onStartLearning}>
+          <Link className="btn btn-primary" to="/modulos">
             🚀 Comenzar Ahora
-          </button>
-          <button className="btn btn-secondary">📖 Ver Módulos</button>
+          </Link>
+          <Link className="btn btn-secondary" to="/retos">
+            📖 Ver Retos de la Comunidad
+          </Link>
         </div>
         <div className="hero-stats">
           <div className="hero-stat">

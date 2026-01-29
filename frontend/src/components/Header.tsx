@@ -1,67 +1,62 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
+import { Link } from "react-router-dom";
 
 interface HeaderProps {
-  onNavigate: (view: string) => void;
   currentView: string;
   onShowAuth: () => void;
 }
 
-function Header({ onNavigate, currentView, onShowAuth }: HeaderProps) {
+function Header({ currentView, onShowAuth }: HeaderProps) {
   const { user } = useAuthStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const handleNavClick = (view: string) => {
-    onNavigate(view);
-    setIsMenuOpen(false);
-  };
 
   return (
     <header className="header">
       <div className="header-content">
-        <div className="logo" onClick={() => handleNavClick("home")}>
+        <Link to="/" className="logo">
           <div className="logo-icon">{"</>"}</div>
           <span className="logo-text">CODEX</span>
-        </div>
+        </Link>
 
         <nav className={`nav ${isMenuOpen ? "open" : ""}`}>
-          <span
+          <Link
             className={`nav-link ${currentView === "home" ? "active" : ""}`}
-            onClick={() => handleNavClick("home")}
+            to="/"
           >
             Inicio
-          </span>
-          <span
+          </Link>
+          <Link
             className={`nav-link ${currentView === "modules" ? "active" : ""}`}
-            onClick={() => handleNavClick("modules")}
+            to="/modulos"
           >
             Módulos
-          </span>
-          <span
+          </Link>
+          <Link
             className={`nav-link ${currentView === "badges" ? "active" : ""}`}
-            onClick={() => handleNavClick("badges")}
+            to="/medallas"
           >
             Medallas
-          </span>
-          <span
+          </Link>
+          <Link
             className={`nav-link ${currentView === "leaderboard" ? "active" : ""}`}
-            onClick={() => handleNavClick("leaderboard")}
+            to="/ranking"
           >
             Ranking
-          </span>
-          <span
+          </Link>
+          <Link
             className={`nav-link ${currentView === "challenges" ? "active" : ""}`}
-            onClick={() => handleNavClick("challenges")}
+            to="/retos"
           >
             Retos
-          </span>
+          </Link>
         </nav>
 
         <div className="header-actions">
           {user ? (
-            <div
+            <Link
               className="user-profile-btn"
-              onClick={() => handleNavClick("profile")}
+              to="/perfil"
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -133,7 +128,7 @@ function Header({ onNavigate, currentView, onShowAuth }: HeaderProps) {
                   Nv.{user.level || user.current_level}
                 </span>
               </span>
-            </div>
+            </Link>
           ) : (
             <button className="btn btn-primary btn-login" onClick={onShowAuth}>
               Login

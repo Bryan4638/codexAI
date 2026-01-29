@@ -10,20 +10,8 @@ import ProfilePage from "./components/ProfilePage";
 import BadgesPage from "./components/BadgesPage";
 import LeaderboardPage from "./components/LeaderboardPage";
 import ChallengesPage from "./components/ChallengesPage";
-
-interface Lesson {
-  id: string;
-  title: string;
-  exercises?: any[];
-}
-
-interface Module {
-  id: number;
-  title: string;
-  description: string;
-  icon: string;
-  lessons: Lesson[];
-}
+import ModulesPage from "./components/ModulesPage";
+import { Outlet } from "react-router-dom";
 
 const modulesData: Module[] = [
   {
@@ -68,9 +56,22 @@ const modulesData: Module[] = [
   },
 ];
 
+interface Lesson {
+  id: string;
+  title: string;
+  exercises?: any[];
+}
+
+interface Module {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;
+  lessons: Lesson[];
+}
+
 function App() {
   const [currentView, setCurrentView] = useState<string>("home");
-  const [selectedModule, setSelectedModule] = useState<Module | null>(null);
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
   const [newBadgeNotification, setNewBadgeNotification] = useState<any>(null);
@@ -78,6 +79,7 @@ function App() {
   const [moduleProgress, setModuleProgress] = useState<
     Record<string, { completed: number; total: number }>
   >({});
+  const [selectedModule, setSelectedModule] = useState<Module | null>(null);
 
   const { user, setUser } = useAuthStore();
 
@@ -127,13 +129,11 @@ function App() {
   const handleNavigate = (view: string) => {
     setCurrentView(view);
     if (view === "home" || view === "profile") {
-      setSelectedModule(null);
       setSelectedLessonId(null);
     }
   };
 
   const handleModuleClick = (module: Module) => {
-    setSelectedModule(module);
     setCurrentView("lessons");
   };
 
@@ -148,7 +148,6 @@ function App() {
   };
 
   const handleBackToHome = () => {
-    setSelectedModule(null);
     setSelectedLessonId(null);
     setCurrentView("modules");
   };
@@ -163,7 +162,6 @@ function App() {
   return (
     <>
       <Header
-        onNavigate={handleNavigate}
         currentView={currentView}
         onShowAuth={() => setShowAuthModal(true)}
       />
@@ -215,207 +213,7 @@ function App() {
       )}
 
       <main style={{ flex: 1, width: "100%" }}>
-        {currentView === "home" && (
-          <>
-            <Hero onStartLearning={() => handleNavigate("modules")} />
-            <section className="modules-section container">
-              <div className="section-header">
-                <h2>Módulos de Aprendizaje</h2>
-                <p>
-                  Explora nuestros módulos diseñados para llevarte desde cero
-                  hasta programador.
-                </p>
-              </div>
-              <div className="modules-grid">
-                {modulesData.map((module) => {
-                  const stats = moduleProgress[module.id] || {
-                    completed: 0,
-                    total: 0,
-                  };
-                  const progress =
-                    stats.total > 0
-                      ? Math.round((stats.completed / stats.total) * 100)
-                      : 0;
-
-                  return (
-                    <ModuleCard
-                      key={module.id}
-                      module={module}
-                      progress={progress}
-                      onClick={() => handleModuleClick(module)}
-                    />
-                  );
-                })}
-              </div>
-            </section>
-          </>
-        )}
-
-        {currentView === "modules" && (
-          <section
-            className="modules-section container"
-            style={{ paddingTop: "120px" }}
-          >
-            <div className="section-header">
-              <h2>Todos los Módulos</h2>
-              <p>Selecciona un módulo para comenzar a aprender.</p>
-            </div>
-            <div className="modules-grid">
-              {modulesData.map((module) => {
-                const stats = moduleProgress[module.id] || {
-                  completed: 0,
-                  total: 0,
-                };
-                const progress =
-                  stats.total > 0
-                    ? Math.round((stats.completed / stats.total) * 100)
-                    : 0;
-
-                return (
-                  <ModuleCard
-                    key={module.id}
-                    module={module}
-                    progress={progress}
-                    onClick={() => handleModuleClick(module)}
-                  />
-                );
-              })}
-            </div>
-          </section>
-        )}
-
-        {currentView === "lessons" && selectedModule && (
-          <section className="container" style={{ paddingTop: "120px" }}>
-            <div
-              className="lesson-breadcrumb"
-              style={{ marginBottom: "var(--spacing-xl)" }}
-            >
-              <span
-                onClick={handleBackToHome}
-                style={{ cursor: "pointer", color: "var(--neon-cyan)" }}
-              >
-                ← Volver a Módulos
-              </span>
-            </div>
-            <div className="section-header" style={{ textAlign: "left" }}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "var(--spacing-lg)",
-                  marginBottom: "var(--spacing-md)",
-                }}
-              >
-                <div className="module-icon" style={{ fontSize: "2rem" }}>
-                  {selectedModule.icon}
-                </div>
-                <div>
-                  <h2 style={{ marginBottom: "var(--spacing-xs)" }}>
-                    {selectedModule.title}
-                  </h2>
-                  <p style={{ margin: 0 }}>{selectedModule.description}</p>
-                </div>
-              </div>
-            </div>
-            <div
-              className="modules-grid"
-              style={{ marginTop: "var(--spacing-2xl)" }}
-            >
-              {selectedModule.lessons.map((lesson, index) => {
-                const isCompleted = completedLessons.includes(lesson.id);
-                return (
-                  <div
-                    key={lesson.id}
-                    className="module-card"
-                    onClick={() => handleLessonClick(lesson.id)}
-                    style={
-                      isCompleted
-                        ? {
-                            borderColor: "var(--neon-green)",
-                            background: "rgba(0, 255, 136, 0.05)",
-                          }
-                        : {}
-                    }
-                  >
-                    <div className="module-number">0{index + 1}</div>
-                    <h3 className="module-title">
-                      {lesson.title}
-                      {isCompleted && (
-                        <span style={{ marginLeft: "10px" }}>✅</span>
-                      )}
-                    </h3>
-                    <p className="module-description">
-                      {isCompleted
-                        ? "¡Lección completada!"
-                        : "Ejercicios interactivos disponibles"}
-                    </p>
-                    <div className="module-lessons">
-                      <span>{isCompleted ? "🌟" : "🎯"}</span>
-                      <span>
-                        {isCompleted
-                          ? "Repasar lección"
-                          : "Click para comenzar"}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        )}
-
-        {currentView === "lesson" && selectedModule && selectedLessonId && (
-          <LessonView
-            module={selectedModule}
-            lessonId={selectedLessonId}
-            onBack={handleBackToModules}
-            onNewBadges={handleNewBadges}
-          />
-        )}
-
-        {currentView === "badges" && user && <BadgesPage />}
-
-        {currentView === "badges" && !user && (
-          <section
-            className="container"
-            style={{ paddingTop: "150px", textAlign: "center" }}
-          >
-            <h2>🔒 Acceso Restringido</h2>
-            <p style={{ marginBottom: "var(--spacing-xl)" }}>
-              Inicia sesión para ver tus medallas
-            </p>
-            <button
-              className="btn btn-primary"
-              onClick={() => setShowAuthModal(true)}
-            >
-              Iniciar Sesión
-            </button>
-          </section>
-        )}
-
-        {currentView === "leaderboard" && <LeaderboardPage />}
-
-        {currentView === "challenges" && <ChallengesPage />}
-
-        {currentView === "profile" && user && <ProfilePage />}
-
-        {currentView === "profile" && !user && (
-          <section
-            className="container"
-            style={{ paddingTop: "150px", textAlign: "center" }}
-          >
-            <h2>🔒 Acceso Restringido</h2>
-            <p style={{ marginBottom: "var(--spacing-xl)" }}>
-              Inicia sesión para ver tu perfil
-            </p>
-            <button
-              className="btn btn-primary"
-              onClick={() => setShowAuthModal(true)}
-            >
-              Iniciar Sesión
-            </button>
-          </section>
-        )}
+        <Outlet />
       </main>
 
       <footer className="footer">
