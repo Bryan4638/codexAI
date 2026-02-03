@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 interface HeaderProps {
   currentView: string;
@@ -10,6 +10,7 @@ interface HeaderProps {
 function Header({ currentView, onShowAuth }: HeaderProps) {
   const { user } = useAuthStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = useLocation();
 
   return (
     <header className="header">
@@ -21,31 +22,31 @@ function Header({ currentView, onShowAuth }: HeaderProps) {
 
         <nav className={`nav ${isMenuOpen ? "open" : ""}`}>
           <Link
-            className={`nav-link ${currentView === "home" ? "active" : ""}`}
+            className={`nav-link ${pathname.pathname === "/" ? "active" : ""}`}
             to="/"
           >
             Inicio
           </Link>
           <Link
-            className={`nav-link ${currentView === "modules" ? "active" : ""}`}
+            className={`nav-link ${pathname.pathname === "/modulos" ? "active" : ""}`}
             to="/modulos"
           >
             Módulos
           </Link>
           <Link
-            className={`nav-link ${currentView === "badges" ? "active" : ""}`}
+            className={`nav-link ${pathname.pathname === "/medallas" ? "active" : ""}`}
             to="/medallas"
           >
             Medallas
           </Link>
           <Link
-            className={`nav-link ${currentView === "leaderboard" ? "active" : ""}`}
+            className={`nav-link ${pathname.pathname === "/ranking" ? "active" : ""}`}
             to="/ranking"
           >
             Ranking
           </Link>
           <Link
-            className={`nav-link ${currentView === "challenges" ? "active" : ""}`}
+            className={`nav-link ${pathname.pathname === "/retos" ? "active" : ""}`}
             to="/retos"
           >
             Retos
