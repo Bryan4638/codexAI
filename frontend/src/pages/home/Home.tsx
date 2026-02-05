@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Hero from "@/components/Hero";
-import ModuleCard from "@/components/ModuleCard";
+import Hero from "@/pages/home/components/Hero";
+import ModuleCard from "@/components/share/ModuleCard";
 
 const modulesData: Module[] = [
   {
