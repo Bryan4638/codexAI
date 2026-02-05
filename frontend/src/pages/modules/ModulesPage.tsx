@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ModuleCard from "@/components/ModuleCard";
+import ModuleCard from "@/components/share/ModuleCard";
 
 const modulesData: Module[] = [
   {
