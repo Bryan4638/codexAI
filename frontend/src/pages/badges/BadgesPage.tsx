@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { badgeApi } from "../services/api";
+import { badgeApi } from "@/services/api";
 
 interface Badge {
   id: string;

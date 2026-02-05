@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuthStore } from "../store/useAuthStore";
+import { useAuthStore } from "@/store/useAuthStore";
 import { Link, useLocation } from "react-router-dom";
 
 interface HeaderProps {

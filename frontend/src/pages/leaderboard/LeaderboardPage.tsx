@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { leaderboardApi } from "../services/api";
+import { leaderboardApi } from "@/services/api";
 
 interface LeaderboardUser {
   id: string;

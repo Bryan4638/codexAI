@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useAuthStore } from "../store/useAuthStore";
-import { badgeApi } from "../services/api";
-import EditProfileModal from "./EditProfileModal";
+import { useAuthStore } from "@/store/useAuthStore";
+import { badgeApi } from "@/services/api";
+import EditProfileModal from "@/components/EditProfileModal";
 
 interface Badge {
   id: string;

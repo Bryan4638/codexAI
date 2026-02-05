@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { challengeApi } from "../services/api";
-import CreateChallengeModal from "./CreateChallengeModal";
-import ChallengeDetailModal from "./ChallengeDetailModal";
-import { useAuthStore } from "../store/useAuthStore";
+import { challengeApi } from "@/services/api";
+import CreateChallengeModal from "@/components/CreateChallengeModal";
+import ChallengeDetailModal from "@/components/ChallengeDetailModal";
+import { useAuthStore } from "@/store/useAuthStore";
 
 interface Challenge {
   id: string;
