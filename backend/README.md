@@ -1,140 +1,98 @@
-# 📚 CODEX Backend & Sandbox Architecture
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
 
-Este documento detalla la arquitectura del backend de CODEX, con un enfoque especial en el sistema de ejecución de código seguro (Sandboxes).
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-## 🚀 1. Visión General del Backend
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-El backend está construido con:
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Lenguaje**: TypeScript
-- **Base de Datos**: PostgreSQL (vía Prisma ORM)
-- **Cache/Colas**: Redis (para gestión de ejecuciones)
-- **Containerización**: Docker (para aislamiento de código)
+## Description
 
----
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## 🔌 2. API Endpoints
+## Project setup
 
-### 🛠️ Ejecución de Código (Code Runner)
-
-El núcleo de la plataforma es la capacidad de ejecutar código de usuario de forma segura.
-
-#### `POST /api/execute`
-
-Ejecuta un fragmento de código en un lenguaje específico dentro de un contenedor aislado.
-
-**Body (JSON):**
-```json
-{
-  "language": "javascript" | "python" | "java" | "csharp",
-  "code": "console.log('Hola Mundo');",
-  "userId": "uuid-usuario-opcional"
-}
+```bash
+$ npm install
 ```
 
-**Respuesta Exitosa (200 OK):**
-```json
-{
-  "success": true,
-  "output": "Hola Mundo",
-  "error": "",
-  "exitCode": 0
-}
+## Compile and run the project
+
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
 ```
 
-**Respuesta de Error de Compilación/Ejecución:**
-```json
-{
-  "success": false,
-  "output": "",
-  "error": "SyntaxError: ...",
-  "exitCode": 1
-}
+## Run tests
+
+```bash
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
 ```
 
----
+## Deployment
 
-### 🛡️ Autenticación (`/api/auth`)
-- `POST /register`: Registro de nuevos usuarios.
-- `POST /login`: Inicio de sesión (retorna JWT).
-- `GET /me`: Obtener perfil del usuario actual.
+When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
 
-### 🏋️ Ejercicios (`/api/exercises`)
-- `GET /`: Listar ejercicios.
-- `POST /validate`: Validar solución de ejercicios (lógica de negocio).
+If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
 
----
+```bash
+$ npm install -g @nestjs/mau
+$ mau deploy
+```
 
-## 📦 3. Arquitectura de Sandboxes (Entornos Controlados)
+With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
-Para garantizar que el código enviado por los usuarios no dañe el servidor ni acceda a información sensible, utilizamos **contenedores Docker efímeros y altamente restringidos**.
+## Resources
 
-### 🏗️ Flujo de Ejecución
+Check out a few resources that may come in handy when working with NestJS:
 
-1.  **Recepción**: El endpoint `/api/execute` recibe el código y el lenguaje.
-2.  **Orquestación**: `DockerManager` (en el backend) selecciona la imagen Docker adecuada (`code-platform-js`, `code-platform-python`, etc.).
-3.  **Contenedorización**: Se crea un contenedor nuevo **por cada ejecución**.
-4.  **Ejecución**: El código se inyecta en el contenedor (vía `stdin`).
-5.  **Captura**: Se capturan `stdout` y `stderr`.
-6.  **Limpieza**: El contenedor se destruye inmediatamente después de finalizar (o al alcanzar el timeout).
+- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
+- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
+- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
+- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
-### 🔒 Medidas de Seguridad (Aislamiento Total)
+## Support
 
-Cada sandbox implementa múltiples capas de seguridad:
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-1.  **Sin Red (`NetworkMode: 'none'`)**:
-    - Los contenedores **no tienen acceso a internet** ni a la red local. No pueden hacer peticiones HTTP ni conectarse a bases de datos externas.
+## Stay in touch
 
-2.  **Sistema de Archivos de Solo Lectura (`ReadonlyRootfs: true`)**:
-    - El sistema de archivos raíz es de solo lectura. El código malicioso no puede modificar archivos del sistema ni instalar malware.
-    - Solo `/tmp` es escribible (montado como `tmpfs` en memoria), y se borra al terminar.
+- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-3.  **Usuario sin Privilegios (Non-Root)**:
-    - Todos los procesos corren como usuario `1001` o `1000`, sin permisos de root (`sudo` no existe o no funciona).
+## License
 
-4.  **Límites de Recursos (Resource Quotas)**:
-    - **CPU**: Limitado (ej. 10% de un core) para evitar bucles infinitos que congelen el servidor.
-    - **Memoria**: Máximo 100MB (ajustable) para prevenir ataques de denegación de servicio (OOM).
-    - **PIDs**: Límite de procesos concurrentes (ej. 50) para evitar bombas fork.
-
-5.  **Filtrado de Syscalls (Seccomp)**:
-    - Utilizamos perfiles `seccomp` para bloquear llamadas al sistema peligrosas a nivel de kernel, reduciendo la superficie de ataque.
-
-6.  **Capacidades del Kernel (CapDrop ALL)**:
-    - Se eliminan todas las "capabilities" de Linux (ej. `NET_ADMIN`, `SYS_ADMIN`), dejando al contenedor estrictamente con lo mínimo para procesar texto.
-
-### 📝 Detalles por Lenguaje
-
-| Lenguaje | Imagen Base | Runner | Notas |
-|----------|-------------|--------|-------|
-| **JS** | `node:18-alpine` | `vm` module | Usa contexto aislado de Node.js `vm`. |
-| **Python** | `python:3.11-slim` | `pypy-sandbox` logic | Restricción de imports (`os`, `subprocess` bloqueados). |
-| **Java** | `openjdk:17` | `SecurityManager` | Política estricta (`java.policy`) que prohíbe IO y reflexión. |
-| **C#** | `.NET 7 SDK` | Managed Runner | Compilación en memoria. |
-
----
-
-## ⚙️ Configuración para Desarrollo
-
-### Prerrequisitos
-- Docker Desktop (o Engine) corriendo.
-- Node.js 18+.
-
-### Pasos
-1.  **Levantar Infraestructura**:
-    ```bash
-    # Desde la raiz del proyecto
-    docker-compose up -d --build
-    ```
-    Esto prepara las imágenes de los sandboxes.
-
-2.  **Iniciar Backend**:
-    ```bash
-    cd backend
-    npm install
-    npm run dev
-    ```
-
-3.  **Verificar**:
-    Accede a `http://localhost:4003/api/health` para ver el estado.
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).

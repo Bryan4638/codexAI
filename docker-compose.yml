@@ -1,16 +1,23 @@
 
 services:
   # Base de datos (PostgreSQL) - Opcional si usas externa
-  # db:
-  #   image: postgres:15-alpine
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: password
-  #     POSTGRES_DB: codex
-  #   ports:
-  #     - "5432:5432"
-  #   networks:
-  #     - codex-net
+  postgres:
+    image: postgres:17.7-alpine3.22
+    container_name: postgres_codex
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 4638
+      POSTGRES_DB: codex
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # Cache & Cola
   redis:
@@ -52,3 +59,6 @@ services:
 networks:
   codex-net:
     driver: bridge
+
+volumes:
+  postgres_data:
