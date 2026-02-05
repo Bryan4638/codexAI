@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import CodeEditor from "./exercises/CodeEditor";
-import QuizExercise from "./exercises/QuizExercise";
-import DragDropExercise from "./exercises/DragDropExercise";
-import FillBlankExercise from "./exercises/FillBlankExercise";
-import { exerciseApi, badgeApi } from "../services/api";
-import { useAuthStore } from "../store/useAuthStore";
+import CodeEditor from "@/components/exercises/CodeEditor";
+import QuizExercise from "@/components/exercises/QuizExercise";
+import DragDropExercise from "@/components/exercises/DragDropExercise";
+import FillBlankExercise from "@/components/exercises/FillBlankExercise";
+import { badgeApi } from "@/services/endpoints/badge";
+import { exerciseApi } from "@/services/endpoints/exercise";
+import { useAuthStore } from "@/store/useAuthStore";
 
 interface LessonViewProps {
   module: any; // Define nicer type later

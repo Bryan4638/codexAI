@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { challengeApi } from "@/services/api";
+import { challengeApi } from "@/services/endpoints/challenge";
 import CreateChallengeModal from "@/pages/challenges/components/CreateChallengeModal";
 import ChallengeDetailModal from "@/pages/challenges/components/CreateChallengeModal";
 import { useAuthStore } from "@/store/useAuthStore";

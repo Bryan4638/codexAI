@@ -1,5 +1,5 @@
 import { useState, SyntheticEvent } from "react";
-import { useAuthStore } from "../store/useAuthStore";
+import { useAuthStore } from "@/store/useAuthStore";
 
 interface AuthModalProps {
   onClose: () => void;

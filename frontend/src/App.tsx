@@ -1,22 +1,15 @@
 import { useState, useEffect } from "react";
-import { useAuthStore } from "./store/useAuthStore";
-import { badgeApi, authApi } from "./services/api";
-import Header from "./components/Header";
-import AuthModal from "./components/AuthModal";
+import { useAuthStore } from "@/store/useAuthStore";
+import { badgeApi } from "@/services/endpoints/badge";
+import { authApi } from "@/services/endpoints/auth";
+import Header from "@/components/nav/Header";
+import AuthModal from "@/components/auth/AuthModal";
 import { Outlet } from "react-router-dom";
 
 interface Lesson {
   id: string;
   title: string;
   exercises?: any[];
-}
-
-interface Module {
-  id: number;
-  title: string;
-  description: string;
-  icon: string;
-  lessons: Lesson[];
 }
 
 function App() {

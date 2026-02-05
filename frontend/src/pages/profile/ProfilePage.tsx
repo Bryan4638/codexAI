@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
-import { badgeApi } from "@/services/api";
+import { badgeApi } from "@/services/endpoints/badge";
 import EditProfileModal from "@/pages/profile/components/EditProfileModal";
 
 interface Badge {

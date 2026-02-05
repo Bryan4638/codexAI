@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-import { challengeApi } from "@/services/api";
+import { challengeApi } from "@/services/endpoints/challenge";
 
 interface CreateChallengeModalProps {
   onClose: () => void;
