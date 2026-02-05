@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { badgeApi } from "../services/api";
-import EditProfileModal from "./EditProfileModal";
+import EditProfileModal from "../pages/profile/components/EditProfileModal";
 
 interface UserProfileProps {
   onClose: () => void;

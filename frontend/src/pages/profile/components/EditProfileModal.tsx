@@ -1,6 +1,6 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
-import { useAuthStore } from "../store/useAuthStore";
-import { leaderboardApi } from "../services/api";
+import { useAuthStore } from "@/store/useAuthStore";
+import { leaderboardApi } from "@/services/api";
 
 interface EditProfileModalProps {
   onClose: () => void;
