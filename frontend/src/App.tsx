@@ -2,59 +2,8 @@ import { useState, useEffect } from "react";
 import { useAuthStore } from "./store/useAuthStore";
 import { badgeApi, authApi } from "./services/api";
 import Header from "./components/Header";
-import Hero from "./components/Hero";
-import ModuleCard from "./components/ModuleCard";
-import LessonView from "./components/LessonView";
 import AuthModal from "./components/AuthModal";
-import ProfilePage from "./pages/profile/ProfilePage";
-import BadgesPage from "./pages/badges/BadgesPage";
-import LeaderboardPage from "./pages/leaderboard/LeaderboardPage";
-import ChallengesPage from "./pages/challenges/ChallengesPage";
-import ModulesPage from "./pages/modules/ModulesPage";
 import { Outlet } from "react-router-dom";
-
-const modulesData: Module[] = [
-  {
-    id: 1,
-    title: "Variables y Tipos de Datos",
-    description: "Aprende a almacenar y manipular información en tu código",
-    icon: "📦",
-    lessons: [
-      { id: "1-1", title: "¿Qué son las variables?" },
-      { id: "1-2", title: "Tipos de Datos" },
-    ],
-  },
-  {
-    id: 2,
-    title: "Condicionales",
-    description: "Toma decisiones en tu código usando if, else y operadores",
-    icon: "🔀",
-    lessons: [
-      { id: "2-1", title: "Estructura if/else" },
-      { id: "2-2", title: "Operadores de Comparación" },
-    ],
-  },
-  {
-    id: 3,
-    title: "Bucles",
-    description: "Repite acciones de forma eficiente con for y while",
-    icon: "🔄",
-    lessons: [
-      { id: "3-1", title: "Bucle For" },
-      { id: "3-2", title: "Bucle While" },
-    ],
-  },
-  {
-    id: 4,
-    title: "Funciones",
-    description: "Crea bloques de código reutilizables y organizados",
-    icon: "⚡",
-    lessons: [
-      { id: "4-1", title: "Crear Funciones" },
-      { id: "4-2", title: "Parámetros y Retorno" },
-    ],
-  },
-];
 
 interface Lesson {
   id: string;
@@ -72,14 +21,12 @@ interface Module {
 
 function App() {
   const [currentView, setCurrentView] = useState<string>("home");
-  const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
   const [newBadgeNotification, setNewBadgeNotification] = useState<any>(null);
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
   const [moduleProgress, setModuleProgress] = useState<
     Record<string, { completed: number; total: number }>
   >({});
-  const [selectedModule, setSelectedModule] = useState<Module | null>(null);
 
   const { user, setUser } = useAuthStore();
 
@@ -125,40 +72,6 @@ function App() {
       console.error("Error loading progress:", error);
     }
   };
-
-  const handleNavigate = (view: string) => {
-    setCurrentView(view);
-    if (view === "home" || view === "profile") {
-      setSelectedLessonId(null);
-    }
-  };
-
-  const handleModuleClick = (module: Module) => {
-    setCurrentView("lessons");
-  };
-
-  const handleLessonClick = (lessonId: string) => {
-    setSelectedLessonId(lessonId);
-    setCurrentView("lesson");
-  };
-
-  const handleBackToModules = () => {
-    setSelectedLessonId(null);
-    setCurrentView("lessons");
-  };
-
-  const handleBackToHome = () => {
-    setSelectedLessonId(null);
-    setCurrentView("modules");
-  };
-
-  const handleNewBadges = (badges: any[]) => {
-    if (badges && badges.length > 0) {
-      setNewBadgeNotification(badges[0]);
-      setTimeout(() => setNewBadgeNotification(null), 5000);
-    }
-  };
-
   return (
     <>
       <Header
