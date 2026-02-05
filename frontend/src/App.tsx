@@ -6,11 +6,11 @@ import Hero from "./components/Hero";
 import ModuleCard from "./components/ModuleCard";
 import LessonView from "./components/LessonView";
 import AuthModal from "./components/AuthModal";
-import ProfilePage from "./components/ProfilePage";
-import BadgesPage from "./components/BadgesPage";
-import LeaderboardPage from "./components/LeaderboardPage";
-import ChallengesPage from "./components/ChallengesPage";
-import ModulesPage from "./components/ModulesPage";
+import ProfilePage from "./pages/profile/ProfilePage";
+import BadgesPage from "./pages/badges/BadgesPage";
+import LeaderboardPage from "./pages/leaderboard/LeaderboardPage";
+import ChallengesPage from "./pages/challenges/ChallengesPage";
+import ModulesPage from "./pages/modules/ModulesPage";
 import { Outlet } from "react-router-dom";
 
 const modulesData: Module[] = [

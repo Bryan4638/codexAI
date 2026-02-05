@@ -1,11 +1,11 @@
-import ChallengesPage from "../components/ChallengesPage";
+import ChallengesPage from "../pages/challenges/ChallengesPage";
 import App from "../App";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
-import BadgesPage from "../components/BadgesPage";
-import LeaderboardPage from "../components/LeaderboardPage";
-import ModulesPage from "../components/ModulesPage";
-import ProfilePage from "../components/ProfilePage";
-import Home from "../components/Home";
+import BadgesPage from "../pages/badges/BadgesPage";
+import LeaderboardPage from "../pages/leaderboard/LeaderboardPage";
+import ModulesPage from "../pages/modules/ModulesPage";
+import ProfilePage from "../pages/profile/ProfilePage";
+import Home from "../pages/home/Home";
 
 export default function AppRouter() {
   return (
