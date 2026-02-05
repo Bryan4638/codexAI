@@ -1,6 +1,20 @@
 import { useState } from "react";
 import ModuleCard from "@/components/share/ModuleCard";
 
+interface Module {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;
+  lessons: Lesson[];
+}
+
+interface Lesson {
+  id: string;
+  title: string;
+  exercises?: any[];
+}
+
 const modulesData: Module[] = [
   {
     id: 1,
@@ -43,20 +57,6 @@ const modulesData: Module[] = [
     ],
   },
 ];
-
-interface Lesson {
-  id: string;
-  title: string;
-  exercises?: any[];
-}
-
-interface Module {
-  id: number;
-  title: string;
-  description: string;
-  icon: string;
-  lessons: Lesson[];
-}
 
 export default function ModulesPage() {
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
