@@ -1,5 +1,5 @@
 /* CODEX - Educational Programming Platform */
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
   --neon-cyan: #00f0ff;
@@ -37,9 +37,9 @@
   --shadow-neon-purple: 0 0 20px rgba(139, 92, 246, 0.3);
   --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
   --border-subtle: 1px solid rgba(255, 255, 255, 0.08);
-  --font-display: "Orbitron", sans-serif;
-  --font-body: "Inter", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-display: 'Orbitron', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -76,7 +76,7 @@ body {
   overflow-x: hidden;
 }
 body::before {
-  content: "";
+  content: '';
   position: fixed;
   inset: 0;
   background:
@@ -94,7 +94,7 @@ body::before {
   z-index: -1;
 }
 body::after {
-  content: "";
+  content: '';
   position: fixed;
   inset: 0;
   background-image:
@@ -266,7 +266,7 @@ code {
   overflow: hidden;
 }
 .glass-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -304,7 +304,7 @@ code {
   overflow: hidden;
 }
 .btn::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: -100%;
@@ -407,7 +407,7 @@ code {
   cursor: pointer;
 }
 .nav-link::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 0;
   left: 0;
@@ -456,7 +456,7 @@ code {
   margin-bottom: var(--spacing-xl);
 }
 .hero-badge::before {
-  content: "●";
+  content: '●';
   animation: blink 1s infinite;
   color: var(--neon-green);
 }
@@ -536,7 +536,7 @@ code {
   overflow: hidden;
 }
 .module-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -1430,7 +1430,8 @@ code {
   background: rgba(20, 20, 30, 0.8);
   border: 2px solid rgba(0, 240, 255, 0.2);
   border-radius: var(--radius-md);
-  padding: var(--spacing-sm) var(--spacing-xl) var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-xl) var(--spacing-sm)
+    var(--spacing-md);
   font-family: var(--font-display);
   font-size: 0.85rem;
   font-weight: 500;
@@ -1509,11 +1510,11 @@ code {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .filter-controls {
     justify-content: center;
   }
-  
+
   .filter-select {
     min-width: 150px;
     flex: 1;
@@ -1523,13 +1524,13 @@ code {
   .desktop-only {
     display: none;
   }
-  
+
   .header-actions {
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
   }
-  
+
   .user-profile-btn {
     display: flex;
     align-items: center;
@@ -1538,7 +1539,7 @@ code {
     background: transparent !important;
     border: none !important;
   }
-  
+
   .user-avatar {
     width: 32px;
     height: 32px;
@@ -1549,7 +1550,7 @@ code {
     align-items: center;
     justify-content: center;
   }
-  
+
   .user-avatar img {
     width: 100%;
     height: 100%;
@@ -1561,7 +1562,7 @@ code {
     padding-left: var(--spacing-md);
     padding-right: var(--spacing-md);
   }
-  
+
   .modules-grid {
     gap: var(--spacing-md);
     padding: var(--spacing-sm);
@@ -1573,7 +1574,7 @@ code {
     align-items: center !important;
     gap: var(--spacing-xl) !important;
   }
-  
+
   .leaderboard-podium > div {
     order: unset !important;
     transform: none !important;
@@ -1587,7 +1588,7 @@ code {
     text-align: center;
     gap: var(--spacing-lg) !important;
   }
-  
+
   .profile-stats-grid {
     grid-template-columns: 1fr !important; /* Stack stats vertically on mobile or maybe 3 small ones? Let's try 1fr for now due to space */
     gap: var(--spacing-md) !important;
@@ -1596,7 +1597,7 @@ code {
   .profile-content-grid {
     grid-template-columns: 1fr !important;
   }
-  
+
   /* Create styling classes for ProfilePage elements that use inline styles currently */
   /* Since ProfilePage uses inline styles mostly, I need to use !important to override or go back and change ProfilePage to use classes. 
      Given the constraints and prompt, I will try to target specific glass-cards inside ProfilePage using structural selectors or update ProfilePage to use classes if I can't target them well. 

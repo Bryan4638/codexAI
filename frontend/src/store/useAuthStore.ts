@@ -1,16 +1,16 @@
-import { create } from "zustand";
-import { authApi } from "@/services/endpoints/auth";
-import { User } from "@/types/user";
+import { authApi } from '@/services/endpoints/auth'
+import { User } from '@/types/user'
+import { create } from 'zustand'
 
 interface AuthState {
-  user: User | null;
-  loading: boolean;
-  setUser: (user: User | null) => void;
-  login: (email: string, password: string) => Promise<any>;
-  register: (username: string, email: string, password: string) => Promise<any>;
-  logout: () => void;
-  updateUser: (updates: Partial<User>) => void;
-  checkAuth: () => Promise<void>;
+  user: User | null
+  loading: boolean
+  setUser: (user: User | null) => void
+  login: (email: string, password: string) => Promise<any>
+  register: (username: string, email: string, password: string) => Promise<any>
+  logout: () => void
+  updateUser: (updates: Partial<User>) => void
+  checkAuth: () => Promise<void>
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -20,51 +20,51 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   login: async (email, password) => {
     try {
-      const data = await authApi.login(email, password);
-      set({ user: data.user });
-      return data;
+      const data = await authApi.login(email, password)
+      set({ user: data.user })
+      return data
     } catch (e) {
-      throw e;
+      throw e
     }
   },
 
   register: async (username, email, password) => {
     try {
-      const data = await authApi.register(username, email, password);
-      set({ user: data.user });
-      return data;
+      const data = await authApi.register(username, email, password)
+      set({ user: data.user })
+      return data
     } catch (e) {
-      throw e;
+      throw e
     }
   },
 
   logout: () => {
-    authApi.logout();
-    set({ user: null });
+    authApi.logout()
+    set({ user: null })
   },
 
   updateUser: (updates) => {
     set((state) => ({
       user: state.user ? { ...state.user, ...updates } : null,
-    }));
+    }))
   },
 
   checkAuth: async () => {
     if (authApi.isLoggedIn()) {
       try {
-        const data = await authApi.getMe();
-        set({ user: data.user });
+        const data = await authApi.getMe()
+        set({ user: data.user })
       } catch (error) {
-        console.error("Error verificando auth:", error);
-        authApi.logout();
-        set({ user: null });
+        console.error('Error verificando auth:', error)
+        authApi.logout()
+        set({ user: null })
       }
     } else {
-      set({ user: null });
+      set({ user: null })
     }
-    set({ loading: false });
+    set({ loading: false })
   },
-}));
+}))
 
 // Initialize auth check
-useAuthStore.getState().checkAuth();
+useAuthStore.getState().checkAuth()

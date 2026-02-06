@@ -1,12 +1,12 @@
-import ChallengesPage from "@/pages/challenges/ChallengesPage";
-import { Route, BrowserRouter, Routes } from "react-router-dom";
-import BadgesPage from "@/pages/badges/BadgesPage";
-import LeaderboardPage from "@/pages/leaderboard/LeaderboardPage";
-import ModulesPage from "@/pages/modules/ModulesPage";
-import ProfilePage from "@/pages/profile/ProfilePage";
-import Home from "@/pages/home/Home";
-import AppLayout from "@/layouts/AppLayout";
-import SingleModule from "@/pages/modules/SingleModule";
+import AppLayout from '@/layouts/AppLayout'
+import BadgesPage from '@/pages/badges/BadgesPage'
+import ChallengesPage from '@/pages/challenges/ChallengesPage'
+import Home from '@/pages/home/Home'
+import LeaderboardPage from '@/pages/leaderboard/LeaderboardPage'
+import ModulesPage from '@/pages/modules/ModulesPage'
+import SingleModule from '@/pages/modules/SingleModule'
+import ProfilePage from '@/pages/profile/ProfilePage'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 export default function AppRouter() {
   return (
@@ -26,5 +26,5 @@ export default function AppRouter() {
         </Route>
       </Routes>
     </BrowserRouter>
-  );
+  )
 }

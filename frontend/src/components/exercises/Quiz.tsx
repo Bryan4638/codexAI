@@ -1,116 +1,115 @@
-import { useState } from "react";
-import { exerciseApi } from "@/services/endpoints/exercise";
-import { useAuthStore } from "@/store/useAuthStore";
-import type { QuizExercise } from "@/types/exercise";
-import type { QuizFeedback } from "@/types/feedback";
+import { exerciseApi } from '@/services/endpoints/exercise'
+import { useAuthStore } from '@/store/useAuthStore'
+import type { QuizExercise } from '@/types/exercise'
+import type { QuizFeedback } from '@/types/feedback'
+import { useState } from 'react'
 
 interface QuizProps {
-  exercise: QuizExercise;
-  onComplete: () => void;
-  onNewBadges?: (badges: any[]) => void;
+  exercise: QuizExercise
+  onComplete: () => void
+  onNewBadges?: (badges: any[]) => void
 }
 
 function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
-  const [selected, setSelected] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState<boolean>(false);
-  const [result, setResult] = useState<QuizFeedback | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const { user, updateUser } = useAuthStore();
+  const [selected, setSelected] = useState<string | null>(null)
+  const [submitted, setSubmitted] = useState<boolean>(false)
+  const [result, setResult] = useState<QuizFeedback | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+  const { user, updateUser } = useAuthStore()
 
   const handleSelect = (optionId: string) => {
-    if (submitted) return;
-    setSelected(optionId);
-  };
+    if (submitted) return
+    setSelected(optionId)
+  }
 
   const handleSubmit = async () => {
-    if (!selected || !user) return;
+    if (!selected || !user) return
 
-    setLoading(true);
+    setLoading(true)
     try {
-      const response = await exerciseApi.validate(exercise.id, selected);
-      setResult(response);
-      setSubmitted(true);
+      const response = await exerciseApi.validate(exercise.id, selected)
+      setResult(response)
+      setSubmitted(true)
 
       if (response.correct) {
         if (response.xpEarned) {
           updateUser({
             xp: user.xp + response.xpEarned,
             level: response.newLevel || user.level,
-          });
+          })
         }
         if (response.newBadges?.length > 0) {
-          if (onNewBadges) onNewBadges(response.newBadges);
+          if (onNewBadges) onNewBadges(response.newBadges)
         }
-        onComplete();
+        onComplete()
       }
     } catch (error) {
-      console.error("Error validando:", error);
+      console.error('Error validando:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const getOptionClass = (optionId: string) => {
-    let classes = "quiz-option";
-    if (selected === optionId) classes += " selected";
+    let classes = 'quiz-option'
+    if (selected === optionId) classes += ' selected'
     if (submitted && result) {
-      if (result.correct && selected === optionId) classes += " correct";
-      else if (!result.correct && selected === optionId)
-        classes += " incorrect";
+      if (result.correct && selected === optionId) classes += ' correct'
+      else if (!result.correct && selected === optionId) classes += ' incorrect'
     }
-    return classes;
-  };
+    return classes
+  }
 
   return (
     <div>
       <p className="exercise-prompt">{exercise.prompt}</p>
       <div
         style={{
-          display: "inline-flex",
-          gap: "var(--spacing-sm)",
-          marginBottom: "var(--spacing-md)",
+          display: 'inline-flex',
+          gap: 'var(--spacing-sm)',
+          marginBottom: 'var(--spacing-md)',
         }}
       >
         <span
           style={{
-            padding: "2px 8px",
+            padding: '2px 8px',
             background:
-              exercise.difficulty === "beginner"
-                ? "rgba(0, 255, 136, 0.2)"
-                : exercise.difficulty === "intermediate"
-                  ? "rgba(255, 165, 0, 0.2)"
-                  : "rgba(255, 45, 146, 0.2)",
+              exercise.difficulty === 'beginner'
+                ? 'rgba(0, 255, 136, 0.2)'
+                : exercise.difficulty === 'intermediate'
+                  ? 'rgba(255, 165, 0, 0.2)'
+                  : 'rgba(255, 45, 146, 0.2)',
             border: `1px solid ${
-              exercise.difficulty === "beginner"
-                ? "var(--neon-green)"
-                : exercise.difficulty === "intermediate"
-                  ? "var(--neon-orange)"
-                  : "var(--neon-pink)"
+              exercise.difficulty === 'beginner'
+                ? 'var(--neon-green)'
+                : exercise.difficulty === 'intermediate'
+                  ? 'var(--neon-orange)'
+                  : 'var(--neon-pink)'
             }`,
-            borderRadius: "var(--radius-sm)",
-            fontSize: "0.75rem",
+            borderRadius: 'var(--radius-sm)',
+            fontSize: '0.75rem',
             color:
-              exercise.difficulty === "beginner"
-                ? "var(--neon-green)"
-                : exercise.difficulty === "intermediate"
-                  ? "var(--neon-orange)"
-                  : "var(--neon-pink)",
+              exercise.difficulty === 'beginner'
+                ? 'var(--neon-green)'
+                : exercise.difficulty === 'intermediate'
+                  ? 'var(--neon-orange)'
+                  : 'var(--neon-pink)',
           }}
         >
-          {exercise.difficulty === "beginner"
-            ? "🌱 Básico"
-            : exercise.difficulty === "intermediate"
-              ? "🌿 Intermedio"
-              : "🌳 Avanzado"}
+          {exercise.difficulty === 'beginner'
+            ? '🌱 Básico'
+            : exercise.difficulty === 'intermediate'
+              ? '🌿 Intermedio'
+              : '🌳 Avanzado'}
         </span>
         <span
           style={{
-            padding: "2px 8px",
-            background: "rgba(139, 92, 246, 0.2)",
-            border: "1px solid var(--neon-purple)",
-            borderRadius: "var(--radius-sm)",
-            fontSize: "0.75rem",
-            color: "var(--neon-purple)",
+            padding: '2px 8px',
+            background: 'rgba(139, 92, 246, 0.2)',
+            border: '1px solid var(--neon-purple)',
+            borderRadius: 'var(--radius-sm)',
+            fontSize: '0.75rem',
+            color: 'var(--neon-purple)',
           }}
         >
           +{exercise.xpReward} XP
@@ -135,17 +134,17 @@ function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
           className="btn btn-primary"
           onClick={handleSubmit}
           disabled={!selected || loading || !user}
-          style={{ marginTop: "var(--spacing-lg)" }}
+          style={{ marginTop: 'var(--spacing-lg)' }}
         >
-          {loading ? "⏳ Validando..." : "Verificar Respuesta"}
+          {loading ? '⏳ Validando...' : 'Verificar Respuesta'}
         </button>
       )}
       {submitted && result && (
-        <div className={`feedback ${result.correct ? "success" : "error"}`}>
-          <span className="feedback-icon">{result.correct ? "✓" : "✗"}</span>
+        <div className={`feedback ${result.correct ? 'success' : 'error'}`}>
+          <span className="feedback-icon">{result.correct ? '✓' : '✗'}</span>
           <div className="feedback-text">
             <div className="feedback-title">
-              {result.correct ? "¡Correcto!" : "Incorrecto"}
+              {result.correct ? '¡Correcto!' : 'Incorrecto'}
               {result.xpEarned &&
                 result.xpEarned > 0 &&
                 ` (+${result.xpEarned} XP)`}
@@ -155,8 +154,8 @@ function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
               <div
                 className="feedback-explanation"
                 style={{
-                  marginTop: "var(--spacing-sm)",
-                  fontStyle: "italic",
+                  marginTop: 'var(--spacing-sm)',
+                  fontStyle: 'italic',
                   opacity: 0.9,
                 }}
               >
@@ -167,7 +166,7 @@ function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
         </div>
       )}
     </div>
-  );
+  )
 }
 
-export default Quiz;
+export default Quiz

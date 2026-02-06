@@ -1,9 +1,9 @@
-import { Module } from "@/types/module";
+import { Module } from '@/types/module'
 
 interface ModuleCardProps {
-  module: Module;
-  progress: number;
-  onClick: () => void;
+  module: Module
+  progress: number
+  onClick: () => void
 }
 
 function ModuleCard({ module, progress, onClick }: ModuleCardProps) {
@@ -22,12 +22,12 @@ function ModuleCard({ module, progress, onClick }: ModuleCardProps) {
       <div className="module-lessons">
         <span>📚</span>
         <span>{module.lessons.length} lecciones</span>
-        <span style={{ marginLeft: "auto", color: "var(--neon-cyan)" }}>
+        <span style={{ marginLeft: 'auto', color: 'var(--neon-cyan)' }}>
           {progress}% completado
         </span>
       </div>
     </div>
-  );
+  )
 }
 
-export default ModuleCard;
+export default ModuleCard

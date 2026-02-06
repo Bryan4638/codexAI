@@ -1,18 +1,18 @@
-import { useState } from "react";
-import Hero from "@/pages/home/components/Hero";
-import ModuleCard from "@/components/share/ModuleCard";
-import { Module } from "@/types/module";
-import { modulesData } from "@/data/data";
+import ModuleCard from '@/components/share/ModuleCard'
+import { modulesData } from '@/data/data'
+import Hero from '@/pages/home/components/Hero'
+import { Module } from '@/types/module'
+import { useState } from 'react'
 
 export default function Home() {
   const [moduleProgress, setModuleProgress] = useState<
     Record<string, { completed: number; total: number }>
-  >({});
-  const [currentView, setCurrentView] = useState<string>("home");
+  >({})
+  const [currentView, setCurrentView] = useState<string>('home')
 
   const handleModuleClick = (module: Module) => {
-    setCurrentView("lessons");
-  };
+    setCurrentView('lessons')
+  }
   return (
     <>
       <Hero />
@@ -29,11 +29,11 @@ export default function Home() {
             const stats = moduleProgress[module.id] || {
               completed: 0,
               total: 0,
-            };
+            }
             const progress =
               stats.total > 0
                 ? Math.round((stats.completed / stats.total) * 100)
-                : 0;
+                : 0
 
             return (
               <ModuleCard
@@ -42,10 +42,10 @@ export default function Home() {
                 progress={progress}
                 onClick={() => handleModuleClick(module)}
               />
-            );
+            )
           })}
         </div>
       </section>
     </>
-  );
+  )
 }

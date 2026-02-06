@@ -1,42 +1,42 @@
-import { useState, useEffect } from "react";
-import { useAuthStore } from "@/store/useAuthStore";
-import { badgeApi } from "@/services/endpoints/badge";
-import EditProfileModal from "@/pages/profile/components/EditProfileModal";
-import { ProgressData, ProfileBadgesData } from "@/types/profile";
+import EditProfileModal from '@/pages/profile/components/EditProfileModal'
+import { badgeApi } from '@/services/endpoints/badge'
+import { useAuthStore } from '@/store/useAuthStore'
+import { ProfileBadgesData, ProgressData } from '@/types/profile'
+import { useEffect, useState } from 'react'
 
 function ProfilePage() {
-  const { user, logout } = useAuthStore();
-  const [progress, setProgress] = useState<ProgressData | null>(null);
+  const { user, logout } = useAuthStore()
+  const [progress, setProgress] = useState<ProgressData | null>(null)
   const [badges, setBadges] = useState<ProfileBadgesData>({
     badges: [],
     total: 0,
     unlocked: 0,
-  });
-  const [loading, setLoading] = useState<boolean>(true);
-  const [showEditProfile, setShowEditProfile] = useState<boolean>(false);
+  })
+  const [loading, setLoading] = useState<boolean>(true)
+  const [showEditProfile, setShowEditProfile] = useState<boolean>(false)
 
   useEffect(() => {
-    loadData();
-  }, []);
+    loadData()
+  }, [])
 
   const loadData = async () => {
     try {
       const [progressData, badgesData] = await Promise.all([
         badgeApi.getProgress(),
         badgeApi.getUserBadges(),
-      ]);
-      setProgress(progressData);
-      setBadges(badgesData);
+      ])
+      setProgress(progressData)
+      setBadges(badgesData)
     } catch (error) {
-      console.error("Error cargando datos:", error);
+      console.error('Error cargando datos:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const handleLogout = () => {
-    logout();
-  };
+    logout()
+  }
 
   if (showEditProfile) {
     return (
@@ -44,61 +44,61 @@ function ProfilePage() {
         onClose={() => setShowEditProfile(false)}
         onSave={loadData}
       />
-    );
+    )
   }
 
   if (loading) {
     return (
       <div
         className="container"
-        style={{ paddingTop: "120px", textAlign: "center" }}
+        style={{ paddingTop: '120px', textAlign: 'center' }}
       >
         <p>Cargando perfil...</p>
       </div>
-    );
+    )
   }
 
   return (
     <div
       className="container"
-      style={{ paddingTop: "120px", paddingBottom: "60px" }}
+      style={{ paddingTop: '120px', paddingBottom: '60px' }}
     >
-      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         {/* Header del perfil */}
         <div
           className="profile-header-container"
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "var(--spacing-lg)",
-            marginBottom: "var(--spacing-2xl)",
+            display: 'flex',
+            alignItems: 'center',
+            gap: 'var(--spacing-lg)',
+            marginBottom: 'var(--spacing-2xl)',
           }}
         >
           <div
             style={{
-              width: "100px",
-              height: "100px",
-              background: "var(--gradient-primary)",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "2.5rem",
+              width: '100px',
+              height: '100px',
+              background: 'var(--gradient-primary)',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '2.5rem',
             }}
           >
             👤
           </div>
           <div style={{ flex: 1 }}>
             <h1
-              style={{ marginBottom: "var(--spacing-xs)", fontSize: "2.5rem" }}
+              style={{ marginBottom: 'var(--spacing-xs)', fontSize: '2.5rem' }}
             >
               {user?.username}
             </h1>
             <p
               style={{
-                color: "var(--text-secondary)",
+                color: 'var(--text-secondary)',
                 margin: 0,
-                fontSize: "1.1rem",
+                fontSize: '1.1rem',
               }}
             >
               {user?.email}
@@ -106,23 +106,23 @@ function ProfilePage() {
             {user?.createdAt && (
               <p
                 style={{
-                  color: "var(--text-muted)",
-                  fontSize: "0.9rem",
-                  marginTop: "8px",
+                  color: 'var(--text-muted)',
+                  fontSize: '0.9rem',
+                  marginTop: '8px',
                 }}
               >
                 Miembro desde: {new Date(user.createdAt).toLocaleDateString()}
               </p>
             )}
           </div>
-          <div style={{ display: "flex", gap: "var(--spacing-md)" }}>
+          <div style={{ display: 'flex', gap: 'var(--spacing-md)' }}>
             <button
               onClick={() => setShowEditProfile(true)}
               className="btn btn-secondary"
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "var(--spacing-xs)",
+                display: 'flex',
+                alignItems: 'center',
+                gap: 'var(--spacing-xs)',
               }}
             >
               ✏️ Editar Perfil
@@ -131,9 +131,9 @@ function ProfilePage() {
               className="btn"
               onClick={handleLogout}
               style={{
-                background: "rgba(255, 45, 146, 0.2)",
-                color: "var(--neon-pink)",
-                border: "1px solid var(--neon-pink)",
+                background: 'rgba(255, 45, 146, 0.2)',
+                color: 'var(--neon-pink)',
+                border: '1px solid var(--neon-pink)',
               }}
             >
               Cerrar Sesión
@@ -145,30 +145,30 @@ function ProfilePage() {
         <div
           className="profile-stats-grid"
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "var(--spacing-lg)",
-            marginBottom: "var(--spacing-2xl)",
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: 'var(--spacing-lg)',
+            marginBottom: 'var(--spacing-2xl)',
           }}
         >
           <div
             className="glass-card"
-            style={{ padding: "var(--spacing-xl)", textAlign: "center" }}
+            style={{ padding: 'var(--spacing-xl)', textAlign: 'center' }}
           >
             <div
               style={{
-                fontSize: "3rem",
-                fontFamily: "var(--font-display)",
-                color: "var(--neon-cyan)",
+                fontSize: '3rem',
+                fontFamily: 'var(--font-display)',
+                color: 'var(--neon-cyan)',
               }}
             >
               {progress?.level || 1}
             </div>
             <div
               style={{
-                fontSize: "1rem",
-                color: "var(--text-muted)",
-                letterSpacing: "2px",
+                fontSize: '1rem',
+                color: 'var(--text-muted)',
+                letterSpacing: '2px',
               }}
             >
               NIVEL
@@ -176,22 +176,22 @@ function ProfilePage() {
           </div>
           <div
             className="glass-card"
-            style={{ padding: "var(--spacing-xl)", textAlign: "center" }}
+            style={{ padding: 'var(--spacing-xl)', textAlign: 'center' }}
           >
             <div
               style={{
-                fontSize: "3rem",
-                fontFamily: "var(--font-display)",
-                color: "var(--neon-purple)",
+                fontSize: '3rem',
+                fontFamily: 'var(--font-display)',
+                color: 'var(--neon-purple)',
               }}
             >
               {progress?.xp || 0}
             </div>
             <div
               style={{
-                fontSize: "1rem",
-                color: "var(--text-muted)",
-                letterSpacing: "2px",
+                fontSize: '1rem',
+                color: 'var(--text-muted)',
+                letterSpacing: '2px',
               }}
             >
               XP
@@ -199,22 +199,22 @@ function ProfilePage() {
           </div>
           <div
             className="glass-card"
-            style={{ padding: "var(--spacing-xl)", textAlign: "center" }}
+            style={{ padding: 'var(--spacing-xl)', textAlign: 'center' }}
           >
             <div
               style={{
-                fontSize: "3rem",
-                fontFamily: "var(--font-display)",
-                color: "var(--neon-green)",
+                fontSize: '3rem',
+                fontFamily: 'var(--font-display)',
+                color: 'var(--neon-green)',
               }}
             >
               {progress?.completedExercises || 0}
             </div>
             <div
               style={{
-                fontSize: "1rem",
-                color: "var(--text-muted)",
-                letterSpacing: "2px",
+                fontSize: '1rem',
+                color: 'var(--text-muted)',
+                letterSpacing: '2px',
               }}
             >
               EJERCICIOS
@@ -226,31 +226,31 @@ function ProfilePage() {
         <div
           className="glass-card"
           style={{
-            padding: "var(--spacing-xl)",
-            marginBottom: "var(--spacing-2xl)",
+            padding: 'var(--spacing-xl)',
+            marginBottom: 'var(--spacing-2xl)',
           }}
         >
           <div
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginBottom: "var(--spacing-md)",
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginBottom: 'var(--spacing-md)',
             }}
           >
-            <span style={{ color: "var(--text-secondary)" }}>
+            <span style={{ color: 'var(--text-secondary)' }}>
               Progreso al nivel {(progress?.level || 1) + 1}
             </span>
             <span
               style={{
-                color: "var(--neon-cyan)",
-                fontFamily: "var(--font-mono)",
-                fontSize: "1.2rem",
+                color: 'var(--neon-cyan)',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '1.2rem',
               }}
             >
               {progress?.xp || 0} / {progress?.nextLevelXp || 100} XP
             </span>
           </div>
-          <div className="progress-bar" style={{ height: "12px" }}>
+          <div className="progress-bar" style={{ height: '12px' }}>
             <div
               className="progress-fill"
               style={{ width: `${progress?.levelProgress || 0}%` }}
@@ -261,28 +261,28 @@ function ProfilePage() {
         <div
           className="profile-content-grid"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--spacing-xl)",
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: 'var(--spacing-xl)',
           }}
         >
           {/* Medallas */}
           <div>
             <h3
               style={{
-                marginBottom: "var(--spacing-lg)",
-                display: "flex",
-                alignItems: "center",
-                gap: "var(--spacing-sm)",
+                marginBottom: 'var(--spacing-lg)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 'var(--spacing-sm)',
               }}
             >
               🏆 Medallas ({badges.unlocked}/{badges.total})
             </h3>
             <div
               style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "var(--spacing-md)",
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 'var(--spacing-md)',
               }}
             >
               {badges.badges.length > 0 ? (
@@ -291,27 +291,27 @@ function ProfilePage() {
                     key={badge.id}
                     className="glass-card"
                     style={{
-                      padding: "var(--spacing-lg)",
-                      textAlign: "center",
-                      minWidth: "120px",
+                      padding: 'var(--spacing-lg)',
+                      textAlign: 'center',
+                      minWidth: '120px',
                       flex: 1,
                     }}
                   >
                     <div
                       style={{
-                        fontSize: "2.5rem",
-                        marginBottom: "var(--spacing-xs)",
+                        fontSize: '2.5rem',
+                        marginBottom: 'var(--spacing-xs)',
                       }}
                     >
                       {badge.icon}
                     </div>
-                    <div style={{ fontSize: "0.9rem", fontWeight: "600" }}>
+                    <div style={{ fontSize: '0.9rem', fontWeight: '600' }}>
                       {badge.name}
                     </div>
                   </div>
                 ))
               ) : (
-                <p style={{ color: "var(--text-muted)", fontStyle: "italic" }}>
+                <p style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>
                   Completa ejercicios para desbloquear medallas
                 </p>
               )}
@@ -322,34 +322,34 @@ function ProfilePage() {
           <div>
             {progress?.moduleProgress && (
               <>
-                <h3 style={{ marginBottom: "var(--spacing-lg)" }}>
+                <h3 style={{ marginBottom: 'var(--spacing-lg)' }}>
                   📊 Progreso por Módulo
                 </h3>
                 <div
                   className="glass-card"
-                  style={{ padding: "var(--spacing-lg)" }}
+                  style={{ padding: 'var(--spacing-lg)' }}
                 >
                   {Object.entries(progress.moduleProgress).map(
                     ([moduleId, data]) => (
                       <div
                         key={moduleId}
-                        style={{ marginBottom: "var(--spacing-lg)" }}
+                        style={{ marginBottom: 'var(--spacing-lg)' }}
                       >
                         <div
                           style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            marginBottom: "var(--spacing-xs)",
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            marginBottom: 'var(--spacing-xs)',
                           }}
                         >
-                          <span style={{ color: "var(--text-secondary)" }}>
+                          <span style={{ color: 'var(--text-secondary)' }}>
                             Módulo {moduleId}
                           </span>
-                          <span style={{ color: "var(--neon-cyan)" }}>
+                          <span style={{ color: 'var(--neon-cyan)' }}>
                             {data.completed}/{data.total}
                           </span>
                         </div>
-                        <div className="progress-bar" style={{ height: "8px" }}>
+                        <div className="progress-bar" style={{ height: '8px' }}>
                           <div
                             className="progress-fill"
                             style={{
@@ -358,7 +358,7 @@ function ProfilePage() {
                           />
                         </div>
                       </div>
-                    ),
+                    )
                   )}
                 </div>
               </>
@@ -368,56 +368,56 @@ function ProfilePage() {
 
         {/* Historial de Actividad */}
         {progress?.history && progress.history.length > 0 && (
-          <div style={{ marginTop: "var(--spacing-2xl)" }}>
-            <h3 style={{ marginBottom: "var(--spacing-lg)" }}>
+          <div style={{ marginTop: 'var(--spacing-2xl)' }}>
+            <h3 style={{ marginBottom: 'var(--spacing-lg)' }}>
               📜 Historial de Actividad
             </h3>
             <div
               className="glass-card"
-              style={{ padding: "0", overflow: "hidden" }}
+              style={{ padding: '0', overflow: 'hidden' }}
             >
-              <div style={{ maxHeight: "400px", overflowY: "auto" }}>
+              <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
                 {progress.history.map((item, index) => (
                   <div
                     key={`${item.id}-${index}`}
                     style={{
-                      padding: "var(--spacing-md) var(--spacing-lg)",
-                      borderBottom: "1px solid rgba(255,255,255,0.05)",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
+                      padding: 'var(--spacing-md) var(--spacing-lg)',
+                      borderBottom: '1px solid rgba(255,255,255,0.05)',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
                     }}
                   >
                     <div>
                       <div
                         style={{
-                          fontWeight: "bold",
-                          color: "var(--text-primary)",
-                          marginBottom: "4px",
+                          fontWeight: 'bold',
+                          color: 'var(--text-primary)',
+                          marginBottom: '4px',
                         }}
                       >
                         {item.title}
                       </div>
                       <div
                         style={{
-                          fontSize: "0.85rem",
-                          color: "var(--text-secondary)",
+                          fontSize: '0.85rem',
+                          color: 'var(--text-secondary)',
                         }}
                       >
-                        {new Date(item.completedAt).toLocaleDateString()} •{" "}
+                        {new Date(item.completedAt).toLocaleDateString()} •{' '}
                         {new Date(item.completedAt).toLocaleTimeString()}
                       </div>
                     </div>
                     <div
                       style={{
-                        background: "rgba(255, 255, 255, 0.05)",
-                        padding: "4px 12px",
-                        borderRadius: "12px",
-                        fontSize: "0.85rem",
-                        color: "var(--text-muted)",
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        padding: '4px 12px',
+                        borderRadius: '12px',
+                        fontSize: '0.85rem',
+                        color: 'var(--text-muted)',
                       }}
                     >
-                      {item.attempts} intento{item.attempts !== 1 ? "s" : ""}
+                      {item.attempts} intento{item.attempts !== 1 ? 's' : ''}
                     </div>
                   </div>
                 ))}
@@ -427,7 +427,7 @@ function ProfilePage() {
         )}
       </div>
     </div>
-  );
+  )
 }
 
-export default ProfilePage;
+export default ProfilePage

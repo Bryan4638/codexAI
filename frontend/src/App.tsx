@@ -1,7 +1,7 @@
-import AppLayout from "@/layouts/AppLayout";
+import AppRouter from '@/routes/AppRouter'
 
 function App() {
-  return <AppLayout />;
+  return <AppRouter />
 }
 
-export default App;
+export default App
