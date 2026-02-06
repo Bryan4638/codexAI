@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import CodeEditor from "@/components/exercises/CodeEditor";
-import QuizExercise from "@/components/exercises/QuizExercise";
-import DragDropExercise from "@/components/exercises/DragDropExercise";
-import FillBlankExercise from "@/components/exercises/FillBlankExercise";
+import Quiz from "@/components/exercises/Quiz";
+import DragDrop from "@/components/exercises/DragDrop";
+import FillBlank from "@/components/exercises/FillBlank";
 import { badgeApi } from "@/services/endpoints/badge";
 import { exerciseApi } from "@/services/endpoints/exercise";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -127,11 +127,11 @@ function LessonView({
       case "code":
         return <CodeEditor key={currentExercise.id} {...props} />;
       case "quiz":
-        return <QuizExercise key={currentExercise.id} {...props} />;
+        return <Quiz key={currentExercise.id} {...props} />;
       case "dragDrop":
-        return <DragDropExercise key={currentExercise.id} {...props} />;
+        return <DragDrop key={currentExercise.id} {...props} />;
       case "fillBlank":
-        return <FillBlankExercise key={currentExercise.id} {...props} />;
+        return <FillBlank key={currentExercise.id} {...props} />;
       default:
         return <p>Tipo de ejercicio no soportado.</p>;
     }
