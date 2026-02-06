@@ -1,15 +1,4 @@
-interface Lesson {
-  id: string;
-  title: string;
-}
-
-interface Module {
-  id: number;
-  title: string;
-  description: string;
-  icon: string;
-  lessons: Lesson[];
-}
+import { Module } from "@/types/module";
 
 interface ModuleCardProps {
   module: Module;

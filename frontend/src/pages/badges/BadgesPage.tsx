@@ -1,20 +1,9 @@
 import { useState, useEffect } from "react";
 import { badgeApi } from "@/services/endpoints/badge";
-
-interface Badge {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-}
-
-interface UserBadgeData {
-  badges: Badge[];
-  unlocked: number; // Assuming unlocked is a count?
-}
+import { BadgeWithDescription, UserBadgeData } from "@/types/badge";
 
 function BadgesPage() {
-  const [allBadges, setAllBadges] = useState<Badge[]>([]);
+  const [allBadges, setAllBadges] = useState<BadgeWithDescription[]>([]);
   const [userBadges, setUserBadges] = useState<UserBadgeData>({
     badges: [],
     unlocked: 0,

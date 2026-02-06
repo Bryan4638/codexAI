@@ -1,26 +1,18 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { leaderboardApi } from "@/services/endpoints/leaderboard";
+import { ProfileFormData } from "@/types/profile";
 
 interface EditProfileModalProps {
   onClose: () => void;
   onSave?: () => void; // Made optional as in usage it might not be passed or handled flexibly
 }
 
-interface FormData {
-  bio: string;
-  github: string;
-  linkedin: string;
-  twitter: string;
-  website: string;
-  isPublic: boolean;
-}
-
 function EditProfileModal({ onClose, onSave }: EditProfileModalProps) {
   const { user } = useAuthStore();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<ProfileFormData>({
     bio: "",
     github: "",
     linkedin: "",

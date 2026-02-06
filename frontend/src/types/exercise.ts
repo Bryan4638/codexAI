@@ -5,6 +5,12 @@ interface BaseExercise {
   xpReward: number;
 }
 
+export interface LessonExercise extends BaseExercise {
+  type: "code" | "quiz" | "dragDrop" | "fillBlank";
+  data?: any;
+  [key: string]: any;
+}
+
 export interface CodeEditorExercise extends BaseExercise {
   data?: {
     placeholder?: string;

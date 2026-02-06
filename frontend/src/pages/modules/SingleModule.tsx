@@ -1,17 +1,4 @@
-import { useState } from "react";
-import ModuleCard from "@/components/share/ModuleCard";
-import { Module } from "@/types/module";
-import { modulesData } from "@/data/data";
-
-export default function ModulesPage() {
-  const [selectedModule, setSelectedModule] = useState<Module | null>(null);
-  const [moduleProgress, setModuleProgress] = useState<
-    Record<string, { completed: number; total: number }>
-  >({});
-
-  const handleModuleClick = (module: Module) => {
-    setSelectedModule(module);
-  };
+export default function SingleModule() {
   return (
     <section
       className="modules-section container"

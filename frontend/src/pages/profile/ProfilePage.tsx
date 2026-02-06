@@ -2,38 +2,12 @@ import { useState, useEffect } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { badgeApi } from "@/services/endpoints/badge";
 import EditProfileModal from "@/pages/profile/components/EditProfileModal";
-
-interface Badge {
-  id: string;
-  name: string;
-  icon: string;
-}
-
-interface ProgressData {
-  level: number;
-  xp: number;
-  completedExercises: number;
-  nextLevelXp: number;
-  levelProgress: number;
-  moduleProgress?: Record<string, { completed: number; total: number }>;
-  history?: Array<{
-    id: string;
-    title: string;
-    completedAt: string;
-    attempts: number;
-  }>;
-}
-
-interface BadgesData {
-  badges: Badge[];
-  total: number;
-  unlocked: number;
-}
+import { ProgressData, ProfileBadgesData } from "@/types/profile";
 
 function ProfilePage() {
   const { user, logout } = useAuthStore();
   const [progress, setProgress] = useState<ProgressData | null>(null);
-  const [badges, setBadges] = useState<BadgesData>({
+  const [badges, setBadges] = useState<ProfileBadgesData>({
     badges: [],
     total: 0,
     unlocked: 0,

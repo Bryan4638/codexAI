@@ -6,6 +6,7 @@ import ModulesPage from "@/pages/modules/ModulesPage";
 import ProfilePage from "@/pages/profile/ProfilePage";
 import Home from "@/pages/home/Home";
 import AppLayout from "@/layouts/AppLayout";
+import SingleModule from "@/pages/modules/SingleModule";
 
 export default function AppRouter() {
   return (
@@ -20,8 +21,8 @@ export default function AppRouter() {
           <Route path="/retos" element={<ChallengesPage />} />
           <Route path="/perfil" element={<ProfilePage />} />
 
-          {/*<Route path="/modulos/:module" element={ } />
-          <Route path="modulos/:module/:lesson" element={ <LessonView} />*/}
+          <Route path="/modulos/:module" element={<SingleModule />} />
+          {/*<Route path="modulos/:module/:lesson" element={ <LessonView} />*/}
         </Route>
       </Routes>
     </BrowserRouter>

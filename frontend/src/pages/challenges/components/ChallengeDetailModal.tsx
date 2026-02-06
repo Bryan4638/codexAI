@@ -1,7 +1,8 @@
 import { useAuthStore } from "@/store/useAuthStore";
+import { Challenge } from "@/types/challenge";
 
 interface ChallengeDetailModalProps {
-  challenge: any; // Define proper type if reused
+  challenge: Challenge;
   onClose: () => void;
   onReaction?: (id: string) => void;
   onDelete?: (id: string) => void;
@@ -228,7 +229,7 @@ function ChallengeDetailModal({
                 gap: "var(--spacing-sm)",
               }}
             >
-              {challenge.testCases.map((testCase: any, index: number) => (
+              {challenge.testCases.map((testCase, index: number) => (
                 <div
                   key={index}
                   style={{

@@ -7,7 +7,7 @@ interface HeaderProps {
   onShowAuth: () => void;
 }
 
-function Header({ currentView, onShowAuth }: HeaderProps) {
+function Header({ onShowAuth }: HeaderProps) {
   const { user } = useAuthStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = useLocation();

@@ -6,22 +6,14 @@ import FillBlank from "@/components/exercises/FillBlank";
 import { badgeApi } from "@/services/endpoints/badge";
 import { exerciseApi } from "@/services/endpoints/exercise";
 import { useAuthStore } from "@/store/useAuthStore";
+import { Module } from "@/types/module";
+import { LessonExercise } from "@/types/exercise";
 
 interface LessonViewProps {
-  module: any; // Define nicer type later
+  module: Module;
   lessonId: string;
   onBack: () => void;
   onNewBadges: (badges: any[]) => void;
-}
-
-interface Exercise {
-  id: string;
-  type: "code" | "quiz" | "dragDrop" | "fillBlank";
-  prompt: string;
-  difficulty: string;
-  xpReward: number;
-  data?: any;
-  [key: string]: any;
 }
 
 function LessonView({
@@ -30,7 +22,7 @@ function LessonView({
   onBack,
   onNewBadges,
 }: LessonViewProps) {
-  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [exercises, setExercises] = useState<LessonExercise[]>([]);
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState<number>(0);
   const [completedExercises, setCompletedExercises] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -60,7 +52,7 @@ function LessonView({
         const completedIds = progressData.history?.map((h: any) => h.id) || [];
 
         const completedIndices = exercisesList.reduce(
-          (acc: number[], exercise: Exercise, index: number) => {
+          (acc: number[], exercise: LessonExercise, index: number) => {
             if (completedIds.includes(exercise.id)) {
               acc.push(index);
             }

@@ -1,14 +1,6 @@
 import { create } from "zustand";
 import { authApi } from "@/services/endpoints/auth";
-
-interface User {
-  id: string;
-  username: string;
-  email: string;
-  role: string;
-  current_level?: number;
-  [key: string]: any;
-}
+import { User } from "@/types/user";
 
 interface AuthState {
   user: User | null;

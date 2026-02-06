@@ -3,25 +3,7 @@ import { challengeApi } from "@/services/endpoints/challenge";
 import CreateChallengeModal from "@/pages/challenges/components/CreateChallengeModal";
 import ChallengeDetailModal from "@/pages/challenges/components/CreateChallengeModal";
 import { useAuthStore } from "@/store/useAuthStore";
-
-interface Challenge {
-  id: string;
-  title: string;
-  description: string;
-  difficulty: "easy" | "medium" | "hard";
-  authorId: string;
-  author?: {
-    username: string;
-    avatarUrl?: string;
-  };
-  reactions?: { userId: string }[];
-  _count?: {
-    reactions: number;
-    solutions?: number;
-  };
-  createdAt?: string;
-  // Add other fields as needed
-}
+import { Challenge } from "@/types/challenge";
 
 function ChallengesPage() {
   const { user } = useAuthStore();
@@ -315,13 +297,13 @@ function ChallengesPage() {
         <ChallengeDetailModal
           challenge={selectedChallenge}
           onClose={() => setSelectedChallenge(null)}
-          onReaction={(id) => {
+          onReaction={(id: string) => {
             handleReaction(id);
             // Actualizar el challenge seleccionado con los nuevos datos
             const updated = challenges.find((c) => c.id === id);
             if (updated) setSelectedChallenge(updated);
           }}
-          onDelete={(id) => {
+          onDelete={(id: string) => {
             handleDelete(id);
             setSelectedChallenge(null);
           }}

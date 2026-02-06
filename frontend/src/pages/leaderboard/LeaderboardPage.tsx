@@ -1,38 +1,7 @@
 import { useState, useEffect } from "react";
 import { leaderboardApi } from "@/services/endpoints/leaderboard";
-
-interface LeaderboardUser {
-  id: string;
-  username: string;
-  avatarUrl?: string;
-  level: number;
-  xp: number;
-  badgeCount: number;
-  rank: number;
-  isPublic: boolean;
-}
-
-interface UserProfileData {
-  username: string;
-  avatarUrl?: string;
-  level: number;
-  xp: number;
-  badgeCount: number;
-  exercisesCompleted: number;
-  bio?: string;
-  isPublic: boolean;
-  contact?: {
-    github?: string;
-    linkedin?: string;
-    twitter?: string;
-    website?: string;
-  };
-  badges?: Array<{
-    id: string;
-    name: string;
-    icon: string;
-  }>;
-}
+import { LeaderboardUser } from "@/types/leaderboard";
+import { UserProfileData } from "@/types/profile";
 
 function LeaderboardPage() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);

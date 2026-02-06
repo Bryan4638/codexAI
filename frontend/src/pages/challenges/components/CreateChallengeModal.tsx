@@ -1,23 +1,16 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { challengeApi } from "@/services/endpoints/challenge";
+import { CreateChallengeFormData } from "@/types/challenge";
 
 interface CreateChallengeModalProps {
   onClose: () => void;
   onSave?: () => void;
 }
 
-interface FormData {
-  title: string;
-  description: string;
-  difficulty: string;
-  initialCode: string;
-  testCases: string;
-}
-
 function CreateChallengeModal({ onClose, onSave }: CreateChallengeModalProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<CreateChallengeFormData>({
     title: "",
     description: "",
     difficulty: "easy",
