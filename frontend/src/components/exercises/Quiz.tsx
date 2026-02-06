@@ -1,58 +1,33 @@
 import { useState } from "react";
-import { exerciseApi } from "../../services/api";
-import { useAuthStore } from "../../store/useAuthStore";
+import { exerciseApi } from "@/services/endpoints/exercise";
+import { useAuthStore } from "@/store/useAuthStore";
+import type { QuizExercise } from "@/types/exercise";
+import type { QuizFeedback } from "@/types/feedback";
 
-interface Blank {
-  id: string;
-}
-
-interface Exercise {
-  id: string;
-  prompt: string;
-  difficulty: string;
-  xpReward: number;
-  data?: {
-    template?: string[];
-    blanks?: Blank[];
-  };
-}
-
-interface FillBlankExerciseProps {
-  exercise: Exercise;
+interface QuizProps {
+  exercise: QuizExercise;
   onComplete: () => void;
   onNewBadges?: (badges: any[]) => void;
 }
 
-interface Feedback {
-  correct: boolean;
-  message: string;
-  explanation?: string;
-  xpEarned?: number;
-  newLevel?: number;
-  newBadges?: any[];
-}
-
-function FillBlankExercise({
-  exercise,
-  onComplete,
-  onNewBadges,
-}: FillBlankExerciseProps) {
-  const [answers, setAnswers] = useState<Record<string, string>>({});
+function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
+  const [selected, setSelected] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<boolean>(false);
-  const [result, setResult] = useState<Feedback | null>(null);
+  const [result, setResult] = useState<QuizFeedback | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { user, updateUser } = useAuthStore();
 
-  const handleChange = (blankId: string, value: string) => {
-    setAnswers((prev) => ({ ...prev, [blankId]: value }));
+  const handleSelect = (optionId: string) => {
+    if (submitted) return;
+    setSelected(optionId);
   };
 
   const handleSubmit = async () => {
-    if (!user) return;
+    if (!selected || !user) return;
 
     setLoading(true);
     try {
-      const response = await exerciseApi.validate(exercise.id, answers);
+      const response = await exerciseApi.validate(exercise.id, selected);
       setResult(response);
       setSubmitted(true);
 
@@ -68,18 +43,22 @@ function FillBlankExercise({
         }
         onComplete();
       }
-    } catch (error: any) {
-      setResult({ correct: false, message: error.message });
-      setSubmitted(true);
+    } catch (error) {
+      console.error("Error validando:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleReset = () => {
-    setAnswers({});
-    setSubmitted(false);
-    setResult(null);
+  const getOptionClass = (optionId: string) => {
+    let classes = "quiz-option";
+    if (selected === optionId) classes += " selected";
+    if (submitted && result) {
+      if (result.correct && selected === optionId) classes += " correct";
+      else if (!result.correct && selected === optionId)
+        classes += " incorrect";
+    }
+    return classes;
   };
 
   return (
@@ -137,53 +116,36 @@ function FillBlankExercise({
           +{exercise.xpReward} XP
         </span>
       </div>
-      <div className="fill-blank-code">
-        {exercise.data?.template?.map((part, index) => (
-          <span key={index}>
-            {part}
-            {exercise.data?.blanks && index < exercise.data.blanks.length && (
-              <input
-                type="text"
-                className={`fill-blank-input ${submitted ? (result?.correct ? "correct" : "incorrect") : ""}`}
-                value={answers[exercise.data.blanks[index].id] || ""}
-                onChange={(e) =>
-                  exercise.data?.blanks &&
-                  handleChange(exercise.data.blanks[index].id, e.target.value)
-                }
-                disabled={submitted}
-                placeholder="..."
-              />
-            )}
-          </span>
+      <div className="quiz-options">
+        {exercise.data?.options?.map((option) => (
+          <div
+            key={option.id}
+            className={getOptionClass(option.id)}
+            onClick={() => handleSelect(option.id)}
+          >
+            <span className="quiz-option-marker">
+              {option.id.toUpperCase()}
+            </span>
+            <span className="quiz-option-text">{option.text}</span>
+          </div>
         ))}
       </div>
-      <div
-        style={{
-          marginTop: "var(--spacing-lg)",
-          display: "flex",
-          gap: "var(--spacing-md)",
-        }}
-      >
-        {!submitted ? (
-          <button
-            className="btn btn-primary"
-            onClick={handleSubmit}
-            disabled={loading || !user}
-          >
-            {loading ? "⏳ Validando..." : "✓ Verificar"}
-          </button>
-        ) : (
-          <button className="btn btn-secondary" onClick={handleReset}>
-            ↺ Intentar de nuevo
-          </button>
-        )}
-      </div>
+      {!submitted && (
+        <button
+          className="btn btn-primary"
+          onClick={handleSubmit}
+          disabled={!selected || loading || !user}
+          style={{ marginTop: "var(--spacing-lg)" }}
+        >
+          {loading ? "⏳ Validando..." : "Verificar Respuesta"}
+        </button>
+      )}
       {submitted && result && (
         <div className={`feedback ${result.correct ? "success" : "error"}`}>
           <span className="feedback-icon">{result.correct ? "✓" : "✗"}</span>
           <div className="feedback-text">
             <div className="feedback-title">
-              {result.correct ? "¡Correcto!" : "Inténtalo de nuevo"}
+              {result.correct ? "¡Correcto!" : "Incorrecto"}
               {result.xpEarned &&
                 result.xpEarned > 0 &&
                 ` (+${result.xpEarned} XP)`}
@@ -208,4 +170,4 @@ function FillBlankExercise({
   );
 }
 
-export default FillBlankExercise;
+export default Quiz;

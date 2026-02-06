@@ -1,37 +1,20 @@
 import { useState } from "react";
-import { exerciseApi } from "../../services/api";
-import { useAuthStore } from "../../store/useAuthStore";
-
-interface Exercise {
-  id: string;
-  prompt: string;
-  difficulty: string;
-  xpReward: number;
-  data?: {
-    placeholder?: string;
-  };
-}
+import { exerciseApi } from "@/services/endpoints/exercise";
+import { useAuthStore } from "@/store/useAuthStore";
+import type { CodeEditorExercise } from "@/types/exercise";
+import type { CodeEditorFeedback } from "@/types/feedback";
 
 interface CodeEditorProps {
-  exercise: Exercise;
+  exercise: CodeEditorExercise;
   onComplete: () => void;
   onNewBadges?: (badges: any[]) => void;
-}
-
-interface Feedback {
-  type: "success" | "error";
-  message: string;
-  explanation?: string;
-  xpEarned?: number;
-  levelUp?: boolean;
-  newLevel?: number;
 }
 
 function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
   const [code, setCode] = useState<string>(
     exercise.data?.placeholder || "// Escribe tu código aquí\n",
   );
-  const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const [feedback, setFeedback] = useState<CodeEditorFeedback | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { user, updateUser } = useAuthStore();
 

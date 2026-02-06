@@ -1,55 +1,26 @@
 import { useState } from "react";
-import { exerciseApi } from "../../services/api";
-import { useAuthStore } from "../../store/useAuthStore";
+import { exerciseApi } from "@/services/endpoints/exercise";
+import { useAuthStore } from "@/store/useAuthStore";
+import type { DragDropFeedback } from "@/types/feedback";
+import type { DragDropExercise, DraggedItem, Option } from "@/types/exercise";
 
-interface ExerciseItem {
-  id: string;
-  text: string;
-}
-
-interface Exercise {
-  id: string;
-  prompt: string;
-  difficulty: string;
-  xpReward: number;
-  data?: {
-    items?: ExerciseItem[];
-  };
-}
-
-interface DragDropExerciseProps {
-  exercise: Exercise;
+interface DragDropProps {
+  exercise: DragDropExercise;
   onComplete: () => void;
   onNewBadges?: (badges: any[]) => void;
 }
 
-interface DraggedItem {
-  item: ExerciseItem;
-  fromTarget: boolean;
-}
-
-interface Feedback {
-  type: "success" | "error";
-  message: string;
-  explanation?: string;
-  xpEarned?: number;
-}
-
-function DragDropExercise({
-  exercise,
-  onComplete,
-  onNewBadges,
-}: DragDropExerciseProps) {
-  const [sourceItems, setSourceItems] = useState<ExerciseItem[]>([
+function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
+  const [sourceItems, setSourceItems] = useState<Option[]>([
     ...(exercise.data?.items || []),
   ]);
-  const [targetItems, setTargetItems] = useState<ExerciseItem[]>([]);
+  const [targetItems, setTargetItems] = useState<Option[]>([]);
   const [draggedItem, setDraggedItem] = useState<DraggedItem | null>(null);
-  const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const [feedback, setFeedback] = useState<DragDropFeedback | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { user, updateUser } = useAuthStore();
 
-  const handleDragStart = (item: ExerciseItem, fromTarget = false) => {
+  const handleDragStart = (item: Option, fromTarget = false) => {
     setDraggedItem({ item, fromTarget });
   };
 
@@ -291,4 +262,4 @@ function DragDropExercise({
   );
 }
 
-export default DragDropExercise;
+export default DragDrop;
