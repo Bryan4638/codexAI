@@ -1,14 +1,14 @@
 import { Module } from '@/types/module'
+import { Link } from 'react-router-dom'
 
 interface ModuleCardProps {
   module: Module
   progress: number
-  onClick: () => void
 }
 
-function ModuleCard({ module, progress, onClick }: ModuleCardProps) {
+function ModuleCard({ module, progress }: ModuleCardProps) {
   return (
-    <div className="module-card" onClick={onClick}>
+    <Link to={`/modulos/${module.id}`} className="module-card">
       <div className="module-number">0{module.id}</div>
       <div className="module-icon">{module.icon}</div>
       <h3 className="module-title">{module.title}</h3>
@@ -26,7 +26,7 @@ function ModuleCard({ module, progress, onClick }: ModuleCardProps) {
           {progress}% completado
         </span>
       </div>
-    </div>
+    </Link>
   )
 }
 
