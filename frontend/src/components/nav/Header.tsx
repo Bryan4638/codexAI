@@ -28,14 +28,14 @@ function Header({ onShowAuth }: HeaderProps) {
             Inicio
           </Link>
           <Link
-            className={`nav-link ${pathname.pathname === '/modulos' ? 'active' : ''}`}
-            to="/modulos"
+            className={`nav-link ${pathname.pathname === '/modules' ? 'active' : ''}`}
+            to="/modules"
           >
             Módulos
           </Link>
           <Link
-            className={`nav-link ${pathname.pathname === '/medallas' ? 'active' : ''}`}
-            to="/medallas"
+            className={`nav-link ${pathname.pathname === '/badges' ? 'active' : ''}`}
+            to="/badges"
           >
             Medallas
           </Link>
@@ -46,8 +46,8 @@ function Header({ onShowAuth }: HeaderProps) {
             Ranking
           </Link>
           <Link
-            className={`nav-link ${pathname.pathname === '/retos' ? 'active' : ''}`}
-            to="/retos"
+            className={`nav-link ${pathname.pathname === '/challenges' ? 'active' : ''}`}
+            to="/challenges"
           >
             Retos
           </Link>
@@ -57,7 +57,7 @@ function Header({ onShowAuth }: HeaderProps) {
           {user ? (
             <Link
               className="user-profile-btn"
-              to="/perfil"
+              to="/profile"
               style={{
                 display: 'flex',
                 alignItems: 'center',

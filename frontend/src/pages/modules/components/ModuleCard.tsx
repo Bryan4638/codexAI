@@ -8,7 +8,7 @@ interface ModuleCardProps {
 
 function ModuleCard({ module, progress }: ModuleCardProps) {
   return (
-    <Link to={`/modulos/${module.id}`} className="module-card">
+    <Link to={`/modules/${module.path}`} className="module-card">
       <div className="module-number">0{module.id}</div>
       <div className="module-icon">{module.icon}</div>
       <h3 className="module-title">{module.title}</h3>

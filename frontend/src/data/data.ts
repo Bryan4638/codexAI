@@ -4,6 +4,7 @@ export const modulesData: Module[] = [
   {
     id: 1,
     title: 'Variables y Tipos de Datos',
+    path: 'variables',
     description: 'Aprende a almacenar y manipular información en tu código',
     icon: '📦',
     lessons: [
@@ -14,6 +15,7 @@ export const modulesData: Module[] = [
   {
     id: 2,
     title: 'Condicionales',
+    path: 'conditionals',
     description: 'Toma decisiones en tu código usando if, else y operadores',
     icon: '🔀',
     lessons: [
@@ -24,6 +26,7 @@ export const modulesData: Module[] = [
   {
     id: 3,
     title: 'Bucles',
+    path: 'loops',
     description: 'Repite acciones de forma eficiente con for y while',
     icon: '🔄',
     lessons: [
@@ -34,6 +37,7 @@ export const modulesData: Module[] = [
   {
     id: 4,
     title: 'Funciones',
+    path: 'functions',
     description: 'Crea bloques de código reutilizables y organizados',
     icon: '⚡',
     lessons: [

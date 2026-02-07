@@ -11,10 +11,10 @@ function Hero() {
           retroalimentación instantánea y un diseño que te mantendrá motivado.
         </p>
         <div className="hero-buttons">
-          <Link className="btn btn-primary" to="/modulos">
+          <Link className="btn btn-primary" to="/modules">
             🚀 Comenzar Ahora
           </Link>
-          <Link className="btn btn-secondary" to="/retos">
+          <Link className="btn btn-secondary" to="/challenges">
             📖 Ver Retos de la Comunidad
           </Link>
         </div>

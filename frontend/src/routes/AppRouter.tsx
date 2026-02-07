@@ -15,14 +15,14 @@ export default function AppRouter() {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Home />} />
 
-          <Route path="/modulos" element={<ModulesPage />} />
-          <Route path="/medallas" element={<BadgesPage />} />
+          <Route path="/modules" element={<ModulesPage />} />
+          <Route path="/badges" element={<BadgesPage />} />
           <Route path="/ranking" element={<LeaderboardPage />} />
-          <Route path="/retos" element={<ChallengesPage />} />
-          <Route path="/perfil" element={<ProfilePage />} />
+          <Route path="/challenges" element={<ChallengesPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
 
-          <Route path="/modulos/:id" element={<SingleModule />} />
-          {/*<Route path="modulos/:module/:lesson" element={ <LessonView} />*/}
+          <Route path="/modules/:modulePath" element={<SingleModule />} />
+          <Route path="modules/:module/lessons/le" element={<h1>Lesson</h1>} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -36,12 +36,7 @@ export default function Home() {
                 : 0
 
             return (
-              <ModuleCard
-                key={module.id}
-                module={module}
-                progress={progress}
-                onClick={() => handleModuleClick(module)}
-              />
+              <ModuleCard key={module.id} module={module} progress={progress} />
             )
           })}
         </div>

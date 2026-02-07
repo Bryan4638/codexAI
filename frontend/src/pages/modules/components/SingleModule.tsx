@@ -1,11 +1,12 @@
 import { modulesData } from '@/data/data'
 import LessonCard from '@/pages/modules/components/LessonCard'
-import { Link, useParams } from 'react-router'
+import { Link, useNavigate, useParams } from 'react-router'
 
 export default function SingleModule() {
-  const { id } = useParams()
+  const { modulePath } = useParams()
+  const navigate = useNavigate()
 
-  const module = modulesData.find((m) => m.id === Number(id))
+  const module = modulesData.find((m) => m.path === modulePath)
   console.log(module)
 
   if (!module) {
@@ -16,7 +17,7 @@ export default function SingleModule() {
           style={{ marginBottom: 'var(--spacing-xl)' }}
         >
           <Link
-            to={'/modulos'}
+            to={'/modules'}
             style={{
               cursor: 'pointer',
               color: 'var(--neon-cyan)',
@@ -39,7 +40,7 @@ export default function SingleModule() {
         style={{ marginBottom: 'var(--spacing-xl)' }}
       >
         <Link
-          to={'/modulos'}
+          to={'/modules'}
           style={{
             cursor: 'pointer',
             color: 'var(--neon-cyan)',
@@ -77,7 +78,13 @@ export default function SingleModule() {
         style={{ marginTop: 'var(--spacing-2xl)' }}
       >
         {module.lessons.map((lesson) => (
-          <LessonCard key={lesson.id} lesson={lesson} />
+          <LessonCard
+            key={lesson.id}
+            lesson={lesson}
+            onClick={() =>
+              navigate(`/modules/${modulePath}/lessons/${lesson.id}`)
+            }
+          />
         ))}
       </section>
     </section>
