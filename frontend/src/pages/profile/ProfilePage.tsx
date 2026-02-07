@@ -3,6 +3,7 @@ import { badgeApi } from '@/services/endpoints/badge'
 import { useAuthStore } from '@/store/useAuthStore'
 import { ProfileBadgesData, ProgressData } from '@/types/profile'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function ProfilePage() {
   const { user, logout } = useAuthStore()
@@ -14,6 +15,7 @@ function ProfilePage() {
   })
   const [loading, setLoading] = useState<boolean>(true)
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     loadData()
@@ -36,6 +38,7 @@ function ProfilePage() {
 
   const handleLogout = () => {
     logout()
+    navigate('/')
   }
 
   if (showEditProfile) {
