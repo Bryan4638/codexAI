@@ -1,6 +1,6 @@
-import ModuleCard from '@/components/share/ModuleCard'
 import { modulesData } from '@/data/data'
 import Hero from '@/pages/home/components/Hero'
+import ModuleCard from '@/pages/modules/components/ModuleCard'
 import { Module } from '@/types/module'
 import { useState } from 'react'
 

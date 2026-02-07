@@ -1,17 +1,12 @@
-import ModuleCard from '@/components/share/ModuleCard'
 import { modulesData } from '@/data/data'
-import { Module } from '@/types/module'
+import ModuleCard from '@/pages/modules/components/ModuleCard'
 import { useState } from 'react'
 
 export default function ModulesPage() {
-  const [selectedModule, setSelectedModule] = useState<Module | null>(null)
   const [moduleProgress, setModuleProgress] = useState<
     Record<string, { completed: number; total: number }>
   >({})
 
-  const handleModuleClick = (module: Module) => {
-    setSelectedModule(module)
-  }
   return (
     <section
       className="modules-section container"
@@ -33,12 +28,7 @@ export default function ModulesPage() {
               : 0
 
           return (
-            <ModuleCard
-              key={module.id}
-              module={module}
-              progress={progress}
-              onClick={() => handleModuleClick(module)}
-            />
+            <ModuleCard key={module.id} module={module} progress={progress} />
           )
         })}
       </div>
