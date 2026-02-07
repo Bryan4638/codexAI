@@ -3,6 +3,7 @@ import BadgesPage from '@/pages/badges/BadgesPage'
 import ChallengesPage from '@/pages/challenges/ChallengesPage'
 import Home from '@/pages/home/Home'
 import LeaderboardPage from '@/pages/leaderboard/LeaderboardPage'
+import LessonsPage from '@/pages/lessons/LessonsPage'
 import ModulesPage from '@/pages/modules/ModulesPage'
 import SingleModule from '@/pages/modules/components/SingleModule'
 import ProfilePage from '@/pages/profile/ProfilePage'
@@ -22,7 +23,10 @@ export default function AppRouter() {
           <Route path="/profile" element={<ProfilePage />} />
 
           <Route path="/modules/:modulePath" element={<SingleModule />} />
-          <Route path="modules/:module/lessons/le" element={<h1>Lesson</h1>} />
+          <Route
+            path="modules/:modulePath/:lessonPath"
+            element={<LessonsPage />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

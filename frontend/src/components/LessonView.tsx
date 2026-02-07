@@ -42,6 +42,7 @@ function LessonView({
       ])
 
       const exercisesList = exercisesData.exercises || []
+      console.log(exercisesList)
       setExercises(exercisesList)
 
       // Sincronizar ejercicios completados

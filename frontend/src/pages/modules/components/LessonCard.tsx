@@ -2,10 +2,11 @@ import { Lesson } from '@/types/module'
 
 interface LessonCardProps {
   lesson: Lesson
+  onClick: () => void
 }
-function LessonCard({ lesson }: LessonCardProps) {
+function LessonCard({ lesson, onClick }: LessonCardProps) {
   return (
-    <div className="module-card">
+    <article className="module-card" onClick={onClick}>
       <div className="module-number">{lesson.id}</div>
       <h3 className="module-title">{lesson.title}</h3>
       <p className="module-description">Ejercicios interactivos disponibles</p>
@@ -13,7 +14,7 @@ function LessonCard({ lesson }: LessonCardProps) {
         <span>🎯</span>
         <span>Click para comenzar</span>
       </div>
-    </div>
+    </article>
   )
 }
 

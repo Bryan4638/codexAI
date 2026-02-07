@@ -81,9 +81,7 @@ export default function SingleModule() {
           <LessonCard
             key={lesson.id}
             lesson={lesson}
-            onClick={() =>
-              navigate(`/modules/${modulePath}/lessons/${lesson.id}`)
-            }
+            onClick={() => navigate(`/modules/${modulePath}/${lesson.path}`)}
           />
         ))}
       </section>

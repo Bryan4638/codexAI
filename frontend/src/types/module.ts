@@ -12,5 +12,6 @@ export interface Module {
 export interface Lesson {
   id: string
   title: string
+  path: string
   exercises?: LessonExercise[]
 }
