@@ -35,7 +35,7 @@ function CreateChallengeModal({ onClose, onSave }: CreateChallengeModalProps) {
 
     try {
       // Validate JSON
-      let parsedTestCases
+      let parsedTestCases: string
       try {
         parsedTestCases = JSON.parse(formData.testCases)
         if (!Array.isArray(parsedTestCases))

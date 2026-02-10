@@ -1,7 +1,5 @@
-import {
-  default as ChallengeDetailModal,
-  default as CreateChallengeModal,
-} from '@/pages/challenges/components/CreateChallengeModal'
+import ChallengeDetailModal from '@/pages/challenges/components/ChallengeDetailModal'
+import CreateChallengeModal from '@/pages/challenges/components/CreateChallengeModal'
 import { challengeApi } from '@/services/endpoints/challenge'
 import { useAuthStore } from '@/store/useAuthStore'
 import { Challenge } from '@/types/challenge'
