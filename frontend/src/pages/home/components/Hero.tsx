@@ -22,19 +22,19 @@ function Hero() {
         <div className="hero-stats">
           <div className="hero-stat">
             <div className="hero-stat-value">
-              <CountUp end={4} duration={3} />
+              <CountUp end={4} duration={2} />
             </div>
             <div className="hero-stat-label">Módulos</div>
           </div>
           <div className="hero-stat">
             <div className="hero-stat-value">
-              <CountUp end={8} duration={3} />
+              <CountUp end={8} duration={2} />
             </div>
             <div className="hero-stat-label">Lecciones</div>
           </div>
           <div className="hero-stat">
             <div className="hero-stat-value">
-              <CountUp end={20} suffix="+" duration={3} />
+              <CountUp end={20} suffix="+" duration={2} />
             </div>
             <div className="hero-stat-label">Ejercicios</div>
           </div>

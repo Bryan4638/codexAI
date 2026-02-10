@@ -1,11 +1,13 @@
 import api from '@/services/api'
+import { ExerciseResponse, LessonExercise } from '@/types/exercise'
 
 export const exerciseApi = {
-  async getAll(params: Record<string, any> = {}): Promise<any> {
-    return api.get('/exercises', { params })
+  async getAll(params: Record<string, any> = {}): Promise<LessonExercise[]> {
+    const data: ExerciseResponse = await api.get('/exercises', { params })
+    return data.exercises
   },
 
-  async getById(id: string): Promise<any> {
+  async getById(id: string): Promise<LessonExercise> {
     return api.get(`/exercises/${id}`)
   },
 

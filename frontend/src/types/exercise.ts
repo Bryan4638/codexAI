@@ -1,39 +1,54 @@
 interface BaseExercise {
   id: string
   prompt: string
-  difficulty: string
   xpReward: number
-}
-
-export interface LessonExercise extends BaseExercise {
-  type: 'code' | 'quiz' | 'dragDrop' | 'fillBlank'
-  data?: any
-  [key: string]: any
+  type: ExerciseType
+  difficulty: ExerciseDifficulty
+  moduleId: number
+  lessonId: string
 }
 
 export interface CodeEditorExercise extends BaseExercise {
-  data?: {
-    placeholder?: string
-  }
-}
-
-export interface DragDropExercise extends BaseExercise {
-  data?: {
-    items?: Option[]
-  }
-}
-
-export interface FillBlankExercise extends BaseExercise {
-  data?: {
-    template?: string[]
-    blanks?: Blank[]
+  type: 'code'
+  data: {
+    placeholder: string
+    hint?: string
+    explanation?: string
   }
 }
 
 export interface QuizExercise extends BaseExercise {
-  data?: {
-    options?: Option[]
+  type: 'quiz'
+  data: {
+    options: Option[]
+    explanation?: string
   }
+}
+
+export interface DragDropExercise extends BaseExercise {
+  type: 'dragDrop'
+  data: {
+    items: {
+      id: number
+      text: string
+    }[]
+    hint?: string
+    explanation?: string
+  }
+}
+
+export interface FillBlankExercise extends BaseExercise {
+  type: 'fillBlank'
+  data: {
+    template: string[]
+    blanks: Blank[]
+    hint?: string
+    explanation?: string
+  }
+}
+
+export interface ExerciseResponse {
+  exercises: LessonExercise[]
 }
 
 export interface Option {
@@ -49,3 +64,11 @@ export interface DraggedItem {
 export interface Blank {
   id: string
 }
+
+export type ExerciseDifficulty = 'beginner' | 'intermediate' | 'advanced'
+export type ExerciseType = 'code' | 'quiz' | 'dragDrop' | 'fillBlank'
+export type LessonExercise =
+  | CodeEditorExercise
+  | QuizExercise
+  | DragDropExercise
+  | FillBlankExercise

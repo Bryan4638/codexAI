@@ -41,7 +41,7 @@ function LessonView({
           : Promise.resolve({ completedExercises: [], history: [] }),
       ])
 
-      const exercisesList = exercisesData.exercises || []
+      const exercisesList: LessonExercise[] = exercisesData || []
       console.log(exercisesList)
       setExercises(exercisesList)
 
@@ -110,21 +110,48 @@ function LessonView({
   const renderExercise = () => {
     if (!currentExercise) return <p>No hay ejercicios disponibles.</p>
 
-    const props = {
-      exercise: currentExercise,
+    const commonProps = {
       onComplete: handleExerciseComplete,
       onNewBadges,
     }
 
     switch (currentExercise.type) {
       case 'code':
-        return <CodeEditor key={currentExercise.id} {...props} />
+        return (
+          <CodeEditor
+            key={currentExercise.id}
+            exercise={currentExercise}
+            {...commonProps}
+          />
+        )
+
       case 'quiz':
-        return <Quiz key={currentExercise.id} {...props} />
+        return (
+          <Quiz
+            key={currentExercise.id}
+            exercise={currentExercise}
+            {...commonProps}
+          />
+        )
+
       case 'dragDrop':
-        return <DragDrop key={currentExercise.id} {...props} />
+        return (
+          <DragDrop
+            key={currentExercise.id}
+            exercise={currentExercise}
+            {...commonProps}
+          />
+        )
+
       case 'fillBlank':
-        return <FillBlank key={currentExercise.id} {...props} />
+        return (
+          <FillBlank
+            key={currentExercise.id}
+            exercise={currentExercise}
+            {...commonProps}
+          />
+        )
+
       default:
         return <p>Tipo de ejercicio no soportado.</p>
     }
