@@ -6,9 +6,18 @@ export interface Badge {
 
 export interface BadgeWithDescription extends Badge {
   description: string
+  requirement: Requirement
+}
+
+export interface Requirement {
+  type: string
+  value: number
 }
 
 export interface UserBadgeData {
   badges: Badge[]
   unlocked: number // Assuming unlocked is a count?
+}
+export interface BadgeResponse {
+  badges: BadgeWithDescription[]
 }
