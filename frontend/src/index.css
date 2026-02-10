@@ -2,6 +2,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import 'tailwindcss';
 
+@theme {
+  /* Colores Neón */
+  --color-neon-cyan: #00f0ff;
+  --color-neon-magenta: #ff00ff;
+  --color-neon-purple: #8b5cf6;
+  --color-neon-green: #00ff88;
+  --color-neon-pink: #ff2d92;
+  --color-neon-orange: #ff6b35;
+
+  /* Colores de Fondo (Cyber) */
+  --color-bg-primary: #0a0a0f;
+  --color-bg-secondary: #12121a;
+  --color-bg-tertiary: #1a1a25;
+  --color-bg-card: rgba(20, 20, 30, 0.8);
+
+  /* Texto */
+  --color-text-main: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-text-muted: rgba(255, 255, 255, 0.4);
+
+  /* Fuentes */
+  --font-display: 'Orbitron', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
 :root {
   --neon-cyan: #00f0ff;
   --neon-magenta: #ff00ff;
@@ -57,13 +82,6 @@
   --transition-slow: 0.5s ease;
 }
 
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 html {
   font-size: 16px;
   scroll-behavior: smooth;
