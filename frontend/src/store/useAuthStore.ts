@@ -1,13 +1,17 @@
 import { authApi } from '@/services/endpoints/auth'
-import { User } from '@/types/user'
+import { AuthResponse, User } from '@/types/user'
 import { create } from 'zustand'
 
 interface AuthState {
   user: User | null
   loading: boolean
   setUser: (user: User | null) => void
-  login: (email: string, password: string) => Promise<any>
-  register: (username: string, email: string, password: string) => Promise<any>
+  login: (email: string, password: string) => Promise<AuthResponse>
+  register: (
+    username: string,
+    email: string,
+    password: string
+  ) => Promise<AuthResponse>
   logout: () => void
   updateUser: (updates: Partial<User>) => void
   checkAuth: () => Promise<void>
@@ -53,7 +57,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (authApi.isLoggedIn()) {
       try {
         const data = await authApi.getMe()
-        set({ user: data.user })
+        set({ user: data })
       } catch (error) {
         console.error('Error verificando auth:', error)
         authApi.logout()

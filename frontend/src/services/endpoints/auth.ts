@@ -7,26 +7,26 @@ export const authApi = {
     email: string,
     password: string
   ): Promise<AuthResponse> {
-    const res = await api.post<AuthResponse>('/auth/register', {
+    const data = (await api.post('/auth/register', {
       username,
       email,
       password,
-    })
-    const data = res.data
+    })) as AuthResponse
     if (data.token) localStorage.setItem('codex-token', data.token)
     return data
   },
 
   async login(email: string, password: string): Promise<AuthResponse> {
-    const res = await api.post<AuthResponse>('/auth/login', { email, password })
-    const data = res.data
+    const data = (await api.post('/auth/login', {
+      email,
+      password,
+    })) as AuthResponse
     if (data.token) localStorage.setItem('codex-token', data.token)
     return data
   },
 
   async getMe(): Promise<User> {
-    const res = await api.get<User>('/auth/me')
-    return res.data
+    return (await api.get('/auth/me')) as User
   },
 
   logout() {
