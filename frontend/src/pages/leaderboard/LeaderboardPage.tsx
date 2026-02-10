@@ -1,10 +1,9 @@
 import { leaderboardApi } from '@/services/endpoints/leaderboard'
-import { LeaderboardUser } from '@/types/leaderboard'
 import { UserProfileData } from '@/types/profile'
 import { useEffect, useState } from 'react'
 
 function LeaderboardPage() {
-  const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([])
+  const [leaderboard, setLeaderboard] = useState<UserProfileData[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
   const [profileLoading, setProfileLoading] = useState<boolean>(false)
@@ -59,78 +58,42 @@ function LeaderboardPage() {
 
   return (
     <section className="container" style={{ paddingTop: '120px' }}>
-      <div
-        className="section-header"
-        style={{ textAlign: 'center', marginBottom: 'var(--spacing-2xl)' }}
-      >
+      <div className="section-header text-center mb-12">
         <h2>🏆 Tabla de Posiciones</h2>
         <p>Los mejores estudiantes de CODEX</p>
       </div>
 
       {/* Podio - Top 3 */}
       {top3.length > 0 && (
-        <div
-          className="leaderboard-podium"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-            gap: 'var(--spacing-lg)',
-            marginBottom: 'var(--spacing-3xl)',
-            flexWrap: 'wrap',
-          }}
-        >
+        <div className="leaderboard-podium flex justify-center items-end gap-10 mb-24 flex-wrap">
           {/* 2do lugar */}
           {top3[1] && (
             <div
               onClick={() => handleUserClick(top3[1].id)}
-              className="glass-card"
+              className="glass-card p-12 text-center cursor-pointer order-1 min-w-45"
               style={{
-                padding: 'var(--spacing-xl)',
-                textAlign: 'center',
-                cursor: 'pointer',
                 transition: 'var(--transition-normal)',
                 transform: 'scale(0.95)',
-                order: 1,
-                minWidth: '180px',
               }}
             >
+              <div className="text-4xl mb-10">🥈</div>
               <div
-                style={{ fontSize: '2rem', marginBottom: 'var(--spacing-sm)' }}
-              >
-                🥈
-              </div>
-              <div
+                className="w-20 h-20 rounded-full mx-10 my-10 flex items-center justify-center text-4xl"
                 style={{
-                  width: '70px',
-                  height: '70px',
                   background: 'var(--gradient-secondary)',
-                  borderRadius: '50%',
-                  margin: '0 auto var(--spacing-md)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '1.8rem',
                 }}
               >
                 {top3[1].avatarUrl ? (
                   <img
                     src={top3[1].avatarUrl}
                     alt=""
-                    style={{ width: '100%', borderRadius: '50%' }}
+                    className="w-full rounded-full"
                   />
                 ) : (
                   '👤'
                 )}
               </div>
-              <h4
-                style={{
-                  color: 'var(--neon-purple)',
-                  marginBottom: 'var(--spacing-xs)',
-                }}
-              >
-                {top3[1].username}
-              </h4>
+              <h4 className="text-neon-purple mb-4">{top3[1].username}</h4>
               <div
                 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}
               >

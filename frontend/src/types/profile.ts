@@ -1,6 +1,7 @@
 import { Badge } from '@/types/badge'
 
 export interface UserProfileData {
+  id: string
   username: string
   avatarUrl?: string
   level: number
@@ -8,6 +9,7 @@ export interface UserProfileData {
   badgeCount: number
   exercisesCompleted: number
   bio?: string
+  rank: number
   isPublic: boolean
   contact?: {
     github?: string
@@ -15,11 +17,7 @@ export interface UserProfileData {
     twitter?: string
     website?: string
   }
-  badges?: Array<{
-    id: string
-    name: string
-    icon: string
-  }>
+  badges?: Badge[]
 }
 
 export interface ProfileFormData {

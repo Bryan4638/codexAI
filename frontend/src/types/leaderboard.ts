@@ -1,10 +1,10 @@
-export interface LeaderboardUser {
-  id: string
-  username: string
-  avatarUrl?: string
-  level: number
-  xp: number
-  badgeCount: number
-  rank: number
-  isPublic: boolean
+import { UserProfileData } from './profile'
+
+export interface LeaderboardResponse {
+  leaderboard: UserProfileData[]
+  totalUsers: number
+}
+
+export interface LeaderboardProfileResponse {
+  profile: UserProfileData
 }
