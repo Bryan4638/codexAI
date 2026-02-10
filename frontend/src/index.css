@@ -1,5 +1,6 @@
 /* CODEX - Educational Programming Platform */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import 'tailwindcss';
 
 :root {
   --neon-cyan: #00f0ff;
@@ -1599,10 +1600,10 @@ code {
   }
 
   /* Create styling classes for ProfilePage elements that use inline styles currently */
-  /* Since ProfilePage uses inline styles mostly, I need to use !important to override or go back and change ProfilePage to use classes. 
-     Given the constraints and prompt, I will try to target specific glass-cards inside ProfilePage using structural selectors or update ProfilePage to use classes if I can't target them well. 
+  /* Since ProfilePage uses inline styles mostly, I need to use !important to override or go back and change ProfilePage to use classes.
+     Given the constraints and prompt, I will try to target specific glass-cards inside ProfilePage using structural selectors or update ProfilePage to use classes if I can't target them well.
      Currently ProfilePage has inline styles. I should probably update ProfilePage to use classes for better control, but I can try to target generic structures first or rely on the Fact I can update ProfilePage.
-     
+
      Actually, updating ProfilePage to use CSS classes is cleaner. Let's do that in a separate step if needed, but for now I'll apply generic overrides.
   */
 }
