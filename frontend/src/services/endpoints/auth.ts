@@ -1,28 +1,32 @@
 import api from '@/services/api'
+import type { AuthResponse, User } from '@/types/user'
 
 export const authApi = {
   async register(
     username: string,
     email: string,
     password: string
-  ): Promise<any> {
-    const data = (await api.post('/auth/register', {
+  ): Promise<AuthResponse> {
+    const res = await api.post<AuthResponse>('/auth/register', {
       username,
       email,
       password,
-    })) as any
+    })
+    const data = res.data
     if (data.token) localStorage.setItem('codex-token', data.token)
     return data
   },
 
-  async login(email: string, password: string): Promise<any> {
-    const data = (await api.post('/auth/login', { email, password })) as any
+  async login(email: string, password: string): Promise<AuthResponse> {
+    const res = await api.post<AuthResponse>('/auth/login', { email, password })
+    const data = res.data
     if (data.token) localStorage.setItem('codex-token', data.token)
     return data
   },
 
-  async getMe(): Promise<any> {
-    return api.get('/auth/me')
+  async getMe(): Promise<User> {
+    const res = await api.get<User>('/auth/me')
+    return res.data
   },
 
   logout() {

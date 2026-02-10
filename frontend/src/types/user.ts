@@ -1,8 +1,13 @@
+export interface AuthResponse {
+  user: User
+  token: string
+}
+
 export interface User {
   id: string
   username: string
   email: string
-  role: string
-  current_level?: number
-  [key: string]: any
+  xp: number
+  level: number
+  createdAt: Date
 }
