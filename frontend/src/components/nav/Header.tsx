@@ -126,7 +126,7 @@ function Header({ onShowAuth }: HeaderProps) {
                     color: 'var(--bg-primary)',
                   }}
                 >
-                  Nv.{user.level || user.current_level}
+                  Nv.{user.level}
                 </span>
               </span>
             </Link>

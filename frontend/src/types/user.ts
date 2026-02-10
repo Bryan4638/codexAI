@@ -9,5 +9,6 @@ export interface User {
   email: string
   xp: number
   level: number
+  avatarUrl: string
   createdAt: Date
 }
