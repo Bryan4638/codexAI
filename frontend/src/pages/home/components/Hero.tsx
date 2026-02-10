@@ -1,3 +1,4 @@
+import CountUp from 'react-countup'
 import { Link } from 'react-router-dom'
 
 function Hero() {
@@ -20,15 +21,21 @@ function Hero() {
         </div>
         <div className="hero-stats">
           <div className="hero-stat">
-            <div className="hero-stat-value">4</div>
+            <div className="hero-stat-value">
+              <CountUp end={4} duration={3} />
+            </div>
             <div className="hero-stat-label">Módulos</div>
           </div>
           <div className="hero-stat">
-            <div className="hero-stat-value">8</div>
+            <div className="hero-stat-value">
+              <CountUp end={8} duration={3} />
+            </div>
             <div className="hero-stat-label">Lecciones</div>
           </div>
           <div className="hero-stat">
-            <div className="hero-stat-value">20+</div>
+            <div className="hero-stat-value">
+              <CountUp end={20} suffix="+" duration={3} />
+            </div>
             <div className="hero-stat-label">Ejercicios</div>
           </div>
         </div>
