@@ -7,26 +7,16 @@ export default function SingleModule() {
   const navigate = useNavigate()
 
   const module = modulesData.find((m) => m.path === modulePath)
-  console.log(module)
 
   if (!module) {
     return (
-      <section className="container" style={{ paddingTop: '120px' }}>
-        <div
-          className="lesson-breadcumb"
-          style={{ marginBottom: 'var(--spacing-xl)' }}
-        >
-          <Link
-            to={'/modules'}
-            style={{
-              cursor: 'pointer',
-              color: 'var(--neon-cyan)',
-            }}
-          >
+      <section className="pt-32 max-w-7xl mx-auto px-6">
+        <div className="mb-8">
+          <Link to="/modules" className="text-neon-cyan hover:underline">
             ← Volver a módulos
           </Link>
         </div>
-        <div className="section-header">
+        <div className="text-center">
           <h2>Módulo no encontrado</h2>
         </div>
       </section>
@@ -34,49 +24,26 @@ export default function SingleModule() {
   }
 
   return (
-    <section className="container" style={{ paddingTop: '120px' }}>
-      <div
-        className="lesson-breadcumb"
-        style={{ marginBottom: 'var(--spacing-xl)' }}
-      >
-        <Link
-          to={'/modules'}
-          style={{
-            cursor: 'pointer',
-            color: 'var(--neon-cyan)',
-          }}
-        >
+    <section className="pt-32 max-w-7xl mx-auto px-6">
+      <div className="mb-8">
+        <Link to="/modules" className="text-neon-cyan hover:underline">
           ← Volver a módulos
         </Link>
       </div>
 
       {/* Header */}
-      <header style={{ textAlign: 'left' }}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 'var(--spacing-lg)',
-            marginBottom: 'var(--spacing-md)',
-          }}
-        >
-          <span className="module-icon" style={{ fontSize: '2rem' }}>
-            {module.icon}
-          </span>
+      <header className="text-left">
+        <div className="flex items-center gap-6 mb-4">
+          <span className="text-4xl">{module.icon}</span>
           <div>
-            <h1 style={{ marginBottom: 'var(--spacing-xs)' }}>
-              {module.title}
-            </h1>
-            <p style={{ margin: '0' }}>{module.description}</p>
+            <h1 className="mb-1">{module.title}</h1>
+            <p className="m-0">{module.description}</p>
           </div>
         </div>
       </header>
 
-      {/* Lessons */}
-      <section
-        className="modules-grid"
-        style={{ marginTop: 'var(--spacing-2xl)' }}
-      >
+      {/* Lessons Grid */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-12">
         {module.lessons.map((lesson) => (
           <LessonCard
             key={lesson.id}

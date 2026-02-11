@@ -1,126 +1,45 @@
 import AuthModal from '@/components/auth/AuthModal'
 import Header from '@/components/nav/Header'
-import { authApi } from '@/services/endpoints/auth'
-import { badgeApi } from '@/services/endpoints/badge'
 import { useAuthStore } from '@/store/useAuthStore'
 import { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 
 function AppLayout() {
-  const [currentView, setCurrentView] = useState<string>('home')
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false)
-  const [newBadgeNotification, setNewBadgeNotification] = useState<any>(null)
-  const [completedLessons, setCompletedLessons] = useState<string[]>([])
-  const [moduleProgress, setModuleProgress] = useState<
-    Record<string, { completed: number; total: number }>
-  >({})
+  const [newBadgeNotification, _setNewBadgeNotification] = useState<any>(null)
 
-  const { user, setUser } = useAuthStore()
+  const { checkAuth } = useAuthStore()
 
   useEffect(() => {
     checkAuth()
   }, [])
 
-  const checkAuth = async () => {
-    if (authApi.isLoggedIn()) {
-      try {
-        // We cast to any because api response type is not strictly typed yet for getMe
-        const response: any = await authApi.getMe()
-        if (response.user) {
-          setUser(response.user)
-        } else if (response.username) {
-          // Adjust based on actual API response structure
-          setUser(response)
-        }
-      } catch (error) {
-        console.error('Session expired or invalid', error)
-        authApi.logout()
-        setUser(null)
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (user) {
-      loadProgress()
-    }
-  }, [user, currentView])
-
-  const loadProgress = async () => {
-    try {
-      const data = await badgeApi.getProgress()
-      if (data.completedLessons) {
-        setCompletedLessons(data.completedLessons)
-      }
-      if (data.moduleProgress) {
-        setModuleProgress(data.moduleProgress)
-      }
-    } catch (error) {
-      console.error('Error loading progress:', error)
-    }
-  }
-
   return (
     <>
-      <Header
-        currentView={currentView}
-        onShowAuth={() => setShowAuthModal(true)}
-      />
+      <Header onShowAuth={() => setShowAuthModal(true)} />
 
-      {/* Notificación de nueva medalla */}
+      {/* Badge Notification */}
       {newBadgeNotification && (
-        <div
-          style={{
-            position: 'fixed',
-            top: '100px',
-            right: '20px',
-            padding: 'var(--spacing-lg)',
-            background: 'var(--gradient-card)',
-            border: '2px solid var(--neon-green)',
-            borderRadius: 'var(--radius-lg)',
-            zIndex: 1001,
-            animation: 'slideUp 0.5s ease',
-            maxWidth: '300px',
-          }}
-        >
-          <div
-            style={{
-              fontSize: '2rem',
-              textAlign: 'center',
-              marginBottom: 'var(--spacing-sm)',
-            }}
-          >
+        <div className="fixed top-24 right-5 p-6 bg-gradient-card border-2 border-neon-green rounded-2xl z-[1001] animate-slide-up max-w-xs">
+          <div className="text-3xl text-center mb-2">
             🎉 {newBadgeNotification.icon}
           </div>
-          <h4
-            style={{
-              color: 'var(--neon-green)',
-              textAlign: 'center',
-              marginBottom: 'var(--spacing-xs)',
-            }}
-          >
-            ¡Nueva Medalla!
-          </h4>
-          <p
-            style={{
-              textAlign: 'center',
-              fontSize: '0.9rem',
-              color: 'var(--text-secondary)',
-            }}
-          >
+          <h4 className="text-neon-green text-center mb-1">¡Nueva Medalla!</h4>
+          <p className="text-center text-sm text-text-secondary">
             {newBadgeNotification.name}
           </p>
         </div>
       )}
 
-      <main style={{ flex: 1, width: '100%' }}>
+      <main className="flex-1 w-full">
         <Outlet />
       </main>
 
-      <footer className="footer">
-        <p className="footer-text">
-          Desarrollado con 💜 por <span>CODEX</span> • Aprende a programar de
-          forma interactiva
+      <footer className="py-4 border-t border-white/8 text-center mt-auto">
+        <p className="text-text-muted text-sm">
+          Desarrollado con 💜 por{' '}
+          <span className="text-neon-cyan">CODEX</span> • Aprende a programar
+          de forma interactiva
         </p>
       </footer>
 

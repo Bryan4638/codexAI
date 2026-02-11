@@ -10,6 +10,21 @@ interface QuizProps {
   onNewBadges?: (badges: any[]) => void
 }
 
+const difficultyMap: Record<string, { classes: string; label: string }> = {
+  beginner: {
+    classes: 'bg-neon-green/20 border-neon-green text-neon-green',
+    label: '🌱 Básico',
+  },
+  intermediate: {
+    classes: 'bg-neon-orange/20 border-neon-orange text-neon-orange',
+    label: '🌿 Intermedio',
+  },
+  advanced: {
+    classes: 'bg-neon-pink/20 border-neon-pink text-neon-pink',
+    label: '🌳 Avanzado',
+  },
+}
+
 function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
   const [selected, setSelected] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState<boolean>(false)
@@ -60,62 +75,16 @@ function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
     return classes
   }
 
+  const diff = difficultyMap[exercise.difficulty] || difficultyMap.beginner
+
   return (
     <div>
       <p className="exercise-prompt">{exercise.prompt}</p>
-      <div
-        style={{
-          display: 'inline-flex',
-          gap: 'var(--spacing-sm)',
-          marginBottom: 'var(--spacing-md)',
-        }}
-      >
-        <span
-          style={{
-            padding: '2px 8px',
-            background:
-              exercise.difficulty === 'beginner'
-                ? 'rgba(0, 255, 136, 0.2)'
-                : exercise.difficulty === 'intermediate'
-                  ? 'rgba(255, 165, 0, 0.2)'
-                  : 'rgba(255, 45, 146, 0.2)',
-            border: `1px solid ${
-              exercise.difficulty === 'beginner'
-                ? 'var(--neon-green)'
-                : exercise.difficulty === 'intermediate'
-                  ? 'var(--neon-orange)'
-                  : 'var(--neon-pink)'
-            }`,
-            borderRadius: 'var(--radius-sm)',
-            fontSize: '0.75rem',
-            color:
-              exercise.difficulty === 'beginner'
-                ? 'var(--neon-green)'
-                : exercise.difficulty === 'intermediate'
-                  ? 'var(--neon-orange)'
-                  : 'var(--neon-pink)',
-          }}
-        >
-          {exercise.difficulty === 'beginner'
-            ? '🌱 Básico'
-            : exercise.difficulty === 'intermediate'
-              ? '🌿 Intermedio'
-              : '🌳 Avanzado'}
-        </span>
-        <span
-          style={{
-            padding: '2px 8px',
-            background: 'rgba(139, 92, 246, 0.2)',
-            border: '1px solid var(--neon-purple)',
-            borderRadius: 'var(--radius-sm)',
-            fontSize: '0.75rem',
-            color: 'var(--neon-purple)',
-          }}
-        >
-          +{exercise.xpReward} XP
-        </span>
+      <div className="inline-flex gap-2 mb-4">
+        <span className={`badge-difficulty ${diff.classes}`}>{diff.label}</span>
+        <span className="badge-xp">+{exercise.xpReward} XP</span>
       </div>
-      <div className="quiz-options">
+      <div className="flex flex-col gap-4">
         {exercise.data?.options?.map((option) => (
           <div
             key={option.id}
@@ -131,10 +100,9 @@ function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
       </div>
       {!submitted && (
         <button
-          className="btn btn-primary"
+          className="btn btn-primary mt-6"
           onClick={handleSubmit}
           disabled={!selected || loading || !user}
-          style={{ marginTop: 'var(--spacing-lg)' }}
         >
           {loading ? '⏳ Validando...' : 'Verificar Respuesta'}
         </button>
@@ -151,14 +119,7 @@ function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
             </div>
             <div className="feedback-message">{result.message}</div>
             {result.explanation && (
-              <div
-                className="feedback-explanation"
-                style={{
-                  marginTop: 'var(--spacing-sm)',
-                  fontStyle: 'italic',
-                  opacity: 0.9,
-                }}
-              >
+              <div className="mt-2 italic opacity-90">
                 💡 {result.explanation}
               </div>
             )}

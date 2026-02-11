@@ -47,205 +47,103 @@ function LeaderboardPage() {
 
   if (loading) {
     return (
-      <section
-        className="container"
-        style={{ paddingTop: '120px', textAlign: 'center' }}
-      >
+      <section className="pt-32 max-w-7xl mx-auto px-6 text-center">
         <p>Cargando ranking...</p>
       </section>
     )
   }
 
   return (
-    <section className="container" style={{ paddingTop: '120px' }}>
-      <div className="section-header text-center mb-12">
+    <section className="pt-32 max-w-7xl mx-auto px-6">
+      <div className="text-center mb-12">
         <h2>🏆 Tabla de Posiciones</h2>
-        <p>Los mejores estudiantes de CODEX</p>
+        <p className="mt-2">Los mejores estudiantes de CODEX</p>
       </div>
 
-      {/* Podio - Top 3 */}
+      {/* Podium - Top 3 */}
       {top3.length > 0 && (
-        <div className="leaderboard-podium flex justify-center items-end gap-10 mb-24 flex-wrap">
-          {/* 2do lugar */}
+        <div className="flex justify-center items-end gap-10 mb-24 flex-wrap">
+          {/* 2nd place */}
           {top3[1] && (
             <div
               onClick={() => handleUserClick(top3[1].id)}
-              className="glass-card p-12 text-center cursor-pointer order-1 min-w-45"
-              style={{
-                transition: 'var(--transition-normal)',
-                transform: 'scale(0.95)',
-              }}
+              className="glass-card p-8 text-center cursor-pointer order-1 min-w-[180px] scale-95 hover:scale-100 transition-transform duration-300"
             >
-              <div className="text-4xl mb-10">🥈</div>
-              <div
-                className="w-20 h-20 rounded-full mx-10 my-10 flex items-center justify-center text-4xl"
-                style={{
-                  background: 'var(--gradient-secondary)',
-                }}
-              >
+              <div className="text-4xl mb-4">🥈</div>
+              <div className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl bg-gradient-secondary">
                 {top3[1].avatarUrl ? (
                   <img
                     src={top3[1].avatarUrl}
                     alt=""
-                    className="w-full rounded-full"
+                    className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
                   '👤'
                 )}
               </div>
-              <h4 className="text-neon-purple mb-4">{top3[1].username}</h4>
-              <div
-                style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}
-              >
+              <h4 className="text-neon-purple mb-1">{top3[1].username}</h4>
+              <div className="text-sm text-text-secondary">
                 Nivel {top3[1].level} • {top3[1].badgeCount} 🏅
               </div>
-              <div
-                style={{
-                  fontSize: '0.8rem',
-                  color: 'var(--text-muted)',
-                  marginTop: 'var(--spacing-xs)',
-                }}
-              >
+              <div className="text-xs text-text-muted mt-1">
                 {top3[1].xp} XP
               </div>
             </div>
           )}
 
-          {/* 1er lugar */}
+          {/* 1st place */}
           {top3[0] && (
             <div
               onClick={() => handleUserClick(top3[0].id)}
-              className="glass-card"
-              style={{
-                padding: 'var(--spacing-2xl)',
-                textAlign: 'center',
-                cursor: 'pointer',
-                transition: 'var(--transition-normal)',
-                transform: 'scale(1.1)',
-                order: 2,
-                minWidth: '220px',
-                background:
-                  'linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(139, 92, 246, 0.2))',
-                border: '2px solid var(--neon-cyan)',
-              }}
+              className="glass-card p-10 text-center cursor-pointer order-2 min-w-[220px] scale-110 hover:scale-115 transition-transform duration-300 bg-[linear-gradient(135deg,rgba(0,240,255,0.2),rgba(139,92,246,0.2))] border-2 border-neon-cyan"
             >
-              <div
-                style={{ fontSize: '3rem', marginBottom: 'var(--spacing-md)' }}
-              >
-                👑
-              </div>
-              <div
-                style={{
-                  width: '100px',
-                  height: '100px',
-                  background: 'var(--gradient-primary)',
-                  borderRadius: '50%',
-                  margin: '0 auto var(--spacing-lg)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '2.5rem',
-                  boxShadow: '0 0 30px rgba(0, 240, 255, 0.5)',
-                }}
-              >
+              <div className="text-5xl mb-4">👑</div>
+              <div className="w-24 h-24 bg-gradient-primary rounded-full mx-auto mb-6 flex items-center justify-center text-4xl shadow-neon-cyan">
                 {top3[0].avatarUrl ? (
                   <img
                     src={top3[0].avatarUrl}
                     alt=""
-                    style={{ width: '100%', borderRadius: '50%' }}
+                    className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
                   '👤'
                 )}
               </div>
-              <h3
-                style={{
-                  color: 'var(--neon-cyan)',
-                  marginBottom: 'var(--spacing-sm)',
-                  fontFamily: 'var(--font-display)',
-                }}
-              >
+              <h3 className="text-neon-cyan mb-2 font-display">
                 {top3[0].username}
               </h3>
-              <div style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>
+              <div className="text-base">
                 Nivel {top3[0].level} • {top3[0].badgeCount} 🏅
               </div>
-              <div
-                style={{
-                  fontSize: '1.2rem',
-                  color: 'var(--neon-cyan)',
-                  marginTop: 'var(--spacing-sm)',
-                  fontWeight: '600',
-                }}
-              >
+              <div className="text-xl text-neon-cyan mt-2 font-semibold">
                 {top3[0].xp} XP
               </div>
             </div>
           )}
 
-          {/* 3er lugar */}
+          {/* 3rd place */}
           {top3[2] && (
             <div
               onClick={() => handleUserClick(top3[2].id)}
-              className="glass-card"
-              style={{
-                padding: 'var(--spacing-xl)',
-                textAlign: 'center',
-                cursor: 'pointer',
-                transition: 'var(--transition-normal)',
-                transform: 'scale(0.9)',
-                order: 3,
-                minWidth: '170px',
-              }}
+              className="glass-card p-6 text-center cursor-pointer order-3 min-w-[170px] scale-90 hover:scale-95 transition-transform duration-300"
             >
-              <div
-                style={{
-                  fontSize: '1.8rem',
-                  marginBottom: 'var(--spacing-sm)',
-                }}
-              >
-                🥉
-              </div>
-              <div
-                style={{
-                  width: '60px',
-                  height: '60px',
-                  background: 'linear-gradient(135deg, #CD7F32, #8B4513)',
-                  borderRadius: '50%',
-                  margin: '0 auto var(--spacing-md)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '1.5rem',
-                }}
-              >
+              <div className="text-3xl mb-2">🥉</div>
+              <div className="w-16 h-16 bg-[linear-gradient(135deg,#CD7F32,#8B4513)] rounded-full mx-auto mb-4 flex items-center justify-center text-2xl">
                 {top3[2].avatarUrl ? (
                   <img
                     src={top3[2].avatarUrl}
                     alt=""
-                    style={{ width: '100%', borderRadius: '50%' }}
+                    className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
                   '👤'
                 )}
               </div>
-              <h4
-                style={{ color: '#CD7F32', marginBottom: 'var(--spacing-xs)' }}
-              >
-                {top3[2].username}
-              </h4>
-              <div
-                style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}
-              >
+              <h4 className="text-[#CD7F32] mb-1">{top3[2].username}</h4>
+              <div className="text-sm text-text-secondary">
                 Nivel {top3[2].level} • {top3[2].badgeCount} 🏅
               </div>
-              <div
-                style={{
-                  fontSize: '0.75rem',
-                  color: 'var(--text-muted)',
-                  marginTop: 'var(--spacing-xs)',
-                }}
-              >
+              <div className="text-xs text-text-muted mt-1">
                 {top3[2].xp} XP
               </div>
             </div>
@@ -253,50 +151,17 @@ function LeaderboardPage() {
         </div>
       )}
 
-      {/* Resto del ranking */}
+      {/* Rest of ranking */}
       {rest.length > 0 && (
-        <div className="glass-card" style={{ padding: 0, overflowX: 'auto' }}>
-          <table
-            style={{
-              width: '100%',
-              borderCollapse: 'collapse',
-              fontSize: '0.95rem',
-            }}
-          >
+        <div className="glass-card !p-0 overflow-x-auto">
+          <table className="w-full border-collapse text-sm">
             <thead>
-              <tr
-                style={{
-                  background: 'rgba(0, 240, 255, 0.1)',
-                  borderBottom: '1px solid rgba(0, 240, 255, 0.2)',
-                }}
-              >
-                <th
-                  style={{
-                    padding: 'var(--spacing-md)',
-                    textAlign: 'center',
-                    width: '60px',
-                  }}
-                >
-                  #
-                </th>
-                <th style={{ padding: 'var(--spacing-md)', textAlign: 'left' }}>
-                  Usuario
-                </th>
-                <th
-                  style={{ padding: 'var(--spacing-md)', textAlign: 'center' }}
-                >
-                  Nivel
-                </th>
-                <th
-                  style={{ padding: 'var(--spacing-md)', textAlign: 'center' }}
-                >
-                  Medallas
-                </th>
-                <th
-                  style={{ padding: 'var(--spacing-md)', textAlign: 'center' }}
-                >
-                  XP
-                </th>
+              <tr className="bg-neon-cyan/10 border-b border-neon-cyan/20">
+                <th className="p-4 text-center w-16">#</th>
+                <th className="p-4 text-left">Usuario</th>
+                <th className="p-4 text-center">Nivel</th>
+                <th className="p-4 text-center">Medallas</th>
+                <th className="p-4 text-center">XP</th>
               </tr>
             </thead>
             <tbody>
@@ -304,54 +169,19 @@ function LeaderboardPage() {
                 <tr
                   key={user.id}
                   onClick={() => handleUserClick(user.id)}
-                  style={{
-                    borderBottom: '1px solid rgba(255,255,255,0.05)',
-                    cursor: 'pointer',
-                    transition: 'var(--transition-fast)',
-                  }}
-                  onMouseOver={(e) =>
-                    (e.currentTarget.style.background =
-                      'rgba(0, 240, 255, 0.05)')
-                  }
-                  onMouseOut={(e) =>
-                    (e.currentTarget.style.background = 'transparent')
-                  }
+                  className="border-b border-white/5 cursor-pointer transition-colors duration-200 hover:bg-neon-cyan/5"
                 >
-                  <td
-                    style={{
-                      padding: 'var(--spacing-md)',
-                      textAlign: 'center',
-                      fontFamily: 'var(--font-display)',
-                      color: 'var(--text-muted)',
-                    }}
-                  >
+                  <td className="p-4 text-center font-display text-text-muted">
                     {user.rank}
                   </td>
-                  <td style={{ padding: 'var(--spacing-md)' }}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 'var(--spacing-sm)',
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: '36px',
-                          height: '36px',
-                          background: 'var(--gradient-card)',
-                          borderRadius: '50%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '1rem',
-                        }}
-                      >
+                  <td className="p-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-9 h-9 bg-gradient-card rounded-full flex items-center justify-center text-base">
                         {user.avatarUrl ? (
                           <img
                             src={user.avatarUrl}
                             alt=""
-                            style={{ width: '100%', borderRadius: '50%' }}
+                            className="w-full h-full rounded-full object-cover"
                           />
                         ) : (
                           '👤'
@@ -359,42 +189,17 @@ function LeaderboardPage() {
                       </div>
                       <span>{user.username}</span>
                       {!user.isPublic && (
-                        <span
-                          style={{
-                            fontSize: '0.7rem',
-                            color: 'var(--text-muted)',
-                          }}
-                        >
+                        <span className="text-[0.7rem] text-text-muted">
                           🔒
                         </span>
                       )}
                     </div>
                   </td>
-                  <td
-                    style={{
-                      padding: 'var(--spacing-md)',
-                      textAlign: 'center',
-                      color: 'var(--neon-purple)',
-                    }}
-                  >
+                  <td className="p-4 text-center text-neon-purple">
                     {user.level}
                   </td>
-                  <td
-                    style={{
-                      padding: 'var(--spacing-md)',
-                      textAlign: 'center',
-                    }}
-                  >
-                    {user.badgeCount} 🏅
-                  </td>
-                  <td
-                    style={{
-                      padding: 'var(--spacing-md)',
-                      textAlign: 'center',
-                      color: 'var(--neon-cyan)',
-                      fontFamily: 'var(--font-mono)',
-                    }}
-                  >
+                  <td className="p-4 text-center">{user.badgeCount} 🏅</td>
+                  <td className="p-4 text-center text-neon-cyan font-mono">
                     {user.xp}
                   </td>
                 </tr>
@@ -405,65 +210,40 @@ function LeaderboardPage() {
       )}
 
       {leaderboard.length === 0 && (
-        <div
-          style={{
-            textAlign: 'center',
-            padding: 'var(--spacing-3xl)',
-            color: 'var(--text-muted)',
-          }}
-        >
+        <div className="text-center py-16 text-text-muted">
           <p>No hay usuarios en el ranking aún. ¡Sé el primero!</p>
         </div>
       )}
 
-      {/* Modal de Perfil */}
+      {/* Profile Modal */}
       {selectedUser && (
         <div className="modal-overlay" onClick={closeProfile}>
           <div
-            className="modal"
+            className="modal max-w-lg text-left"
             onClick={(e) => e.stopPropagation()}
-            style={{ maxWidth: '500px', textAlign: 'left' }}
           >
             {profileLoading ? (
-              <p style={{ textAlign: 'center' }}>Cargando perfil...</p>
+              <p className="text-center">Cargando perfil...</p>
             ) : userProfile ? (
               <>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 'var(--spacing-lg)',
-                    marginBottom: 'var(--spacing-xl)',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '80px',
-                      height: '80px',
-                      background: 'var(--gradient-primary)',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '2rem',
-                    }}
-                  >
+                <div className="flex items-center gap-6 mb-8">
+                  <div className="w-20 h-20 bg-gradient-primary rounded-full flex items-center justify-center text-3xl">
                     {userProfile.avatarUrl ? (
                       <img
                         src={userProfile.avatarUrl}
                         alt=""
-                        style={{ width: '100%', borderRadius: '50%' }}
+                        className="w-full h-full rounded-full object-cover"
                       />
                     ) : (
                       '👤'
                     )}
                   </div>
                   <div>
-                    <h2 style={{ marginBottom: 'var(--spacing-xs)' }}>
+                    <h2 className="mb-1">
                       {userProfile.username}
                       {!userProfile.isPublic && ' 🔒'}
                     </h2>
-                    <p style={{ color: 'var(--text-secondary)', margin: 0 }}>
+                    <p className="text-text-secondary m-0">
                       Nivel {userProfile.level}
                     </p>
                   </div>
@@ -472,83 +252,24 @@ function LeaderboardPage() {
                 {userProfile.isPublic ? (
                   <>
                     {/* Stats */}
-                    <div
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(3, 1fr)',
-                        gap: 'var(--spacing-md)',
-                        marginBottom: 'var(--spacing-xl)',
-                      }}
-                    >
-                      <div
-                        className="glass-card"
-                        style={{
-                          padding: 'var(--spacing-md)',
-                          textAlign: 'center',
-                        }}
-                      >
-                        <div
-                          style={{
-                            fontSize: '1.5rem',
-                            color: 'var(--neon-cyan)',
-                          }}
-                        >
+                    <div className="grid grid-cols-3 gap-4 mb-8">
+                      <div className="glass-card !p-4 text-center">
+                        <div className="text-2xl text-neon-cyan">
                           {userProfile.xp}
                         </div>
-                        <div
-                          style={{
-                            fontSize: '0.75rem',
-                            color: 'var(--text-muted)',
-                          }}
-                        >
-                          XP
-                        </div>
+                        <div className="text-xs text-text-muted">XP</div>
                       </div>
-                      <div
-                        className="glass-card"
-                        style={{
-                          padding: 'var(--spacing-md)',
-                          textAlign: 'center',
-                        }}
-                      >
-                        <div
-                          style={{
-                            fontSize: '1.5rem',
-                            color: 'var(--neon-purple)',
-                          }}
-                        >
+                      <div className="glass-card !p-4 text-center">
+                        <div className="text-2xl text-neon-purple">
                           {userProfile.badgeCount}
                         </div>
-                        <div
-                          style={{
-                            fontSize: '0.75rem',
-                            color: 'var(--text-muted)',
-                          }}
-                        >
-                          MEDALLAS
-                        </div>
+                        <div className="text-xs text-text-muted">MEDALLAS</div>
                       </div>
-                      <div
-                        className="glass-card"
-                        style={{
-                          padding: 'var(--spacing-md)',
-                          textAlign: 'center',
-                        }}
-                      >
-                        <div
-                          style={{
-                            fontSize: '1.5rem',
-                            color: 'var(--neon-green)',
-                          }}
-                        >
+                      <div className="glass-card !p-4 text-center">
+                        <div className="text-2xl text-neon-green">
                           {userProfile.exercisesCompleted}
                         </div>
-                        <div
-                          style={{
-                            fontSize: '0.75rem',
-                            color: 'var(--text-muted)',
-                          }}
-                        >
+                        <div className="text-xs text-text-muted">
                           EJERCICIOS
                         </div>
                       </div>
@@ -556,49 +277,26 @@ function LeaderboardPage() {
 
                     {/* Bio */}
                     {userProfile.bio && (
-                      <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-                        <h4
-                          style={{
-                            marginBottom: 'var(--spacing-sm)',
-                            color: 'var(--text-secondary)',
-                          }}
-                        >
-                          Bio
-                        </h4>
-                        <p style={{ fontSize: '0.95rem' }}>{userProfile.bio}</p>
+                      <div className="mb-8">
+                        <h4 className="mb-2 text-text-secondary">Bio</h4>
+                        <p className="text-sm">{userProfile.bio}</p>
                       </div>
                     )}
 
-                    {/* Contacto */}
+                    {/* Contact */}
                     {(userProfile.contact?.github ||
                       userProfile.contact?.linkedin ||
                       userProfile.contact?.twitter ||
                       userProfile.contact?.website) && (
-                      <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-                        <h4
-                          style={{
-                            marginBottom: 'var(--spacing-sm)',
-                            color: 'var(--text-secondary)',
-                          }}
-                        >
-                          Contacto
-                        </h4>
-                        <div
-                          style={{
-                            display: 'flex',
-                            gap: 'var(--spacing-md)',
-                            flexWrap: 'wrap',
-                          }}
-                        >
+                      <div className="mb-8">
+                        <h4 className="mb-2 text-text-secondary">Contacto</h4>
+                        <div className="flex gap-4 flex-wrap">
                           {userProfile.contact.github && (
                             <a
                               href={`https://github.com/${userProfile.contact.github}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              style={{
-                                color: 'var(--neon-cyan)',
-                                textDecoration: 'none',
-                              }}
+                              className="text-neon-cyan hover:underline"
                             >
                               🐙 GitHub
                             </a>
@@ -608,10 +306,7 @@ function LeaderboardPage() {
                               href={`https://linkedin.com/in/${userProfile.contact.linkedin}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              style={{
-                                color: 'var(--neon-cyan)',
-                                textDecoration: 'none',
-                              }}
+                              className="text-neon-cyan hover:underline"
                             >
                               💼 LinkedIn
                             </a>
@@ -621,10 +316,7 @@ function LeaderboardPage() {
                               href={`https://twitter.com/${userProfile.contact.twitter}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              style={{
-                                color: 'var(--neon-cyan)',
-                                textDecoration: 'none',
-                              }}
+                              className="text-neon-cyan hover:underline"
                             >
                               𝕏 Twitter
                             </a>
@@ -634,10 +326,7 @@ function LeaderboardPage() {
                               href={userProfile.contact.website}
                               target="_blank"
                               rel="noopener noreferrer"
-                              style={{
-                                color: 'var(--neon-cyan)',
-                                textDecoration: 'none',
-                              }}
+                              className="text-neon-cyan hover:underline"
                             >
                               🌐 Web
                             </a>
@@ -646,34 +335,15 @@ function LeaderboardPage() {
                       </div>
                     )}
 
-                    {/* Medallas */}
+                    {/* Badges */}
                     {userProfile.badges && userProfile.badges.length > 0 && (
                       <div>
-                        <h4
-                          style={{
-                            marginBottom: 'var(--spacing-sm)',
-                            color: 'var(--text-secondary)',
-                          }}
-                        >
-                          Medallas
-                        </h4>
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            gap: 'var(--spacing-sm)',
-                          }}
-                        >
+                        <h4 className="mb-2 text-text-secondary">Medallas</h4>
+                        <div className="flex flex-wrap gap-2">
                           {userProfile.badges.map((badge) => (
                             <div
                               key={badge.id}
-                              style={{
-                                padding: 'var(--spacing-sm) var(--spacing-md)',
-                                background: 'rgba(0, 255, 136, 0.1)',
-                                border: '1px solid rgba(0, 255, 136, 0.3)',
-                                borderRadius: 'var(--radius-md)',
-                                fontSize: '0.85rem',
-                              }}
+                              className="px-4 py-2 bg-neon-green/10 border border-neon-green/30 rounded-xl text-sm"
                             >
                               {badge.icon} {badge.name}
                             </div>
@@ -683,23 +353,10 @@ function LeaderboardPage() {
                     )}
                   </>
                 ) : (
-                  <div
-                    style={{
-                      textAlign: 'center',
-                      padding: 'var(--spacing-xl)',
-                      color: 'var(--text-muted)',
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: '3rem',
-                        marginBottom: 'var(--spacing-md)',
-                      }}
-                    >
-                      🔒
-                    </div>
+                  <div className="text-center py-8 text-text-muted">
+                    <div className="text-5xl mb-4">🔒</div>
                     <p>Este perfil es privado</p>
-                    <p style={{ fontSize: '0.9rem' }}>
+                    <p className="text-sm">
                       Solo puedes ver el nombre y {userProfile.badgeCount}{' '}
                       medallas
                     </p>
@@ -707,15 +364,14 @@ function LeaderboardPage() {
                 )}
 
                 <button
-                  className="btn btn-secondary"
+                  className="btn btn-secondary w-full mt-8"
                   onClick={closeProfile}
-                  style={{ width: '100%', marginTop: 'var(--spacing-xl)' }}
                 >
                   Cerrar
                 </button>
               </>
             ) : (
-              <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
+              <p className="text-center text-text-muted">
                 Error cargando perfil
               </p>
             )}

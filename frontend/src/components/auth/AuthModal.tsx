@@ -42,24 +42,17 @@ function AuthModal({ onClose }: AuthModalProps) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div
-        className="modal"
+        className="modal max-w-[420px]"
         onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: '420px' }}
       >
-        <h2 style={{ marginBottom: 'var(--spacing-lg)' }}>
+        <h2 className="mb-6">
           {isLogin ? '🔐 Iniciar Sesión' : '🚀 Registrarse'}
         </h2>
 
-        <form onSubmit={handleSubmit} style={{ textAlign: 'left' }}>
+        <form onSubmit={handleSubmit} className="text-left">
           {!isLogin && (
-            <div style={{ marginBottom: 'var(--spacing-lg)' }}>
-              <label
-                style={{
-                  display: 'block',
-                  marginBottom: 'var(--spacing-sm)',
-                  color: 'var(--text-secondary)',
-                }}
-              >
+            <div className="mb-6">
+              <label className="block mb-2 text-text-secondary">
                 Nombre de usuario
               </label>
               <input
@@ -68,59 +61,27 @@ function AuthModal({ onClose }: AuthModalProps) {
                 value={formData.username}
                 onChange={handleChange}
                 required={!isLogin}
-                style={{
-                  width: '100%',
-                  padding: 'var(--spacing-md)',
-                  background: 'var(--bg-primary)',
-                  border: '2px solid rgba(0, 240, 255, 0.3)',
-                  borderRadius: 'var(--radius-md)',
-                  color: 'var(--text-primary)',
-                  fontSize: '1rem',
-                  outline: 'none',
-                }}
+                className="w-full p-4 bg-bg-primary border-2 border-neon-cyan/30 rounded-xl text-text-main text-base outline-none focus:border-neon-cyan focus:shadow-neon-cyan transition-all duration-300"
                 placeholder="tu_nombre"
               />
             </div>
           )}
 
-          <div style={{ marginBottom: 'var(--spacing-lg)' }}>
-            <label
-              style={{
-                display: 'block',
-                marginBottom: 'var(--spacing-sm)',
-                color: 'var(--text-secondary)',
-              }}
-            >
-              Email
-            </label>
+          <div className="mb-6">
+            <label className="block mb-2 text-text-secondary">Email</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               required
-              style={{
-                width: '100%',
-                padding: 'var(--spacing-md)',
-                background: 'var(--bg-primary)',
-                border: '2px solid rgba(0, 240, 255, 0.3)',
-                borderRadius: 'var(--radius-md)',
-                color: 'var(--text-primary)',
-                fontSize: '1rem',
-                outline: 'none',
-              }}
+              className="w-full p-4 bg-bg-primary border-2 border-neon-cyan/30 rounded-xl text-text-main text-base outline-none focus:border-neon-cyan focus:shadow-neon-cyan transition-all duration-300"
               placeholder="tu@email.com"
             />
           </div>
 
-          <div style={{ marginBottom: 'var(--spacing-lg)' }}>
-            <label
-              style={{
-                display: 'block',
-                marginBottom: 'var(--spacing-sm)',
-                color: 'var(--text-secondary)',
-              }}
-            >
+          <div className="mb-6">
+            <label className="block mb-2 text-text-secondary">
               Contraseña
             </label>
             <input
@@ -130,41 +91,21 @@ function AuthModal({ onClose }: AuthModalProps) {
               onChange={handleChange}
               required
               minLength={6}
-              style={{
-                width: '100%',
-                padding: 'var(--spacing-md)',
-                background: 'var(--bg-primary)',
-                border: '2px solid rgba(0, 240, 255, 0.3)',
-                borderRadius: 'var(--radius-md)',
-                color: 'var(--text-primary)',
-                fontSize: '1rem',
-                outline: 'none',
-              }}
+              className="w-full p-4 bg-bg-primary border-2 border-neon-cyan/30 rounded-xl text-text-main text-base outline-none focus:border-neon-cyan focus:shadow-neon-cyan transition-all duration-300"
               placeholder="••••••••"
             />
           </div>
 
           {error && (
-            <div
-              style={{
-                padding: 'var(--spacing-md)',
-                background: 'rgba(255, 45, 146, 0.1)',
-                border: '1px solid var(--neon-pink)',
-                borderRadius: 'var(--radius-md)',
-                color: 'var(--neon-pink)',
-                marginBottom: 'var(--spacing-lg)',
-                fontSize: '0.9rem',
-              }}
-            >
+            <div className="p-4 bg-neon-pink/10 border border-neon-pink rounded-xl text-neon-pink mb-6 text-sm">
               {error}
             </div>
           )}
 
           <button
             type="submit"
-            className="btn btn-primary"
+            className="btn btn-primary w-full mb-6"
             disabled={loading}
-            style={{ width: '100%', marginBottom: 'var(--spacing-lg)' }}
           >
             {loading
               ? '⏳ Cargando...'
@@ -174,14 +115,14 @@ function AuthModal({ onClose }: AuthModalProps) {
           </button>
         </form>
 
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+        <p className="text-text-secondary text-sm">
           {isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'}{' '}
           <span
             onClick={() => {
               setIsLogin(!isLogin)
               setError('')
             }}
-            style={{ color: 'var(--neon-cyan)', cursor: 'pointer' }}
+            className="text-neon-cyan cursor-pointer hover:underline"
           >
             {isLogin ? 'Regístrate' : 'Inicia sesión'}
           </span>

@@ -35,95 +35,43 @@ function BadgesPage() {
 
   if (loading) {
     return (
-      <section
-        className="container"
-        style={{ paddingTop: '120px', textAlign: 'center' }}
-      >
+      <section className="pt-32 max-w-7xl mx-auto px-6 text-center">
         <p>Cargando medallas...</p>
       </section>
     )
   }
 
   return (
-    <section className="container" style={{ paddingTop: '120px' }}>
-      <div
-        className="section-header"
-        style={{ textAlign: 'center', marginBottom: 'var(--spacing-2xl)' }}
-      >
+    <section className="pt-32 max-w-7xl mx-auto px-6">
+      <div className="text-center mb-12">
         <h2>🏆 Medallas</h2>
-        <p>
+        <p className="mt-2">
           Desbloquea medallas completando ejercicios y alcanzando nuevos niveles
         </p>
-        <div
-          style={{
-            marginTop: 'var(--spacing-lg)',
-            display: 'inline-flex',
-            padding: 'var(--spacing-md) var(--spacing-xl)',
-            background: 'rgba(0, 255, 136, 0.1)',
-            border: '1px solid rgba(0, 255, 136, 0.3)',
-            borderRadius: 'var(--radius-lg)',
-          }}
-        >
-          <span
-            style={{
-              color: 'var(--neon-green)',
-              fontFamily: 'var(--font-display)',
-              fontSize: '1.2rem',
-            }}
-          >
+        <div className="inline-flex mt-6 px-8 py-4 bg-neon-green/10 border border-neon-green/30 rounded-2xl">
+          <span className="text-neon-green font-display text-xl">
             {userBadges.unlocked} / {allBadges.length} desbloqueadas
           </span>
         </div>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-          gap: 'var(--spacing-lg)',
-        }}
-      >
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-6">
         {allBadges.map((badge) => {
           const unlocked = isUnlocked(badge.id)
           return (
             <div
               key={badge.id}
-              className="glass-card"
-              style={{
-                textAlign: 'center',
-                opacity: unlocked ? 1 : 0.5,
-                filter: unlocked ? 'none' : 'grayscale(100%)',
-              }}
+              className={`glass-card text-center ${!unlocked ? 'opacity-50 grayscale' : ''}`}
             >
-              <div
-                style={{ fontSize: '3rem', marginBottom: 'var(--spacing-md)' }}
-              >
-                {badge.icon}
-              </div>
+              <div className="text-5xl mb-4">{badge.icon}</div>
               <h4
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  marginBottom: 'var(--spacing-sm)',
-                  color: unlocked ? 'var(--neon-cyan)' : 'var(--text-muted)',
-                }}
+                className={`font-display mb-2 ${unlocked ? 'text-neon-cyan' : 'text-text-muted'}`}
               >
                 {badge.name}
               </h4>
-              <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                {badge.description}
-              </p>
+              <p className="text-sm text-text-secondary">{badge.description}</p>
               {unlocked && (
-                <div
-                  style={{
-                    marginTop: 'var(--spacing-md)',
-                    padding: 'var(--spacing-xs) var(--spacing-md)',
-                    background: 'rgba(0, 255, 136, 0.2)',
-                    borderRadius: 'var(--radius-sm)',
-                    display: 'inline-block',
-                    fontSize: '0.8rem',
-                    color: 'var(--neon-green)',
-                  }}
-                >
+                <div className="mt-4 inline-block px-4 py-1 bg-neon-green/20 rounded-lg text-xs text-neon-green">
                   ✓ Desbloqueada
                 </div>
               )}

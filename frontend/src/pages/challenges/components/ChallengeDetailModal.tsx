@@ -16,10 +16,10 @@ function ChallengeDetailModal({
 }: ChallengeDetailModalProps) {
   const { user } = useAuthStore()
 
-  const difficultyColors: Record<string, string> = {
-    easy: 'var(--neon-green)',
-    medium: 'var(--neon-cyan)',
-    hard: 'var(--neon-pink)',
+  const difficultyStyles: Record<string, string> = {
+    easy: 'text-neon-green border-neon-green bg-neon-green/10',
+    medium: 'text-neon-cyan border-neon-cyan bg-neon-cyan/10',
+    hard: 'text-neon-pink border-neon-pink bg-neon-pink/10',
   }
 
   const difficultyLabels: Record<string, string> = {
@@ -35,36 +35,20 @@ function ChallengeDetailModal({
     }
   }
 
+  const isLiked = challenge.reactions?.some(
+    (r: any) => r.userId === user?.id
+  )
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div
-        className="modal challenge-detail-modal"
+        className="modal max-w-[700px] text-left max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
-        style={{
-          maxWidth: '700px',
-          textAlign: 'left',
-          maxHeight: '90vh',
-          overflowY: 'auto',
-        }}
       >
         {/* Header */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            marginBottom: 'var(--spacing-lg)',
-          }}
-        >
+        <div className="flex justify-between items-start mb-6">
           <span
-            style={{
-              fontSize: '0.8rem',
-              padding: '4px 12px',
-              borderRadius: '20px',
-              border: `1px solid ${difficultyColors[challenge.difficulty]}`,
-              color: difficultyColors[challenge.difficulty],
-              background: `${difficultyColors[challenge.difficulty]}15`,
-            }}
+            className={`text-xs px-3 py-1 rounded-full border ${difficultyStyles[challenge.difficulty] || ''}`}
           >
             {difficultyLabels[challenge.difficulty] ||
               challenge.difficulty.toUpperCase()}
@@ -72,15 +56,7 @@ function ChallengeDetailModal({
 
           <button
             onClick={onClose}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '1.5rem',
-              color: 'var(--text-muted)',
-              lineHeight: 1,
-              padding: '4px',
-            }}
+            className="bg-transparent border-none cursor-pointer text-2xl text-text-muted leading-none p-1 hover:text-text-main transition-colors"
             title="Cerrar"
           >
             ✕
@@ -88,121 +64,45 @@ function ChallengeDetailModal({
         </div>
 
         {/* Title */}
-        <h2
-          style={{
-            marginBottom: 'var(--spacing-lg)',
-            color: 'var(--text-primary)',
-            fontSize: '1.75rem',
-          }}
-        >
-          {challenge.title}
-        </h2>
+        <h2 className="mb-6 text-3xl">{challenge.title}</h2>
 
         {/* Author info */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            marginBottom: 'var(--spacing-xl)',
-            padding: 'var(--spacing-md)',
-            background: 'rgba(255,255,255,0.03)',
-            borderRadius: 'var(--radius-md)',
-          }}
-        >
+        <div className="flex items-center gap-3 mb-8 p-4 bg-white/[0.03] rounded-xl">
           {challenge.author?.avatarUrl ? (
             <img
               src={challenge.author.avatarUrl}
               alt=""
-              style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                border: '2px solid var(--neon-cyan)',
-              }}
+              className="w-10 h-10 rounded-full border-2 border-neon-cyan"
             />
           ) : (
-            <div
-              style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                background: 'var(--gradient-primary)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.2rem',
-              }}
-            >
+            <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-xl">
               👤
             </div>
           )}
           <div>
-            <div style={{ fontWeight: '600', color: 'var(--text-primary)' }}>
+            <div className="font-semibold">
               {challenge.author?.username || 'Anónimo'}
             </div>
-            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-              Creador del reto
-            </div>
+            <div className="text-sm text-text-muted">Creador del reto</div>
           </div>
         </div>
 
         {/* Description */}
-        <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-          <h4
-            style={{
-              color: 'var(--neon-cyan)',
-              marginBottom: 'var(--spacing-sm)',
-              fontSize: '1rem',
-              fontFamily: 'var(--font-display)',
-            }}
-          >
-            📝 Descripción
-          </h4>
-          <p
-            style={{
-              color: 'var(--text-secondary)',
-              lineHeight: '1.7',
-              whiteSpace: 'pre-wrap',
-            }}
-          >
+        <div className="mb-8">
+          <h4 className="text-neon-cyan mb-2 font-display">📝 Descripción</h4>
+          <p className="text-text-secondary leading-relaxed whitespace-pre-wrap">
             {challenge.description}
           </p>
         </div>
 
         {/* Initial Code */}
         {challenge.initialCode && (
-          <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-            <h4
-              style={{
-                color: 'var(--neon-cyan)',
-                marginBottom: 'var(--spacing-sm)',
-                fontSize: '1rem',
-                fontFamily: 'var(--font-display)',
-              }}
-            >
+          <div className="mb-8">
+            <h4 className="text-neon-cyan mb-2 font-display">
               💻 Código Inicial
             </h4>
-            <div
-              style={{
-                background: 'var(--bg-primary)',
-                border: '1px solid rgba(0, 240, 255, 0.2)',
-                borderRadius: 'var(--radius-md)',
-                padding: 'var(--spacing-lg)',
-                overflow: 'auto',
-                maxHeight: '200px',
-              }}
-            >
-              <pre
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.9rem',
-                  color: 'var(--text-primary)',
-                  margin: 0,
-                  whiteSpace: 'pre-wrap',
-                  wordBreak: 'break-word',
-                }}
-              >
+            <div className="bg-bg-primary border border-neon-cyan/20 rounded-xl p-6 overflow-auto max-h-52">
+              <pre className="font-mono text-sm m-0 whitespace-pre-wrap break-words">
                 {challenge.initialCode}
               </pre>
             </div>
@@ -211,51 +111,25 @@ function ChallengeDetailModal({
 
         {/* Test Cases */}
         {challenge.testCases && challenge.testCases.length > 0 && (
-          <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-            <h4
-              style={{
-                color: 'var(--neon-cyan)',
-                marginBottom: 'var(--spacing-sm)',
-                fontSize: '1rem',
-                fontFamily: 'var(--font-display)',
-              }}
-            >
+          <div className="mb-8">
+            <h4 className="text-neon-cyan mb-2 font-display">
               🧪 Casos de Prueba
             </h4>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 'var(--spacing-sm)',
-              }}
-            >
+            <div className="flex flex-col gap-2">
               {challenge.testCases.map((testCase, index: number) => (
                 <div
                   key={index}
-                  style={{
-                    background: 'rgba(139, 92, 246, 0.1)',
-                    border: '1px solid rgba(139, 92, 246, 0.3)',
-                    borderRadius: 'var(--radius-sm)',
-                    padding: 'var(--spacing-md)',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.85rem',
-                  }}
+                  className="bg-neon-purple/10 border border-neon-purple/30 rounded-lg p-4 font-mono text-sm"
                 >
-                  <div
-                    style={{ color: 'var(--text-muted)', marginBottom: '4px' }}
-                  >
+                  <div className="text-text-muted mb-1">
                     Caso {index + 1}:
                   </div>
-                  <div style={{ color: 'var(--neon-purple)' }}>
-                    <span style={{ color: 'var(--text-secondary)' }}>
-                      Input:
-                    </span>{' '}
+                  <div className="text-neon-purple">
+                    <span className="text-text-secondary">Input:</span>{' '}
                     {JSON.stringify(testCase.input)}
                   </div>
-                  <div style={{ color: 'var(--neon-green)' }}>
-                    <span style={{ color: 'var(--text-secondary)' }}>
-                      Output:
-                    </span>{' '}
+                  <div className="text-neon-green">
+                    <span className="text-text-secondary">Output:</span>{' '}
                     {JSON.stringify(testCase.output)}
                   </div>
                 </div>
@@ -265,47 +139,21 @@ function ChallengeDetailModal({
         )}
 
         {/* Footer Actions */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingTop: 'var(--spacing-lg)',
-            borderTop: '1px solid rgba(255,255,255,0.08)',
-          }}
-        >
+        <div className="flex justify-between items-center pt-6 border-t border-white/8">
           <button
             onClick={() => onReaction?.(challenge.id)}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              color: challenge.reactions?.some(
-                (r: any) => r.userId === user?.id
-              )
-                ? 'var(--neon-pink)'
-                : 'var(--text-muted)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontSize: '1.1rem',
-              padding: 'var(--spacing-sm) var(--spacing-md)',
-              borderRadius: 'var(--radius-md)',
-              transition: 'var(--transition-fast)',
-            }}
+            className={`bg-transparent border-none cursor-pointer flex items-center gap-2 text-lg px-4 py-2 rounded-xl transition-all duration-200 hover:scale-105 ${
+              isLiked ? 'text-neon-pink' : 'text-text-muted'
+            }`}
           >
             ❤️ {challenge._count?.reactions || 0} Me gusta
           </button>
 
-          <div style={{ display: 'flex', gap: 'var(--spacing-md)' }}>
+          <div className="flex gap-4">
             {user && user.id === challenge.authorId && (
               <button
                 onClick={handleDelete}
-                className="btn btn-secondary"
-                style={{
-                  color: 'var(--neon-pink)',
-                  borderColor: 'var(--neon-pink)',
-                }}
+                className="btn btn-secondary !text-neon-pink !border-neon-pink"
               >
                 🗑️ Eliminar
               </button>

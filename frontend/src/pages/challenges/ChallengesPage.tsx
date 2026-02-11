@@ -41,12 +41,10 @@ function ChallengesPage() {
   const handleReaction = async (id: string) => {
     try {
       const data = await challengeApi.toggleReaction(id)
-      // Actualizar estado localmente para feedback inmediato
       setChallenges((prev) =>
         prev.map((c) => {
           if (c.id !== id) return c
           const isLiked = data.liked
-          // Mocking user reaction update locally
           const reactions = c.reactions || []
           const newReactions = isLiked
             ? [...reactions, { userId: user?.id || 'temp' }]
@@ -64,7 +62,6 @@ function ChallengesPage() {
           }
         })
       )
-      // loadChallenges(); // Refetching to ensure consistency, commented out to rely on optimistic update mostly
     } catch (error) {
       console.error('Error reaccionando:', error)
     }
@@ -82,25 +79,26 @@ function ChallengesPage() {
   }
 
   const difficultyColors: Record<string, string> = {
-    easy: 'var(--neon-green)',
-    medium: 'var(--neon-cyan)',
-    hard: 'var(--neon-pink)',
+    easy: 'text-neon-green border-neon-green',
+    medium: 'text-neon-cyan border-neon-cyan',
+    hard: 'text-neon-pink border-neon-pink',
   }
 
   return (
-    <section className="container" style={{ paddingTop: '120px' }}>
-      <div
-        className="section-header"
-        style={{ textAlign: 'center', marginBottom: 'var(--spacing-2xl)' }}
-      >
+    <section className="pt-32 max-w-7xl mx-auto px-6">
+      <div className="text-center mb-12">
         <h2>💻 Retos de la Comunidad</h2>
-        <p>Resuelve desafíos creados por otros estudiantes o sube los tuyos</p>
+        <p className="mt-2">
+          Resuelve desafíos creados por otros estudiantes o sube los tuyos
+        </p>
       </div>
 
-      {/* Controles y Filtros */}
-      <div className="challenges-header">
-        <div className="filter-controls">
-          <span className="filter-label">🎯 Filtrar:</span>
+      {/* Controls & Filters */}
+      <div className="flex justify-between items-center mb-8 flex-wrap gap-4 p-4 bg-bg-card rounded-2xl border border-white/8">
+        <div className="flex gap-4 items-center flex-wrap">
+          <span className="text-xs text-text-muted uppercase tracking-wide">
+            🎯 Filtrar:
+          </span>
           <select
             className="filter-select"
             value={filters.difficulty}
@@ -134,48 +132,24 @@ function ChallengesPage() {
         </button>
       </div>
 
-      {/* Lista de Retos */}
+      {/* Challenge List */}
       {loading ? (
-        <p style={{ textAlign: 'center' }}>Cargando retos...</p>
+        <p className="text-center">Cargando retos...</p>
       ) : challenges.length === 0 ? (
-        <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
+        <p className="text-center text-text-muted">
           No hay retos aún. ¡Sé el primero en crear uno!
         </p>
       ) : (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-            gap: 'var(--spacing-lg)',
-          }}
-        >
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
           {challenges.map((challenge) => (
             <div
               key={challenge.id}
-              className="glass-card"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                cursor: 'pointer',
-              }}
+              className="glass-card flex flex-col cursor-pointer"
               onClick={() => setSelectedChallenge(challenge)}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start',
-                  marginBottom: 'var(--spacing-sm)',
-                }}
-              >
+              <div className="flex justify-between items-start mb-2">
                 <span
-                  style={{
-                    fontSize: '0.75rem',
-                    padding: '2px 8px',
-                    borderRadius: '12px',
-                    border: `1px solid ${difficultyColors[challenge.difficulty]}`,
-                    color: difficultyColors[challenge.difficulty],
-                  }}
+                  className={`text-xs px-2 py-0.5 rounded-full border ${difficultyColors[challenge.difficulty] || ''}`}
                 >
                   {challenge.difficulty.toUpperCase()}
                 </span>
@@ -185,12 +159,7 @@ function ChallengesPage() {
                       e.stopPropagation()
                       handleDelete(challenge.id)
                     }}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      fontSize: '1rem',
-                    }}
+                    className="bg-transparent border-none cursor-pointer text-base"
                     title="Eliminar reto"
                   >
                     🗑️
@@ -198,53 +167,18 @@ function ChallengesPage() {
                 )}
               </div>
 
-              <h3
-                style={{
-                  marginBottom: 'var(--spacing-sm)',
-                  color: 'var(--text-primary)',
-                }}
-              >
-                {challenge.title}
-              </h3>
-              <p
-                style={{
-                  fontSize: '0.9rem',
-                  color: 'var(--text-secondary)',
-                  marginBottom: 'var(--spacing-md)',
-                  flex: 1,
-                  display: '-webkit-box',
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                }}
-              >
+              <h3 className="mb-2">{challenge.title}</h3>
+              <p className="text-sm text-text-secondary mb-4 flex-1 line-clamp-3">
                 {challenge.description}
               </p>
 
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginTop: 'auto',
-                  fontSize: '0.85rem',
-                  color: 'var(--text-muted)',
-                  paddingTop: 'var(--spacing-md)',
-                  borderTop: '1px solid rgba(255,255,255,0.05)',
-                }}
-              >
-                <div
-                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-                >
+              <div className="flex justify-between items-center mt-auto text-sm text-text-muted pt-4 border-t border-white/5">
+                <div className="flex items-center gap-2">
                   {challenge.author?.avatarUrl ? (
                     <img
                       src={challenge.author.avatarUrl}
                       alt=""
-                      style={{
-                        width: '24px',
-                        height: '24px',
-                        borderRadius: '50%',
-                      }}
+                      className="w-6 h-6 rounded-full"
                     />
                   ) : (
                     <span>👤</span>
@@ -257,26 +191,11 @@ function ChallengesPage() {
                     e.stopPropagation()
                     handleReaction(challenge.id)
                   }}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    color: challenge.reactions?.some(
-                      (r) => r.userId === user?.id
-                    )
-                      ? 'var(--neon-pink)'
-                      : 'var(--text-muted)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    transition: 'transform 0.2s',
-                  }}
-                  onMouseOver={(e) =>
-                    (e.currentTarget.style.transform = 'scale(1.1)')
-                  }
-                  onMouseOut={(e) =>
-                    (e.currentTarget.style.transform = 'scale(1)')
-                  }
+                  className={`bg-transparent border-none cursor-pointer flex items-center gap-1 transition-transform duration-200 hover:scale-110 ${
+                    challenge.reactions?.some((r) => r.userId === user?.id)
+                      ? 'text-neon-pink'
+                      : 'text-text-muted'
+                  }`}
                 >
                   ❤️ {challenge._count?.reactions || 0}
                 </button>
@@ -299,7 +218,6 @@ function ChallengesPage() {
           onClose={() => setSelectedChallenge(null)}
           onReaction={(id: string) => {
             handleReaction(id)
-            // Actualizar el challenge seleccionado con los nuevos datos
             const updated = challenges.find((c) => c.id === id)
             if (updated) setSelectedChallenge(updated)
           }}

@@ -1,30 +1,25 @@
 import { modulesData } from '@/data/data'
 import Hero from '@/pages/home/components/Hero'
 import ModuleCard from '@/pages/modules/components/ModuleCard'
-import { Module } from '@/types/module'
 import { useState } from 'react'
 
 export default function Home() {
-  const [moduleProgress, setModuleProgress] = useState<
+  const [moduleProgress] = useState<
     Record<string, { completed: number; total: number }>
   >({})
-  const [currentView, setCurrentView] = useState<string>('home')
 
-  const handleModuleClick = (module: Module) => {
-    setCurrentView('lessons')
-  }
   return (
     <>
       <Hero />
-      <section className="modules-section container">
-        <div className="section-header">
+      <section className="py-16 max-w-7xl mx-auto px-6">
+        <div className="text-center mb-12">
           <h2>Módulos de Aprendizaje</h2>
-          <p>
+          <p className="mt-2">
             Explora nuestros módulos diseñados para llevarte desde cero hasta
             programador.
           </p>
         </div>
-        <div className="modules-grid">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {modulesData.map((module) => {
             const stats = moduleProgress[module.id] || {
               completed: 0,

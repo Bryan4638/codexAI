@@ -42,10 +42,8 @@ function LessonView({
       ])
 
       const exercisesList: LessonExercise[] = exercisesData || []
-      console.log(exercisesList)
       setExercises(exercisesList)
 
-      // Sincronizar ejercicios completados
       if (
         progressData.completedExercises > 0 ||
         progressData.history?.length > 0
@@ -64,7 +62,6 @@ function LessonView({
 
         setCompletedExercises(completedIndices)
 
-        // Auto-avanzar al primer ejercicio no completado
         if (
           completedIndices.length > 0 &&
           completedIndices.length < exercisesList.length
@@ -76,7 +73,6 @@ function LessonView({
             setCurrentExerciseIndex(firstIncomplete)
           }
         } else if (completedIndices.length === exercisesList.length) {
-          // Si todos están completados, ir al último
           setCurrentExerciseIndex(exercisesList.length - 1)
         }
       }
@@ -124,7 +120,6 @@ function LessonView({
             {...commonProps}
           />
         )
-
       case 'quiz':
         return (
           <Quiz
@@ -133,7 +128,6 @@ function LessonView({
             {...commonProps}
           />
         )
-
       case 'dragDrop':
         return (
           <DragDrop
@@ -142,7 +136,6 @@ function LessonView({
             {...commonProps}
           />
         )
-
       case 'fillBlank':
         return (
           <FillBlank
@@ -151,7 +144,6 @@ function LessonView({
             {...commonProps}
           />
         )
-
       default:
         return <p>Tipo de ejercicio no soportado.</p>
     }
@@ -180,53 +172,44 @@ function LessonView({
 
   if (loading) {
     return (
-      <div
-        className="lesson-container container"
-        style={{ textAlign: 'center', paddingTop: '150px' }}
-      >
+      <div className="pt-40 max-w-7xl mx-auto px-6 text-center">
         <p>Cargando ejercicios...</p>
       </div>
     )
   }
 
   return (
-    <div className="lesson-container container">
-      <div className="lesson-header">
-        <div className="lesson-breadcrumb">
+    <div className="pt-32 max-w-7xl mx-auto px-6">
+      <div className="mb-8">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-2 text-sm mb-8">
           <span
             onClick={onBack}
-            style={{ cursor: 'pointer', color: 'var(--neon-cyan)' }}
+            className="cursor-pointer text-neon-cyan hover:underline"
           >
             ← Volver
           </span>
-          <span style={{ color: 'var(--text-muted)' }}>/</span>
-          <span style={{ color: 'var(--text-muted)' }}>{module?.title}</span>
-          <span style={{ color: 'var(--text-muted)' }}>/</span>
-          <span style={{ color: 'var(--text-primary)' }}>
-            {lessonTitles[lessonId] || lessonId}
-          </span>
+          <span className="text-text-muted">/</span>
+          <span className="text-text-muted">{module?.title}</span>
+          <span className="text-text-muted">/</span>
+          <span>{lessonTitles[lessonId] || lessonId}</span>
         </div>
-        <h1 className="lesson-title">{lessonTitles[lessonId] || 'Lección'}</h1>
+
+        <h1 className="mb-6">{lessonTitles[lessonId] || 'Lección'}</h1>
 
         {!user && (
-          <div
-            style={{
-              padding: 'var(--spacing-md)',
-              background: 'rgba(255, 165, 0, 0.1)',
-              border: '1px solid var(--neon-orange)',
-              borderRadius: 'var(--radius-md)',
-              marginBottom: 'var(--spacing-lg)',
-              color: 'var(--neon-orange)',
-            }}
-          >
+          <div className="p-4 bg-neon-orange/10 border border-neon-orange rounded-xl mb-6 text-neon-orange">
             ⚠️ Inicia sesión para guardar tu progreso y ganar XP
           </div>
         )}
 
-        <div className="progress-container">
-          <div className="progress-header">
-            <span className="progress-label">Progreso de la lección</span>
-            <span className="progress-value">
+        {/* Progress */}
+        <div className="glass-card !p-6 mb-8">
+          <div className="flex justify-between mb-3">
+            <span className="text-text-secondary text-sm">
+              Progreso de la lección
+            </span>
+            <span className="text-neon-cyan font-mono text-sm">
               {completedExercises.length} / {exercises.length} ejercicios
             </span>
           </div>
@@ -242,27 +225,20 @@ function LessonView({
       </div>
 
       {exercises.length > 0 ? (
-        <div
-          className="exercise-section"
-          style={{ maxWidth: '800px', margin: '0 auto' }}
-        >
-          <div className="exercise-header">
-            <span className="exercise-type">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <span className="inline-flex items-center gap-2 px-4 py-1 bg-neon-cyan/10 border border-neon-cyan/30 rounded-full text-sm text-neon-cyan font-mono">
               {getExerciseTypeName(currentExercise?.type)}
             </span>
-            <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+            <span className="text-text-muted text-sm">
               Ejercicio {currentExerciseIndex + 1} de {exercises.length}
               {completedExercises.includes(currentExerciseIndex) && ' ✓'}
             </span>
           </div>
+
           {renderExercise()}
-          <div
-            style={{
-              marginTop: 'var(--spacing-xl)',
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
-          >
+
+          <div className="mt-8 flex justify-between">
             <button
               className="btn btn-secondary"
               onClick={handlePrevExercise}
@@ -277,7 +253,6 @@ function LessonView({
                   ? onBack
                   : handleNextExercise
               }
-              disabled={false}
             >
               {currentExerciseIndex === exercises.length - 1
                 ? 'Finalizar ✅'
@@ -286,7 +261,7 @@ function LessonView({
           </div>
         </div>
       ) : (
-        <div style={{ textAlign: 'center', padding: 'var(--spacing-3xl)' }}>
+        <div className="text-center py-16">
           <p>No hay ejercicios para esta lección.</p>
         </div>
       )}

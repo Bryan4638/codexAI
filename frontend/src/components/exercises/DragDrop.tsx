@@ -1,8 +1,18 @@
 import { exerciseApi } from '@/services/endpoints/exercise'
 import { useAuthStore } from '@/store/useAuthStore'
-import type { DragDropExercise, DraggedItem, Option } from '@/types/exercise'
+import type { DragDropExercise } from '@/types/exercise'
 import type { DragDropFeedback } from '@/types/feedback'
 import { useState } from 'react'
+
+interface DragDropItem {
+  id: number
+  text: string
+}
+
+interface DraggedItemState {
+  item: DragDropItem
+  fromTarget: boolean
+}
 
 interface DragDropProps {
   exercise: DragDropExercise
@@ -10,17 +20,32 @@ interface DragDropProps {
   onNewBadges?: (badges: any[]) => void
 }
 
+const difficultyMap: Record<string, { classes: string; label: string }> = {
+  beginner: {
+    classes: 'bg-neon-green/20 border-neon-green text-neon-green',
+    label: '🌱 Básico',
+  },
+  intermediate: {
+    classes: 'bg-neon-orange/20 border-neon-orange text-neon-orange',
+    label: '🌿 Intermedio',
+  },
+  advanced: {
+    classes: 'bg-neon-pink/20 border-neon-pink text-neon-pink',
+    label: '🌳 Avanzado',
+  },
+}
+
 function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
-  const [sourceItems, setSourceItems] = useState<Option[]>([
+  const [sourceItems, setSourceItems] = useState<DragDropItem[]>([
     ...(exercise.data?.items || []),
   ])
-  const [targetItems, setTargetItems] = useState<Option[]>([])
-  const [draggedItem, setDraggedItem] = useState<DraggedItem | null>(null)
+  const [targetItems, setTargetItems] = useState<DragDropItem[]>([])
+  const [draggedItem, setDraggedItem] = useState<DraggedItemState | null>(null)
   const [feedback, setFeedback] = useState<DragDropFeedback | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const { user, updateUser } = useAuthStore()
 
-  const handleDragStart = (item: Option, fromTarget = false) => {
+  const handleDragStart = (item: DragDropItem, fromTarget = false) => {
     setDraggedItem({ item, fromTarget })
   }
 
@@ -80,75 +105,23 @@ function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
   }
 
   const handleReset = () => {
-    setSourceItems([...(exercise.data?.items || [])])
+    setSourceItems([...(exercise.data?.items || [])] as DragDropItem[])
     setTargetItems([])
     setFeedback(null)
   }
 
+  const diff = difficultyMap[exercise.difficulty] || difficultyMap.beginner
+
   return (
     <div>
       <p className="exercise-prompt">{exercise.prompt}</p>
-      <div
-        style={{
-          display: 'inline-flex',
-          gap: 'var(--spacing-sm)',
-          marginBottom: 'var(--spacing-md)',
-        }}
-      >
-        <span
-          style={{
-            padding: '2px 8px',
-            background:
-              exercise.difficulty === 'beginner'
-                ? 'rgba(0, 255, 136, 0.2)'
-                : exercise.difficulty === 'intermediate'
-                  ? 'rgba(255, 165, 0, 0.2)'
-                  : 'rgba(255, 45, 146, 0.2)',
-            border: `1px solid ${
-              exercise.difficulty === 'beginner'
-                ? 'var(--neon-green)'
-                : exercise.difficulty === 'intermediate'
-                  ? 'var(--neon-orange)'
-                  : 'var(--neon-pink)'
-            }`,
-            borderRadius: 'var(--radius-sm)',
-            fontSize: '0.75rem',
-            color:
-              exercise.difficulty === 'beginner'
-                ? 'var(--neon-green)'
-                : exercise.difficulty === 'intermediate'
-                  ? 'var(--neon-orange)'
-                  : 'var(--neon-pink)',
-          }}
-        >
-          {exercise.difficulty === 'beginner'
-            ? '🌱 Básico'
-            : exercise.difficulty === 'intermediate'
-              ? '🌿 Intermedio'
-              : '🌳 Avanzado'}
-        </span>
-        <span
-          style={{
-            padding: '2px 8px',
-            background: 'rgba(139, 92, 246, 0.2)',
-            border: '1px solid var(--neon-purple)',
-            borderRadius: 'var(--radius-sm)',
-            fontSize: '0.75rem',
-            color: 'var(--neon-purple)',
-          }}
-        >
-          +{exercise.xpReward} XP
-        </span>
+      <div className="inline-flex gap-2 mb-4">
+        <span className={`badge-difficulty ${diff.classes}`}>{diff.label}</span>
+        <span className="badge-xp">+{exercise.xpReward} XP</span>
       </div>
       <div className="drag-drop-container">
         <div>
-          <p
-            style={{
-              color: 'var(--text-muted)',
-              marginBottom: 'var(--spacing-sm)',
-              fontSize: '0.9rem',
-            }}
-          >
+          <p className="text-text-muted mb-2 text-sm">
             Bloques disponibles:
           </p>
           <div
@@ -167,20 +140,14 @@ function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
               </div>
             ))}
             {sourceItems.length === 0 && (
-              <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+              <span className="text-text-muted text-sm">
                 Arrastra aquí para devolver
               </span>
             )}
           </div>
         </div>
         <div>
-          <p
-            style={{
-              color: 'var(--text-muted)',
-              marginBottom: 'var(--spacing-sm)',
-              fontSize: '0.9rem',
-            }}
-          >
+          <p className="text-text-muted mb-2 text-sm">
             Ordena el código aquí:
           </p>
           <div
@@ -207,13 +174,7 @@ function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
           </div>
         </div>
       </div>
-      <div
-        style={{
-          marginTop: 'var(--spacing-lg)',
-          display: 'flex',
-          gap: 'var(--spacing-md)',
-        }}
-      >
+      <div className="mt-6 flex gap-4">
         <button
           className="btn btn-primary"
           onClick={handleVerify}
@@ -244,14 +205,7 @@ function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
             </div>
             <div className="feedback-message">{feedback.message}</div>
             {feedback.explanation && (
-              <div
-                className="feedback-explanation"
-                style={{
-                  marginTop: 'var(--spacing-sm)',
-                  fontStyle: 'italic',
-                  opacity: 0.9,
-                }}
-              >
+              <div className="mt-2 italic opacity-90">
                 💡 {feedback.explanation}
               </div>
             )}

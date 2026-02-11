@@ -7,6 +7,9 @@ interface CreateChallengeModalProps {
   onSave?: () => void
 }
 
+const inputClasses =
+  'w-full p-4 bg-bg-primary border-2 border-neon-cyan/30 rounded-xl text-text-main text-base outline-none transition-all duration-200 focus:border-neon-cyan focus:shadow-neon-cyan'
+
 function CreateChallengeModal({ onClose, onSave }: CreateChallengeModalProps) {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
@@ -15,7 +18,7 @@ function CreateChallengeModal({ onClose, onSave }: CreateChallengeModalProps) {
     description: '',
     difficulty: 'easy',
     initialCode: '// Escribe tu código aquí\n',
-    testCases: '[]', // Keeping it as string for textarea input, will parse to JSON
+    testCases: '[]',
   })
 
   const handleChange = (
@@ -34,7 +37,6 @@ function CreateChallengeModal({ onClose, onSave }: CreateChallengeModalProps) {
     setError('')
 
     try {
-      // Validate JSON
       let parsedTestCases: string
       try {
         parsedTestCases = JSON.parse(formData.testCases)
@@ -57,39 +59,19 @@ function CreateChallengeModal({ onClose, onSave }: CreateChallengeModalProps) {
     }
   }
 
-  const inputStyle = {
-    width: '100%',
-    padding: 'var(--spacing-md)',
-    background: 'var(--bg-primary)',
-    border: '2px solid rgba(0, 240, 255, 0.3)',
-    borderRadius: 'var(--radius-md)',
-    color: 'var(--text-primary)',
-    fontSize: '1rem',
-    outline: 'none',
-    transition: 'var(--transition-fast)',
-  }
-
-  const labelStyle = {
-    display: 'block',
-    marginBottom: 'var(--spacing-sm)',
-    color: 'var(--text-secondary)',
-    fontSize: '0.9rem',
-  }
-
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div
-        className="modal"
+        className="modal max-w-[600px] text-left"
         onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: '600px', textAlign: 'left' }}
       >
-        <h2 style={{ marginBottom: 'var(--spacing-xl)', textAlign: 'center' }}>
-          🚀 Crear Reto
-        </h2>
+        <h2 className="mb-8 text-center">🚀 Crear Reto</h2>
 
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: 'var(--spacing-md)' }}>
-            <label style={labelStyle}>Título</label>
+          <div className="mb-4">
+            <label className="block mb-2 text-text-secondary text-sm">
+              Título
+            </label>
             <input
               type="text"
               name="title"
@@ -97,12 +79,14 @@ function CreateChallengeModal({ onClose, onSave }: CreateChallengeModalProps) {
               onChange={handleChange}
               placeholder="Ej: Suma de dos números"
               required
-              style={inputStyle}
+              className={inputClasses}
             />
           </div>
 
-          <div style={{ marginBottom: 'var(--spacing-md)' }}>
-            <label style={labelStyle}>Descripción</label>
+          <div className="mb-4">
+            <label className="block mb-2 text-text-secondary text-sm">
+              Descripción
+            </label>
             <textarea
               name="description"
               value={formData.description}
@@ -110,17 +94,19 @@ function CreateChallengeModal({ onClose, onSave }: CreateChallengeModalProps) {
               placeholder="Explica qué debe hacer la función..."
               rows={3}
               required
-              style={{ ...inputStyle, resize: 'vertical' }}
+              className={`${inputClasses} resize-y`}
             />
           </div>
 
-          <div style={{ marginBottom: 'var(--spacing-md)' }}>
-            <label style={labelStyle}>Dificultad</label>
+          <div className="mb-4">
+            <label className="block mb-2 text-text-secondary text-sm">
+              Dificultad
+            </label>
             <select
               name="difficulty"
               value={formData.difficulty}
               onChange={handleChange}
-              style={inputStyle}
+              className={inputClasses}
             >
               <option value="easy">Fácil</option>
               <option value="medium">Medio</option>
@@ -128,62 +114,54 @@ function CreateChallengeModal({ onClose, onSave }: CreateChallengeModalProps) {
             </select>
           </div>
 
-          <div style={{ marginBottom: 'var(--spacing-md)' }}>
-            <label style={labelStyle}>Código Inicial</label>
+          <div className="mb-4">
+            <label className="block mb-2 text-text-secondary text-sm">
+              Código Inicial
+            </label>
             <textarea
               name="initialCode"
               value={formData.initialCode}
               onChange={handleChange}
               rows={5}
-              style={{ ...inputStyle, fontFamily: 'monospace' }}
+              className={`${inputClasses} font-mono`}
             />
           </div>
 
-          <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-            <label style={labelStyle}>Casos de Prueba (JSON Array)</label>
+          <div className="mb-8">
+            <label className="block mb-2 text-text-secondary text-sm">
+              Casos de Prueba (JSON Array)
+            </label>
             <textarea
               name="testCases"
               value={formData.testCases}
               onChange={handleChange}
               placeholder={'[{"input": [1, 2], "output": 3}]'}
               rows={3}
-              style={{ ...inputStyle, fontFamily: 'monospace' }}
+              className={`${inputClasses} font-mono`}
             />
-            <small style={{ color: 'var(--text-secondary)' }}>
+            <small className="text-text-secondary">
               Ejemplo: {"[{'input': [1, 2], 'output': 3}]"}
             </small>
           </div>
 
           {error && (
-            <div
-              style={{
-                padding: 'var(--spacing-md)',
-                background: 'rgba(255, 45, 146, 0.1)',
-                border: '1px solid var(--neon-pink)',
-                borderRadius: 'var(--radius-md)',
-                color: 'var(--neon-pink)',
-                marginBottom: 'var(--spacing-lg)',
-                fontSize: '0.9rem',
-              }}
-            >
+            <div className="p-4 bg-neon-pink/10 border border-neon-pink rounded-xl text-neon-pink mb-6 text-sm">
               {error}
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: 'var(--spacing-md)' }}>
+          <div className="flex gap-4">
             <button
               type="button"
-              className="btn btn-secondary"
+              className="btn btn-secondary flex-1"
               onClick={onClose}
-              style={{ flex: 1 }}
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="btn btn-primary"
+              className="btn btn-primary flex-1"
               disabled={loading}
-              style={{ flex: 1 }}
             >
               {loading ? '⏳ Creando...' : '✨ Crear Reto'}
             </button>

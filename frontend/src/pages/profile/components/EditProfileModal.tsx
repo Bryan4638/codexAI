@@ -5,8 +5,11 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 interface EditProfileModalProps {
   onClose: () => void
-  onSave?: () => void // Made optional as in usage it might not be passed or handled flexibly
+  onSave?: () => void
 }
+
+const inputClasses =
+  'w-full p-4 bg-bg-primary border-2 border-neon-cyan/30 rounded-xl text-text-main text-base outline-none transition-all duration-200 focus:border-neon-cyan focus:shadow-neon-cyan'
 
 function EditProfileModal({ onClose, onSave }: EditProfileModalProps) {
   const { user } = useAuthStore()
@@ -22,7 +25,6 @@ function EditProfileModal({ onClose, onSave }: EditProfileModalProps) {
   })
 
   useEffect(() => {
-    // Cargar datos actuales del perfil
     if (user) {
       loadProfile()
     }
@@ -33,7 +35,6 @@ function EditProfileModal({ onClose, onSave }: EditProfileModalProps) {
     try {
       const data = await leaderboardApi.getUserProfile(user.id)
       if (data.profile) {
-        // data.profile might contain checks
         setFormData({
           bio: data.profile.bio || '',
           github: data.profile.contact?.github || '',
@@ -77,151 +78,106 @@ function EditProfileModal({ onClose, onSave }: EditProfileModalProps) {
     }
   }
 
-  const inputStyle = {
-    width: '100%',
-    padding: 'var(--spacing-md)',
-    background: 'var(--bg-primary)',
-    border: '2px solid rgba(0, 240, 255, 0.3)',
-    borderRadius: 'var(--radius-md)',
-    color: 'var(--text-primary)',
-    fontSize: '1rem',
-    outline: 'none',
-    transition: 'var(--transition-fast)',
-  }
-
-  const labelStyle = {
-    display: 'block',
-    marginBottom: 'var(--spacing-sm)',
-    color: 'var(--text-secondary)',
-    fontSize: '0.9rem',
-  }
-
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div
-        className="modal"
+        className="modal max-w-lg text-left"
         onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: '500px', textAlign: 'left' }}
       >
-        <h2 style={{ marginBottom: 'var(--spacing-xl)', textAlign: 'center' }}>
-          ✏️ Editar Perfil
-        </h2>
+        <h2 className="mb-8 text-center">✏️ Editar Perfil</h2>
 
         <form onSubmit={handleSubmit}>
           {/* Bio */}
-          <div style={{ marginBottom: 'var(--spacing-lg)' }}>
-            <label style={labelStyle}>Biografía</label>
+          <div className="mb-6">
+            <label className="block mb-2 text-text-secondary text-sm">
+              Biografía
+            </label>
             <textarea
               name="bio"
               value={formData.bio}
               onChange={handleChange}
               placeholder="Cuéntanos sobre ti..."
               rows={3}
-              style={{ ...inputStyle, resize: 'vertical' }}
+              className={`${inputClasses} resize-y`}
             />
           </div>
 
-          {/* Redes Sociales */}
-          <h4
-            style={{
-              marginBottom: 'var(--spacing-md)',
-              color: 'var(--neon-cyan)',
-            }}
-          >
-            🔗 Redes Sociales
-          </h4>
+          {/* Social Links */}
+          <h4 className="mb-4 text-neon-cyan">🔗 Redes Sociales</h4>
 
-          <div style={{ marginBottom: 'var(--spacing-md)' }}>
-            <label style={labelStyle}>🐙 GitHub (usuario)</label>
+          <div className="mb-4">
+            <label className="block mb-2 text-text-secondary text-sm">
+              🐙 GitHub (usuario)
+            </label>
             <input
               type="text"
               name="github"
               value={formData.github}
               onChange={handleChange}
               placeholder="tu-usuario-github"
-              style={inputStyle}
+              className={inputClasses}
             />
           </div>
 
-          <div style={{ marginBottom: 'var(--spacing-md)' }}>
-            <label style={labelStyle}>💼 LinkedIn (usuario)</label>
+          <div className="mb-4">
+            <label className="block mb-2 text-text-secondary text-sm">
+              💼 LinkedIn (usuario)
+            </label>
             <input
               type="text"
               name="linkedin"
               value={formData.linkedin}
               onChange={handleChange}
               placeholder="tu-perfil-linkedin"
-              style={inputStyle}
+              className={inputClasses}
             />
           </div>
 
-          <div style={{ marginBottom: 'var(--spacing-md)' }}>
-            <label style={labelStyle}>𝕏 Twitter (usuario)</label>
+          <div className="mb-4">
+            <label className="block mb-2 text-text-secondary text-sm">
+              𝕏 Twitter (usuario)
+            </label>
             <input
               type="text"
               name="twitter"
               value={formData.twitter}
               onChange={handleChange}
               placeholder="tu_usuario"
-              style={inputStyle}
+              className={inputClasses}
             />
           </div>
 
-          <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-            <label style={labelStyle}>🌐 Sitio Web (URL completa)</label>
+          <div className="mb-8">
+            <label className="block mb-2 text-text-secondary text-sm">
+              🌐 Sitio Web (URL completa)
+            </label>
             <input
               type="url"
               name="website"
               value={formData.website}
               onChange={handleChange}
               placeholder="https://tu-sitio.com"
-              style={inputStyle}
+              className={inputClasses}
             />
           </div>
 
-          {/* Privacidad */}
-          <div
-            style={{
-              padding: 'var(--spacing-lg)',
-              background: 'rgba(139, 92, 246, 0.1)',
-              border: '1px solid rgba(139, 92, 246, 0.3)',
-              borderRadius: 'var(--radius-md)',
-              marginBottom: 'var(--spacing-xl)',
-            }}
-          >
-            <label
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 'var(--spacing-md)',
-                cursor: 'pointer',
-              }}
-            >
+          {/* Privacy */}
+          <div className="p-6 bg-neon-purple/10 border border-neon-purple/30 rounded-xl mb-8">
+            <label className="flex items-center gap-4 cursor-pointer">
               <input
                 type="checkbox"
                 name="isPublic"
                 checked={formData.isPublic}
                 onChange={handleChange}
-                style={{
-                  width: '20px',
-                  height: '20px',
-                  accentColor: 'var(--neon-cyan)',
-                }}
+                className="w-5 h-5 accent-neon-cyan"
               />
               <div>
-                <div
-                  style={{ color: 'var(--text-primary)', fontWeight: '600' }}
-                >
+                <div className="font-semibold">
                   {formData.isPublic
                     ? '🔓 Perfil Público'
                     : '🔒 Perfil Privado'}
                 </div>
-                <div
-                  style={{
-                    fontSize: '0.85rem',
-                    color: 'var(--text-secondary)',
-                  }}
-                >
+                <div className="text-sm text-text-secondary">
                   {formData.isPublic
                     ? 'Otros usuarios pueden ver tu bio y redes sociales'
                     : 'Solo se mostrará tu nombre y medallas'}
@@ -231,35 +187,23 @@ function EditProfileModal({ onClose, onSave }: EditProfileModalProps) {
           </div>
 
           {error && (
-            <div
-              style={{
-                padding: 'var(--spacing-md)',
-                background: 'rgba(255, 45, 146, 0.1)',
-                border: '1px solid var(--neon-pink)',
-                borderRadius: 'var(--radius-md)',
-                color: 'var(--neon-pink)',
-                marginBottom: 'var(--spacing-lg)',
-                fontSize: '0.9rem',
-              }}
-            >
+            <div className="p-4 bg-neon-pink/10 border border-neon-pink rounded-xl text-neon-pink mb-6 text-sm">
               {error}
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: 'var(--spacing-md)' }}>
+          <div className="flex gap-4">
             <button
               type="button"
-              className="btn btn-secondary"
+              className="btn btn-secondary flex-1"
               onClick={onClose}
-              style={{ flex: 1 }}
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="btn btn-primary"
+              className="btn btn-primary flex-1"
               disabled={loading}
-              style={{ flex: 1 }}
             >
               {loading ? '⏳ Guardando...' : '💾 Guardar'}
             </button>

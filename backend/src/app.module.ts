@@ -50,7 +50,7 @@ import { Exercise } from './exercises/entities/exercise.entity';
         Exercise,
       ],
       synchronize: false, // Use migrations instead
-      logging: env.NODE_ENV !== 'production',
+      //logging: env.NODE_ENV !== 'production',
     }),
     ThrottlerModule.forRoot([
       {
