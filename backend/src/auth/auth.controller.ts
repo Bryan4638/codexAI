@@ -68,6 +68,7 @@ export class AuthController {
   @ApiResponse({ status: 302, description: 'Redirige al frontend con tokens' })
   async githubAuthRedirect(@Req() req, @Res() res) {
     const { accessToken, refreshToken } = req.user;
+    console.log(accessToken, refreshToken);
     res.redirect(
       `http://localhost:5173?token=${accessToken}&refreshToken=${refreshToken}`,
     );
