@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDashboardDto } from './dto/create-dashboard.dto';
-import { UpdateDashboardDto } from './dto/update-dashboard.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Exercise } from '../exercises/entities/exercise.entity';
+import { Lesson } from '../exercises/entities/lesson.entity';
+import { Module as ModuleEntity } from '../exercises/entities/module.entity';
 
 @Injectable()
 export class DashboardService {
-  create(createDashboardDto: CreateDashboardDto) {
-    return 'This action adds a new dashboard';
-  }
+  constructor(
+    @InjectRepository(Exercise)
+    private readonly exerciseRepository: Repository<Exercise>,
+    @InjectRepository(Lesson)
+    private readonly lessonRepository: Repository<Lesson>,
+    @InjectRepository(ModuleEntity)
+    private readonly moduleRepository: Repository<ModuleEntity>,
+  ) {}
 
-  findAll() {
-    return `This action returns all dashboard`;
-  }
+  async getData() {
+    const [modulesCount, lessonsCount, exercisesCount] = await Promise.all([
+      this.moduleRepository.count(),
+      this.lessonRepository.count(),
+      this.exerciseRepository.count(),
+    ]);
 
-  findOne(id: number) {
-    return `This action returns a #${id} dashboard`;
-  }
-
-  update(id: number, updateDashboardDto: UpdateDashboardDto) {
-    return `This action updates a #${id} dashboard`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} dashboard`;
+    return {
+      modules: modulesCount,
+      lessons: lessonsCount,
+      exercises: exercisesCount,
+    };
   }
 }

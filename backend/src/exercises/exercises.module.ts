@@ -1,8 +1,11 @@
 import { Module as NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ExercisesController } from './exercises.controller';
-import { ModulesController } from './modules.controller';
-import { LessonsController } from './lessons.controller';
+import { ExercisesController } from './controllers/exercises.controller';
+import { ModulesController } from './controllers/modules.controller';
+import { LessonsController } from './controllers/lessons.controller';
+import { ExercisesService } from './services/exercises.service';
+import { ModulesService } from './services/modules.service';
+import { LessonsService } from './services/lessons.service';
 import { User } from '../auth/entities/user.entity';
 import { UserProgress } from '../auth/entities/user-progress.entity';
 import { UserBadge } from '../auth/entities/user-badge.entity';
@@ -25,6 +28,25 @@ import { GetLessonByIdUseCase } from './use-cases/lessons/get-lesson-by-id.use-c
 import { UpdateLessonUseCase } from './use-cases/lessons/update-lesson.use-case';
 import { DeleteLessonUseCase } from './use-cases/lessons/delete-lesson.use-case';
 
+const useCases = [
+  GetAllExercisesUseCase,
+  GetExerciseByIdUseCase,
+  ValidateExerciseUseCase,
+  CheckAndUnlockBadgesUseCase,
+  // Module Use Cases
+  CreateModuleUseCase,
+  GetAllModulesUseCase,
+  GetModuleByIdUseCase,
+  UpdateModuleUseCase,
+  DeleteModuleUseCase,
+  // Lesson Use Cases
+  CreateLessonUseCase,
+  GetAllLessonsUseCase,
+  GetLessonByIdUseCase,
+  UpdateLessonUseCase,
+  DeleteLessonUseCase,
+];
+
 @NestModule({
   imports: [
     TypeOrmModule.forFeature([
@@ -39,22 +61,11 @@ import { DeleteLessonUseCase } from './use-cases/lessons/delete-lesson.use-case'
   ],
   controllers: [ExercisesController, ModulesController, LessonsController],
   providers: [
-    GetAllExercisesUseCase,
-    GetExerciseByIdUseCase,
-    ValidateExerciseUseCase,
-    CheckAndUnlockBadgesUseCase,
-    // Module Use Cases
-    CreateModuleUseCase,
-    GetAllModulesUseCase,
-    GetModuleByIdUseCase,
-    UpdateModuleUseCase,
-    DeleteModuleUseCase,
-    // Lesson Use Cases
-    CreateLessonUseCase,
-    GetAllLessonsUseCase,
-    GetLessonByIdUseCase,
-    UpdateLessonUseCase,
-    DeleteLessonUseCase,
+    // Services
+    ExercisesService,
+    ModulesService,
+    LessonsService,
+    ...useCases,
   ],
   exports: [CheckAndUnlockBadgesUseCase],
 })
