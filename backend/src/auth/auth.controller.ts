@@ -1,4 +1,12 @@
-import { Controller, Post, Get, Body, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  UseGuards,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { EmailRequestDto } from './dto/email-request.dto';
@@ -21,8 +29,11 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleAuthRedirect(@Req() req) {
-    return req.user;
+  async googleAuthRedirect(@Req() req, @Res() res) {
+    const { accessToken, refreshToken } = req.user;
+    res.redirect(
+      `http://localhost:5173?token=${accessToken}&refreshToken=${refreshToken}`,
+    );
   }
 
   @Get('github')
@@ -33,8 +44,11 @@ export class AuthController {
 
   @Get('github/callback')
   @UseGuards(AuthGuard('github'))
-  async githubAuthRedirect(@Req() req) {
-    return req.user;
+  async githubAuthRedirect(@Req() req, @Res() res) {
+    const { accessToken, refreshToken } = req.user;
+    res.redirect(
+      `http://localhost:5173?token=${accessToken}&refreshToken=${refreshToken}`,
+    );
   }
 
   @Post('email/request')

@@ -9,6 +9,8 @@ import { LeaderboardModule } from './leaderboard/leaderboard.module';
 import { ChallengesModule } from './challenges/challenges.module';
 import { ExecutionModule } from './execution/execution.module';
 import { HealthModule } from './health/health.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+
 import { env } from './config/env';
 
 // Entities
@@ -65,6 +67,7 @@ import { Exercise } from './exercises/entities/exercise.entity';
     ChallengesModule,
     ExecutionModule,
     HealthModule,
+    DashboardModule,
   ],
 })
 export class AppModule {}

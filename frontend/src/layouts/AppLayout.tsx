@@ -3,6 +3,7 @@ import Header from '@/components/nav/Header'
 import { useAuthStore } from '@/store/useAuthStore'
 import { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 function AppLayout() {
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false)
@@ -11,7 +12,46 @@ function AppLayout() {
   const { checkAuth } = useAuthStore()
 
   useEffect(() => {
-    checkAuth()
+    // Check for tokens in URL (OAuth redirect)
+    const params = new URLSearchParams(window.location.search)
+    const token = params.get('token')
+    const refreshToken = params.get('refreshToken')
+
+    if (token) {
+      localStorage.setItem('codex-token', token)
+      if (refreshToken) localStorage.setItem('codex-refresh-token', refreshToken)
+      
+      // Clean URL
+      window.history.replaceState({}, document.title, window.location.pathname)
+      
+      // Force auth check immediately
+      checkAuth()
+
+      // Show success toast
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#0a0a0f',
+        color: '#fff',
+        customClass: {
+          popup: 'border border-neon-green/30 shadow-[0_0_20px_rgba(0,255,100,0.1)]'
+        },
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+
+      Toast.fire({
+        icon: 'success',
+        title: '¡Sesión iniciada con éxito! 🚀'
+      })
+    } else {
+      checkAuth()
+    }
   }, [])
 
   return (

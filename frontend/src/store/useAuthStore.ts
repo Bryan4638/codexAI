@@ -5,37 +5,39 @@ import { create } from 'zustand'
 interface AuthState {
   user: User | null
   loading: boolean
+  otpSent: boolean
+  email: string
   setUser: (user: User | null) => void
-  login: (email: string, password: string) => Promise<AuthResponse>
-  register: (
-    username: string,
-    email: string,
-    password: string
-  ) => Promise<AuthResponse>
+  requestOtp: (email: string) => Promise<void>
+  verifyOtp: (code: string) => Promise<AuthResponse>
   logout: () => void
   updateUser: (updates: Partial<User>) => void
   checkAuth: () => Promise<void>
+  resetAuth: () => void
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   loading: true,
+  otpSent: false,
+  email: '',
+
   setUser: (user) => set({ user }),
 
-  login: async (email, password) => {
+  requestOtp: async (email) => {
     try {
-      const data = await authApi.login(email, password)
-      set({ user: data.user })
-      return data
+      await authApi.requestEmailCode(email)
+      set({ otpSent: true, email })
     } catch (e) {
       throw e
     }
   },
 
-  register: async (username, email, password) => {
+  verifyOtp: async (code) => {
+    const { email } = get()
     try {
-      const data = await authApi.register(username, email, password)
-      set({ user: data.user })
+      const data = await authApi.verifyEmailCode(email, code)
+      set({ user: data.user, otpSent: false, email: '' })
       return data
     } catch (e) {
       throw e
@@ -44,7 +46,11 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   logout: () => {
     authApi.logout()
-    set({ user: null })
+    set({ user: null, otpSent: false, email: '' })
+  },
+
+  resetAuth: () => {
+    set({ otpSent: false, email: '' })
   },
 
   updateUser: (updates) => {
