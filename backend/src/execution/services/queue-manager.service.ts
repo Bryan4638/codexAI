@@ -1,6 +1,7 @@
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
 import Queue from 'bull';
 import { DockerManagerService } from './docker-manager.service';
+import { env } from '../../config/env';
 
 interface ExecutionJob {
   language: 'javascript' | 'python' | 'java' | 'csharp';
@@ -14,7 +15,7 @@ export class QueueManagerService implements OnModuleDestroy {
   private queue: Queue.Queue<ExecutionJob>;
 
   constructor(private readonly dockerManager: DockerManagerService) {
-    const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
+    const redisUrl = env.REDIS_URL;
 
     this.queue = new Queue('execution-queue', redisUrl, {
       defaultJobOptions: {

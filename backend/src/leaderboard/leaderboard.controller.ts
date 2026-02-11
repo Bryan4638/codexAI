@@ -1,6 +1,6 @@
 import { Controller, Get, Put, Body, Param, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
-import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../auth/entities/user.entity';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { GetLeaderboardUseCase } from './use-cases/get-leaderboard.use-case';

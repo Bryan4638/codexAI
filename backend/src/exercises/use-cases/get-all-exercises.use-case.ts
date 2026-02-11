@@ -1,16 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { exercises } from '../data/exercises.data';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Exercise } from '../entities/exercise.entity';
 
 // Safe exercise type without solutions
 export interface SafeExercise {
   id: string;
-  moduleId: number;
-  lessonId: string;
-  type: 'code' | 'quiz' | 'dragDrop' | 'fillBlank';
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  type: string;
+  difficulty: string;
   xpReward: number;
   prompt: string;
   data: Record<string, unknown>;
+  lessonId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface GetAllExercisesResult {
@@ -19,34 +22,43 @@ export interface GetAllExercisesResult {
 
 @Injectable()
 export class GetAllExercisesUseCase {
-  execute(filters?: {
-    moduleId?: number;
+  constructor(
+    @InjectRepository(Exercise)
+    private readonly exerciseRepository: Repository<Exercise>,
+  ) {}
+
+  async execute(filters?: {
     lessonId?: string;
     difficulty?: string;
-  }): GetAllExercisesResult {
-    let filtered = exercises;
+  }): Promise<GetAllExercisesResult> {
+    const query = this.exerciseRepository.createQueryBuilder('exercise');
 
-    if (filters?.moduleId) {
-      filtered = filtered.filter((e) => e.moduleId === filters.moduleId);
-    }
     if (filters?.lessonId) {
-      filtered = filtered.filter((e) => e.lessonId === filters.lessonId);
+      query.andWhere('exercise.lessonId = :lessonId', {
+        lessonId: filters.lessonId,
+      });
     }
     if (filters?.difficulty) {
-      filtered = filtered.filter((e) => e.difficulty === filters.difficulty);
+      query.andWhere('exercise.difficulty = :difficulty', {
+        difficulty: filters.difficulty,
+      });
     }
 
+    const exercises = await query.getMany();
+
     // No enviar las soluciones al cliente
-    const safeExercises: SafeExercise[] = filtered.map(({ data, ...rest }) => ({
-      ...rest,
-      data: {
-        ...data,
-        solutions: undefined,
-        correctAnswer: undefined,
-        correctOrder: undefined,
-        blanks: data.blanks?.map((b) => ({ id: b.id })),
-      },
-    }));
+    const safeExercises: SafeExercise[] = exercises.map(
+      ({ data, ...rest }) => ({
+        ...rest,
+        data: {
+          ...data,
+          solutions: undefined,
+          correctAnswer: undefined,
+          correctOrder: undefined,
+          blanks: (data.blanks as { id: number }[])?.map((b) => ({ id: b.id })),
+        },
+      }),
+    );
 
     return { exercises: safeExercises };
   }

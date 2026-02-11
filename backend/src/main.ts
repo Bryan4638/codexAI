@@ -1,14 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { env } from './config/env';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Global prefix
   app.setGlobalPrefix('api');
 
-  // CORS configuration
   app.enableCors({
     origin: [
       'http://localhost:5173',
@@ -18,7 +17,6 @@ async function bootstrap() {
     credentials: true,
   });
 
-  // Global validation pipe
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -26,7 +24,8 @@ async function bootstrap() {
     }),
   );
 
-  const PORT = process.env.PORT || 3000;
+  const PORT = env.PORT;
+
   await app.listen(PORT);
 
   console.log(`🚀 CODEX API corriendo en http://localhost:${PORT}`);

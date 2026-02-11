@@ -3,10 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../../auth/entities/user.entity';
 import { UserProgress } from '../../auth/entities/user-progress.entity';
+import { Exercise } from '../entities/exercise.entity';
 import { ValidateExerciseDto } from '../dto/validate-exercise.dto';
-import { getExerciseById } from '../data/exercises.data';
 import { CheckAndUnlockBadgesUseCase } from './check-and-unlock-badges.use-case';
-import { Badge, Exercise } from '../../common/types';
+import { Badge, ExerciseData } from '../../common/types';
 
 export interface ValidateExerciseResult {
   correct: boolean;
@@ -25,9 +25,11 @@ const calculateLevel = (xp: number): number => {
 
 // Validar respuesta de ejercicio
 const validateAnswer = (exercise: Exercise, answer: unknown): boolean => {
+  const data = exercise.data as unknown as ExerciseData;
+
   switch (exercise.type) {
     case 'quiz':
-      return answer === exercise.data.correctAnswer;
+      return answer === data.correctAnswer;
 
     case 'code': {
       // Función auxiliar para normalizar código
@@ -52,7 +54,7 @@ const validateAnswer = (exercise: Exercise, answer: unknown): boolean => {
         .trim();
 
       return (
-        exercise.data.solutions?.some((sol: string) => {
+        data.solutions?.some((sol: string) => {
           if (sol.startsWith('regex:')) {
             const pattern = new RegExp(sol.substring(6));
             return pattern.test(regexNormalizedAnswer);
@@ -64,14 +66,14 @@ const validateAnswer = (exercise: Exercise, answer: unknown): boolean => {
 
     case 'dragDrop': {
       if (!Array.isArray(answer)) return false;
-      const correctOrder = exercise.data.correctOrder;
+      const correctOrder = data.correctOrder;
       return JSON.stringify(answer) === JSON.stringify(correctOrder);
     }
 
     case 'fillBlank':
       if (typeof answer !== 'object' || answer === null) return false;
       return (
-        exercise.data.blanks?.every((blank) => {
+        data.blanks?.every((blank) => {
           const userAnswer = String(
             (answer as Record<number, string>)[blank.id] || '',
           )
@@ -86,7 +88,6 @@ const validateAnswer = (exercise: Exercise, answer: unknown): boolean => {
           });
         }) ?? false
       );
-
     default:
       return false;
   }
@@ -99,6 +100,8 @@ export class ValidateExerciseUseCase {
     private readonly userRepository: Repository<User>,
     @InjectRepository(UserProgress)
     private readonly userProgressRepository: Repository<UserProgress>,
+    @InjectRepository(Exercise)
+    private readonly exerciseRepository: Repository<Exercise>,
     private readonly checkAndUnlockBadgesUseCase: CheckAndUnlockBadgesUseCase,
   ) {}
 
@@ -108,19 +111,21 @@ export class ValidateExerciseUseCase {
   ): Promise<ValidateExerciseResult> {
     const { exerciseId, answer } = dto;
 
-    const exercise = getExerciseById(exerciseId);
+    const exercise = await this.exerciseRepository.findOne({
+      where: { id: exerciseId },
+    });
     if (!exercise) {
       throw new NotFoundException('Ejercicio no encontrado');
     }
 
     const isCorrect = validateAnswer(exercise, answer);
+    const data = exercise.data as unknown as ExerciseData;
 
     if (!isCorrect) {
       return {
         correct: false,
-        message:
-          exercise.data.hint || 'Respuesta incorrecta. Intenta de nuevo.',
-        explanation: exercise.data.explanation,
+        message: data.hint || 'Respuesta incorrecta. Intenta de nuevo.',
+        explanation: data.explanation,
       };
     }
 
@@ -176,7 +181,7 @@ export class ValidateExerciseUseCase {
     return {
       correct: true,
       message: '¡Correcto! Excelente trabajo.',
-      explanation: exercise.data.explanation,
+      explanation: data.explanation,
       xpEarned,
       newBadges: newBadges.length > 0 ? newBadges : undefined,
       levelUp,

@@ -3,10 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../../auth/entities/user.entity';
 import { UserProgress } from '../../auth/entities/user-progress.entity';
-import {
-  exercises,
-  getExerciseById,
-} from '../../exercises/data/exercises.data';
+import { exercises, getExerciseById } from '../../scripts/data/exercises.data';
 
 export interface ModuleProgress {
   total: number;

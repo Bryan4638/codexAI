@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 .env
+backend/.env
+backend/dist
+backend/node_modules
+backend/bun.lock
 
 # Editor directories and files
 .vscode/*

@@ -1,34 +1,61 @@
-import { Controller, Post, Get, Body, UseGuards } from '@nestjs/common';
-import { RegisterDto } from './dto/register.dto';
-import { LoginDto } from './dto/login.dto';
-import { RegisterUserUseCase } from './use-cases/register-user.use-case';
-import { LoginUserUseCase } from './use-cases/login-user.use-case';
-import { GetCurrentUserUseCase } from './use-cases/get-current-user.use-case';
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
-import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { Controller, Post, Get, Body, UseGuards, Req } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from './auth.service';
+import { EmailRequestDto } from './dto/email-request.dto';
+import { EmailVerifyDto } from './dto/email-verify.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './entities/user.entity';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly registerUserUseCase: RegisterUserUseCase,
-    private readonly loginUserUseCase: LoginUserUseCase,
-    private readonly getCurrentUserUseCase: GetCurrentUserUseCase,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
-  async register(@Body() dto: RegisterDto) {
-    return this.registerUserUseCase.execute(dto);
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth() {
+    // Initiates Google OAuth
   }
 
-  @Post('login')
-  async login(@Body() dto: LoginDto) {
-    return this.loginUserUseCase.execute(dto);
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthRedirect(@Req() req) {
+    return req.user;
+  }
+
+  @Get('github')
+  @UseGuards(AuthGuard('github'))
+  async githubAuth() {
+    // Initiates GitHub OAuth
+  }
+
+  @Get('github/callback')
+  @UseGuards(AuthGuard('github'))
+  async githubAuthRedirect(@Req() req) {
+    return req.user;
+  }
+
+  @Post('email/request')
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
+  async requestEmailCode(@Body() dto: EmailRequestDto) {
+    return this.authService.requestEmailCode(dto.email);
+  }
+
+  @Post('email/verify')
+  async verifyEmailCode(@Body() dto: EmailVerifyDto) {
+    return this.authService.verifyEmailCode(dto.email, dto.code);
+  }
+
+  @Post('refresh')
+  async refresh(@Body() dto: RefreshTokenDto) {
+    return this.authService.refresh(dto.refreshToken);
   }
 
   @Get('me')
   @UseGuards(JwtAuthGuard)
-  async getMe(@CurrentUser() user: User) {
-    return this.getCurrentUserUseCase.execute(user.id);
+  getMe(@CurrentUser() user: User) {
+    return user;
   }
 }

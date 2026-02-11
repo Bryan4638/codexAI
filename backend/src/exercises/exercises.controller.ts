@@ -7,8 +7,8 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
-import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../auth/entities/user.entity';
 import { ValidateExerciseDto } from './dto/validate-exercise.dto';
 import { GetAllExercisesUseCase } from './use-cases/get-all-exercises.use-case';
@@ -25,12 +25,10 @@ export class ExercisesController {
 
   @Get()
   getAllExercises(
-    @Query('moduleId') moduleId?: string,
     @Query('lessonId') lessonId?: string,
     @Query('difficulty') difficulty?: string,
   ) {
     return this.getAllExercisesUseCase.execute({
-      moduleId: moduleId ? Number(moduleId) : undefined,
       lessonId,
       difficulty,
     });

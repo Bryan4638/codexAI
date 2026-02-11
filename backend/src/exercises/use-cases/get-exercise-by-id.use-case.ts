@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { getExerciseById } from '../data/exercises.data';
-import { Exercise } from '../../common/types';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Exercise } from '../entities/exercise.entity';
 
 export interface GetExerciseByIdResult {
   exercise: Partial<Exercise>;
@@ -8,8 +9,16 @@ export interface GetExerciseByIdResult {
 
 @Injectable()
 export class GetExerciseByIdUseCase {
-  execute(id: string): GetExerciseByIdResult {
-    const exercise = getExerciseById(id);
+  constructor(
+    @InjectRepository(Exercise)
+    private readonly exerciseRepository: Repository<Exercise>,
+  ) {}
+
+  async execute(id: string): Promise<GetExerciseByIdResult> {
+    const exercise = await this.exerciseRepository.findOne({
+      where: { id },
+      relations: ['lesson', 'lesson.module'],
+    });
 
     if (!exercise) {
       throw new NotFoundException('Ejercicio no encontrado');

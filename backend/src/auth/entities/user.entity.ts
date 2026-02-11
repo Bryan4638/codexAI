@@ -3,6 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
 import { UserProgress } from './user-progress.entity';
@@ -21,8 +22,14 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
-  password: string;
+  @Column({ nullable: true })
+  authProvider: 'google' | 'github' | 'email';
+
+  @Column({ nullable: true })
+  providerId: string;
+
+  @Column({ nullable: true })
+  avatar: string;
 
   @Column({ default: 0 })
   xp: number;
@@ -53,6 +60,9 @@ export class User {
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 
   @OneToMany(() => UserProgress, (progress) => progress.user)
   progress: UserProgress[];
