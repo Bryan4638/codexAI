@@ -274,7 +274,7 @@ code {
 
   /* Buttons */
   .btn {
-    @apply font-display relative inline-flex cursor-pointer items-center justify-center gap-1.5 overflow-hidden rounded-xl border-none px-6 py-4 text-sm font-semibold tracking-widest uppercase transition-all duration-300;
+    @apply font-display relative inline-flex cursor-pointer items-center justify-center gap-1.5 overflow-hidden rounded-xl px-6 py-4 text-sm font-semibold tracking-widest uppercase transition-all duration-300;
   }
   .btn::before {
     content: '';
@@ -290,7 +290,7 @@ code {
     @apply left-full;
   }
   .btn-primary {
-    @apply bg-gradient-primary text-bg-primary;
+    @apply bg-gradient-primary text-bg-primary text-lg font-bold;
     box-shadow: var(--shadow-neon-cyan);
   }
   .btn-primary:hover {
@@ -298,7 +298,7 @@ code {
     box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
   }
   .btn-secondary {
-    @apply text-neon-cyan border-neon-cyan border-2 bg-transparent;
+    @apply text-neon-cyan border-neon-cyan border-2 bg-transparent text-lg font-bold;
   }
   .btn-secondary:hover {
     @apply bg-neon-cyan/10;
@@ -379,20 +379,20 @@ code {
 
   /* Exercise Prompt */
   .exercise-prompt {
-    @apply text-xl leading-relaxed mb-6 font-medium;
+    @apply mb-6 text-xl leading-relaxed font-medium;
   }
 
   /* Difficulty & XP Badge (shared by all exercises) */
   .badge-difficulty {
-    @apply px-2 py-0.5 rounded-lg text-xs border;
+    @apply rounded-lg border px-2 py-0.5 text-xs;
   }
   .badge-xp {
-    @apply px-2 py-0.5 rounded-lg text-xs border border-neon-purple bg-neon-purple/20 text-neon-purple;
+    @apply border-neon-purple bg-neon-purple/20 text-neon-purple rounded-lg border px-2 py-0.5 text-xs;
   }
 
   /* Feedback */
   .feedback {
-    @apply mt-6 p-6 rounded-2xl flex items-start gap-4 border animate-slide-up;
+    @apply animate-slide-up mt-6 flex items-start gap-4 rounded-2xl border p-6;
   }
   .feedback.success {
     @apply bg-neon-green/10 border-neon-green/50;
@@ -401,12 +401,16 @@ code {
     @apply bg-neon-pink/10 border-neon-pink/50;
   }
   .feedback-icon {
-    @apply text-2xl font-bold shrink-0;
+    @apply shrink-0 text-2xl font-bold;
   }
-  .feedback.success .feedback-icon { @apply text-neon-green; }
-  .feedback.error .feedback-icon { @apply text-neon-pink; }
+  .feedback.success .feedback-icon {
+    @apply text-neon-green;
+  }
+  .feedback.error .feedback-icon {
+    @apply text-neon-pink;
+  }
   .feedback-title {
-    @apply font-display font-semibold text-lg mb-1;
+    @apply font-display mb-1 text-lg font-semibold;
   }
   .feedback-message {
     @apply text-text-secondary text-sm leading-relaxed;
@@ -414,25 +418,31 @@ code {
 
   /* Code Editor */
   .code-editor {
-    @apply bg-bg-primary rounded-2xl border border-white/8 overflow-hidden;
+    @apply bg-bg-primary overflow-hidden rounded-2xl border border-white/8;
   }
   .code-editor-header {
-    @apply flex items-center gap-3 p-4 bg-white/[0.03] border-b border-white/8;
+    @apply flex items-center gap-3 border-b border-white/8 bg-white/[0.03] p-4;
   }
   .code-editor-dots {
     @apply flex gap-2;
   }
   .code-editor-dot {
-    @apply w-3 h-3 rounded-full;
+    @apply h-3 w-3 rounded-full;
   }
-  .code-editor-dot.red { @apply bg-red-500; }
-  .code-editor-dot.yellow { @apply bg-yellow-500; }
-  .code-editor-dot.green { @apply bg-green-500; }
+  .code-editor-dot.red {
+    @apply bg-red-500;
+  }
+  .code-editor-dot.yellow {
+    @apply bg-yellow-500;
+  }
+  .code-editor-dot.green {
+    @apply bg-green-500;
+  }
   .code-editor-title {
-    @apply font-mono text-sm text-text-muted;
+    @apply text-text-muted font-mono text-sm;
   }
   .code-editor-textarea {
-    @apply w-full min-h-[200px] p-6 bg-transparent font-mono text-sm text-text-main leading-relaxed resize-y outline-none;
+    @apply text-text-main min-h-[200px] w-full resize-y bg-transparent p-6 font-mono text-sm leading-relaxed outline-none;
   }
   .code-editor-textarea::placeholder {
     @apply text-text-muted;
@@ -440,7 +450,7 @@ code {
 
   /* Quiz Options */
   .quiz-option {
-    @apply flex items-center gap-4 p-5 bg-white/[0.02] border-2 border-white/10 rounded-xl cursor-pointer transition-all duration-300;
+    @apply flex cursor-pointer items-center gap-4 rounded-xl border-2 border-white/10 bg-white/[0.02] p-5 transition-all duration-300;
   }
   .quiz-option:hover {
     @apply border-neon-cyan/50 bg-neon-cyan/5;
@@ -457,7 +467,7 @@ code {
     animation: shake 0.5s ease;
   }
   .quiz-option-marker {
-    @apply w-10 h-10 rounded-full bg-white/5 flex items-center justify-center font-display text-sm font-bold shrink-0;
+    @apply font-display flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/5 text-sm font-bold;
   }
   .quiz-option.selected .quiz-option-marker {
     @apply bg-neon-cyan/20 text-neon-cyan;
@@ -472,30 +482,30 @@ code {
   }
   .drag-source,
   .drag-target {
-    @apply min-h-[150px] p-4 rounded-xl border-2 border-dashed border-white/20 flex flex-col gap-2 transition-all duration-300;
+    @apply flex min-h-[150px] flex-col gap-2 rounded-xl border-2 border-dashed border-white/20 p-4 transition-all duration-300;
   }
   .drag-target.drag-over {
     @apply border-neon-cyan/60 bg-neon-cyan/5;
   }
   .drag-item {
-    @apply p-3 bg-bg-card border border-white/10 rounded-lg font-mono text-sm cursor-grab transition-all duration-200 select-none;
+    @apply bg-bg-card cursor-grab rounded-lg border border-white/10 p-3 font-mono text-sm transition-all duration-200 select-none;
   }
   .drag-item:hover {
     @apply border-neon-cyan/50 bg-neon-cyan/5;
   }
   .drag-item:active {
-    @apply cursor-grabbing scale-105;
+    @apply scale-105 cursor-grabbing;
   }
   .drag-target-placeholder {
-    @apply text-text-muted text-sm italic text-center py-8;
+    @apply text-text-muted py-8 text-center text-sm italic;
   }
 
   /* Fill Blank */
   .fill-blank-code {
-    @apply bg-bg-primary p-6 rounded-xl font-mono text-sm leading-loose border border-white/8 whitespace-pre-wrap;
+    @apply bg-bg-primary rounded-xl border border-white/8 p-6 font-mono text-sm leading-loose whitespace-pre-wrap;
   }
   .fill-blank-input {
-    @apply inline-block w-32 mx-1 px-3 py-1 bg-neon-cyan/5 border-b-2 border-neon-cyan/50 text-neon-cyan font-mono text-sm text-center outline-none transition-all duration-300;
+    @apply bg-neon-cyan/5 border-neon-cyan/50 text-neon-cyan mx-1 inline-block w-32 border-b-2 px-3 py-1 text-center font-mono text-sm transition-all duration-300 outline-none;
   }
   .fill-blank-input:focus {
     @apply border-neon-cyan;

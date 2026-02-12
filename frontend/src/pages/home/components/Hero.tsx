@@ -6,10 +6,10 @@ function Hero() {
     <section className="min-h-screen flex items-center justify-center text-center pt-20">
       <div className="animate-slide-up">
         <div className="hero-badge">Plataforma Educativa Interactiva</div>
-        <h1 className="mb-2 [text-shadow:0_0_40px_rgba(0,240,255,0.3)] shadow-aqua/30">
+        <h1 className="mb-2 [text-shadow:0_0_40px_rgba(0,240,255,0.3)] shadow-aqua/30 text-5xl">
           Aprende a Programar desde Cero
         </h1>
-        <p className="text-xl mb-10 max-w-150 mx-auto">
+        <p className="mb-10 max-w-150 mx-auto">
           Domina los fundamentos de la programación con ejercicios interactivos,
           retroalimentación instantánea y un diseño que te mantendrá motivado.
         </p>
