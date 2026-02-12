@@ -19,11 +19,12 @@ function AppLayout() {
 
     if (token) {
       localStorage.setItem('codex-token', token)
-      if (refreshToken) localStorage.setItem('codex-refresh-token', refreshToken)
-      
+      if (refreshToken)
+        localStorage.setItem('codex-refresh-token', refreshToken)
+
       // Clean URL
       window.history.replaceState({}, document.title, window.location.pathname)
-      
+
       // Force auth check immediately
       checkAuth()
 
@@ -37,17 +38,18 @@ function AppLayout() {
         background: '#0a0a0f',
         color: '#fff',
         customClass: {
-          popup: 'border border-neon-green/30 shadow-[0_0_20px_rgba(0,255,100,0.1)]'
+          popup:
+            'border border-neon-green/30 shadow-[0_0_20px_rgba(0,255,100,0.1)]',
         },
         didOpen: (toast) => {
           toast.addEventListener('mouseenter', Swal.stopTimer)
           toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
+        },
       })
 
       Toast.fire({
         icon: 'success',
-        title: '¡Sesión iniciada con éxito! 🚀'
+        title: '¡Sesión iniciada con éxito! 🚀',
       })
     } else {
       checkAuth()
@@ -76,10 +78,9 @@ function AppLayout() {
       </main>
 
       <footer className="py-4 border-t border-white/8 text-center mt-auto">
-        <p className="text-text-muted text-sm">
-          Desarrollado con 💜 por{' '}
-          <span className="text-neon-cyan">CODEX</span> • Aprende a programar
-          de forma interactiva
+        <p className="text-text-muted text-xs">
+          Desarrollado con 💜 por <span className="text-neon-cyan">CODEX</span>{' '}
+          • Aprende a programar de forma interactiva
         </p>
       </footer>
 

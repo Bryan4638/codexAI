@@ -36,8 +36,10 @@ export default function ModulesPage() {
   return (
     <section className="pt-32 max-w-7xl mx-auto px-6">
       <div className="text-center mb-12">
-        <h2>Todos los Módulos</h2>
-        <p className="mt-2">Selecciona un módulo para comenzar a aprender.</p>
+        <h2 className="text-3xl">Todos los Módulos</h2>
+        <p className="mt-2 text-sm">
+          Selecciona un módulo para comenzar a aprender.
+        </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {allModules.map((module: Module) => {

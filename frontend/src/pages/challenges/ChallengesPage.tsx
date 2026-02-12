@@ -87,8 +87,8 @@ function ChallengesPage() {
   return (
     <section className="pt-32 max-w-7xl mx-auto px-6">
       <div className="text-center mb-12">
-        <h2>💻 Retos de la Comunidad</h2>
-        <p className="mt-2">
+        <h2 className="text-3xl">💻 Retos de la Comunidad</h2>
+        <p className="mt-2 text-sm">
           Resuelve desafíos creados por otros estudiantes o sube los tuyos
         </p>
       </div>
@@ -96,9 +96,6 @@ function ChallengesPage() {
       {/* Controls & Filters */}
       <div className="flex justify-between items-center mb-8 flex-wrap gap-4 p-4 bg-bg-card rounded-2xl border border-white/8">
         <div className="flex gap-4 items-center flex-wrap">
-          <span className="text-xs text-text-muted uppercase tracking-wide">
-            🎯 Filtrar:
-          </span>
           <select
             className="filter-select"
             value={filters.difficulty}
@@ -125,7 +122,7 @@ function ChallengesPage() {
         </div>
 
         <button
-          className="btn btn-primary"
+          className="btn btn-primary shadow-none"
           onClick={() => setShowCreateModal(true)}
         >
           ➕ Crear Reto

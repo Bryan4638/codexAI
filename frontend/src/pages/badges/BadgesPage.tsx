@@ -44,12 +44,12 @@ function BadgesPage() {
   return (
     <section className="pt-32 max-w-7xl mx-auto px-6">
       <div className="text-center mb-12">
-        <h2>🏆 Medallas</h2>
-        <p className="mt-2">
+        <h2 className="text-3xl">🏆 Medallas</h2>
+        <p className="mt-2 text-sm">
           Desbloquea medallas completando ejercicios y alcanzando nuevos niveles
         </p>
-        <div className="inline-flex mt-6 px-8 py-4 bg-neon-green/10 border border-neon-green/30 rounded-2xl">
-          <span className="text-neon-green font-display text-xl">
+        <div className="inline-flex mt-6 px-6 py-4 bg-neon-green/10 border border-neon-green/30 rounded-2xl">
+          <span className="text-neon-green font-display">
             {userBadges.unlocked} / {allBadges.length} desbloqueadas
           </span>
         </div>

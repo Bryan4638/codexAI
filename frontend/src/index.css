@@ -290,7 +290,7 @@ code {
     @apply left-full;
   }
   .btn-primary {
-    @apply bg-gradient-primary text-bg-primary text-lg font-bold;
+    @apply bg-gradient-primary text-bg-primary font-bold;
     box-shadow: var(--shadow-neon-cyan);
   }
   .btn-primary:hover {
@@ -298,7 +298,7 @@ code {
     box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
   }
   .btn-secondary {
-    @apply text-neon-cyan border-neon-cyan border-2 bg-transparent text-lg font-bold;
+    @apply text-neon-cyan border-neon-cyan border-2 bg-transparent font-bold;
   }
   .btn-secondary:hover {
     @apply bg-neon-cyan/10;

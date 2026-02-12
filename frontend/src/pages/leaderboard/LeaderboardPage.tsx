@@ -56,8 +56,8 @@ function LeaderboardPage() {
   return (
     <section className="pt-32 max-w-7xl mx-auto px-6">
       <div className="text-center mb-12">
-        <h2>🏆 Tabla de Posiciones</h2>
-        <p className="mt-2">Los mejores estudiantes de CODEX</p>
+        <h2 className="text-3xl">🏆 Tabla de Posiciones</h2>
+        <p className="mt-2 text-sm">Los mejores estudiantes de CODEX</p>
       </div>
 
       {/* Podium - Top 3 */}
@@ -67,7 +67,7 @@ function LeaderboardPage() {
           {top3[1] && (
             <div
               onClick={() => handleUserClick(top3[1].id)}
-              className="glass-card p-8 text-center cursor-pointer order-1 min-w-[180px] scale-95 hover:scale-100 transition-transform duration-300"
+              className="glass-card p-8 text-center cursor-pointer order-1 min-w-45 scale-95 hover:scale-100 transition-transform duration-300"
             >
               <div className="text-4xl mb-4">🥈</div>
               <div className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl bg-gradient-secondary">

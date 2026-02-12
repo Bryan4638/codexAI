@@ -11,7 +11,7 @@ function AuthModal({ onClose }: AuthModalProps) {
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  
+
   const { otpSent, requestOtp, verifyOtp, resetAuth } = useAuthStore()
 
   // Reset auth state when modal opens/closes
@@ -39,7 +39,7 @@ function AuthModal({ onClose }: AuthModalProps) {
     try {
       await verifyOtp(code)
       onClose()
-      
+
       // Show success toast
       const Toast = Swal.mixin({
         toast: true,
@@ -50,17 +50,18 @@ function AuthModal({ onClose }: AuthModalProps) {
         background: '#0a0a0f',
         color: '#fff',
         customClass: {
-          popup: 'border border-neon-green/30 shadow-[0_0_20px_rgba(0,255,100,0.1)]'
+          popup:
+            'border border-neon-green/30 shadow-[0_0_20px_rgba(0,255,100,0.1)]',
         },
         didOpen: (toast) => {
           toast.addEventListener('mouseenter', Swal.stopTimer)
           toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
+        },
       })
 
       Toast.fire({
         icon: 'success',
-        title: '¡Bienvenido de vuelta! 🚀'
+        title: '¡Bienvenido de vuelta! 🚀',
       })
     } catch (err: any) {
       setError(err.message || 'Código inválido')
@@ -75,13 +76,13 @@ function AuthModal({ onClose }: AuthModalProps) {
     setError('')
   }
 
-  const inputClasses =
-    'w-full p-4 bg-white/5 border-2 border-white/10 rounded-xl text-white text-base outline-none focus:border-neon-cyan/50 focus:shadow-[0_0_15px_rgba(0,243,255,0.2)] transition-all duration-300 placeholder:text-white/20'
-
   return (
-    <div className="modal-overlay backdrop-blur-md bg-black/60" onClick={onClose}>
+    <div
+      className="modal-overlay backdrop-blur-md bg-black/60"
+      onClick={onClose}
+    >
       <div
-        className="modal max-w-[420px] bg-[#0a0a0f]/90 border border-white/10 shadow-[0_0_50px_rgba(0,243,255,0.1)] p-8 rounded-3xl relative overflow-hidden"
+        className="modal max-w-105 bg-primary/90 border border-white/10 shadow-[0_0_50px_rgba(0,243,255,0.1)] p-8 rounded-3xl relative overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Decorative background gradients */}
@@ -89,8 +90,8 @@ function AuthModal({ onClose }: AuthModalProps) {
         <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-neon-purple/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10">
-          <h2 className="mb-2 text-2xl font-bold text-center bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
-            {otpSent ? '🔐 Verificar Código' : '👋 ¡Bienvenido!'}
+          <h2 className="mb-2 text-2xl font-bold text-center bg-linear-to-r from-white to-white/70 bg-clip-text text-transparent">
+            {otpSent ? '🔐 Verificar Código' : '¡Bienvenido!'}
           </h2>
           <p className="text-center text-text-secondary text-sm mb-8">
             {otpSent
@@ -100,7 +101,10 @@ function AuthModal({ onClose }: AuthModalProps) {
 
           {!otpSent && (
             <>
-              <form onSubmit={handleRequestOtp} className="text-left space-y-4 mb-6">
+              <form
+                onSubmit={handleRequestOtp}
+                className="text-left space-y-4 mb-6"
+              >
                 <div>
                   <label className="block mb-2 text-text-secondary text-sm font-medium ml-1">
                     Email
@@ -110,7 +114,7 @@ function AuthModal({ onClose }: AuthModalProps) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className={inputClasses}
+                    className="w-full p-2 bg-white/5 border-2 border-white/10 rounded-xl text-white text-base outline-none focus:border-neon-cyan/50 focus:shadow-[0_0_15px_rgba(0,243,255,0.2)] transition-all duration-300 placeholder:text-white/20"
                     placeholder="ejemplo@correo.com"
                     autoFocus
                   />
@@ -124,10 +128,10 @@ function AuthModal({ onClose }: AuthModalProps) {
 
                 <button
                   type="submit"
-                  className="btn btn-primary w-full py-4 text-lg shadow-[0_0_20px_rgba(0,243,255,0.3)] hover:shadow-[0_0_30px_rgba(0,243,255,0.5)]"
+                  className="btn btn-primary w-full py-4 shadow-[0_0_20px_rgba(0,243,255,0.3)] hover:shadow-[0_0_30px_rgba(0,243,255,0.5)]"
                   disabled={loading}
                 >
-                  {loading ? '⏳ Enviando...' : 'Enviar Código ✨'}
+                  {loading ? '⏳ Enviando...' : 'Enviar Código'}
                 </button>
               </form>
 
@@ -144,7 +148,7 @@ function AuthModal({ onClose }: AuthModalProps) {
                   onClick={() =>
                     (window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`)
                   }
-                  className="btn flex-1 bg-white text-black hover:bg-gray-200 border-none flex items-center justify-center gap-2 font-medium transition-transform active:scale-95 py-3"
+                  className="btn flex-1 bg-white text-black hover:bg-gray-200 border-none flex items-center justify-center gap-2 font-medium transition-transform active:scale-95 py-2"
                 >
                   <img
                     src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -157,7 +161,7 @@ function AuthModal({ onClose }: AuthModalProps) {
                   onClick={() =>
                     (window.location.href = `${import.meta.env.VITE_API_URL}/auth/github`)
                   }
-                  className="btn flex-1 bg-[#24292e] text-white hover:bg-[#2f363d] border border-white/10 flex items-center justify-center gap-2 font-medium transition-transform active:scale-95 py-3"
+                  className="btn flex-1 bg-[#24292e] text-white hover:bg-[#2f363d] border border-white/10 flex items-center justify-center gap-2 font-medium transition-transform active:scale-95 py-2"
                 >
                   <img
                     src="https://www.svgrepo.com/show/512317/github-142.svg"
@@ -187,7 +191,7 @@ function AuthModal({ onClose }: AuthModalProps) {
                   onChange={(e) => setCode(e.target.value)}
                   required
                   maxLength={6}
-                  className={`${inputClasses} text-center tracking-[0.8em] font-mono text-2xl py-5 border-neon-cyan/30`}
+                  className="w-full p-2 bg-white/5 border-2 rounded-xl text-white outline-none focus:border-neon-cyan/50 focus:shadow-[0_0_15px_rgba(0,243,255,0.2)] transition-all duration-300 placeholder:text-white/20 text-center tracking-[0.8em] font-mono text-2xl py-5 border-neon-cyan/30"
                   placeholder="000000"
                   autoFocus
                 />

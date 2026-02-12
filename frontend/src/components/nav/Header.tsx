@@ -20,11 +20,11 @@ function Header({ onShowAuth }: HeaderProps) {
   ]
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[1000] bg-bg-primary/80 backdrop-blur-[20px] border-b border-white/8 py-4">
+    <header className="fixed top-0 left-0 right-0 z-1000 bg-bg-primary/80 backdrop-blur-[20px] border-b border-white/8 py-2">
       <div className="flex items-center justify-between max-w-7xl mx-auto px-6">
         <Link
           to="/"
-          className="flex items-center gap-2 font-display text-2xl font-extrabold text-gradient"
+          className="flex items-center gap-2 font-display text-xl font-extrabold text-gradient"
         >
           <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center text-xl text-bg-primary">
             {'</>'}
@@ -36,8 +36,8 @@ function Header({ onShowAuth }: HeaderProps) {
         <nav
           className={`
             flex gap-8
-            max-md:fixed max-md:top-[70px] max-md:left-0 max-md:right-0
-            max-md:bg-bg-primary/[0.98] max-md:backdrop-blur-[20px]
+            max-md:fixed max-md:top-17.5 max-md:left-0 max-md:right-0
+            max-md:bg-bg-primary/98 max-md:backdrop-blur-[20px]
             max-md:flex-col max-md:p-6 max-md:gap-4 max-md:border-b max-md:border-white/8
             ${isMenuOpen ? 'max-md:flex' : 'max-md:hidden'}
           `}
@@ -48,12 +48,12 @@ function Header({ onShowAuth }: HeaderProps) {
               to={link.to}
               onClick={() => setIsMenuOpen(false)}
               className={`
-                font-display text-sm font-medium uppercase tracking-wide
+                font-display text-xs font-medium uppercase tracking-wide
                 relative py-2 cursor-pointer transition-colors duration-300
                 after:content-[''] after:absolute after:bottom-0 after:left-0
                 after:w-0 after:h-0.5 after:bg-gradient-primary after:transition-all after:duration-300
                 hover:text-text-main hover:after:w-full
-                max-md:text-center max-md:p-4 max-md:rounded-xl max-md:bg-white/[0.03]
+                max-md:text-center max-md:p-4 max-md:rounded-xl max-md:bg-white/3
                 ${pathname === link.to ? 'text-neon-cyan after:w-full' : 'text-text-secondary'}
               `}
             >
@@ -87,7 +87,10 @@ function Header({ onShowAuth }: HeaderProps) {
               </span>
             </Link>
           ) : (
-            <button className="btn btn-primary" onClick={onShowAuth}>
+            <button
+              className="btn btn-primary shadow-none py-3 px-4"
+              onClick={onShowAuth}
+            >
               Login
             </button>
           )}
