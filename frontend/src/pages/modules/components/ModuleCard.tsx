@@ -8,16 +8,14 @@ interface ModuleCardProps {
 
 function ModuleCard({ module, progress }: ModuleCardProps) {
   return (
-    <Link to={`/modules/${module.path}`} className="module-card">
+    <Link to={`/modules/${module.icon}`} className="module-card">
       <div className="font-display text-4xl font-black text-white/5 absolute top-4 right-4">
-        0{module.id}
+        0{module.moduleNumber}
       </div>
       <div className="w-16 h-16 bg-neon-cyan/10 rounded-xl flex items-center justify-center text-3xl mb-4 transition-all duration-300 group-hover:scale-110">
         {module.icon}
       </div>
-      <h3 className="font-display text-lg font-semibold mb-2">
-        {module.title}
-      </h3>
+      <h3 className="font-display text-lg font-semibold mb-2">{module.name}</h3>
       <p className="text-sm text-text-secondary mb-4">{module.description}</p>
       <div className="progress-bar">
         <div className="progress-fill" style={{ width: `${progress}%` }} />

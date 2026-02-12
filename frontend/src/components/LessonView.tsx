@@ -190,7 +190,7 @@ function LessonView({
             ← Volver
           </span>
           <span className="text-text-muted">/</span>
-          <span className="text-text-muted">{module?.title}</span>
+          <span className="text-text-muted">{module?.name}</span>
           <span className="text-text-muted">/</span>
           <span>{lessonTitles[lessonId] || lessonId}</span>
         </div>

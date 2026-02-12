@@ -1,17 +1,23 @@
-import { LessonExercise } from '@/types/exercise'
-
 export interface Module {
   id: number
-  title: string
-  path: string
+  moduleNumber: number
+  name: string
   description: string
   icon: string
+  order: number
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
   lessons: Lesson[]
 }
 
 export interface Lesson {
   id: string
   title: string
-  path: string
-  exercises?: LessonExercise[]
+  description: string
+  order: number
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
+  moduleId: string
 }
