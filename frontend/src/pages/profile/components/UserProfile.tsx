@@ -1,5 +1,5 @@
 import EditProfileModal from '@/pages/profile/components/EditProfileModal'
-import { badgeApi } from '@/services/endpoints/badge'
+import { badgeApi } from '@/services/endpoints/badges'
 import { useAuthStore } from '@/store/useAuthStore'
 import { useEffect, useState } from 'react'
 

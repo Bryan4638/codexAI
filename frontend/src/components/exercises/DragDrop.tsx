@@ -1,4 +1,4 @@
-import { exerciseApi } from '@/services/endpoints/exercise'
+import { exerciseApi } from '@/services/endpoints/exercises'
 import { useAuthStore } from '@/store/useAuthStore'
 import type { DragDropExercise } from '@/types/exercise'
 import type { DragDropFeedback } from '@/types/feedback'
@@ -121,9 +121,7 @@ function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
       </div>
       <div className="drag-drop-container">
         <div>
-          <p className="text-text-muted mb-2 text-sm">
-            Bloques disponibles:
-          </p>
+          <p className="text-text-muted mb-2 text-sm">Bloques disponibles:</p>
           <div
             className="drag-source"
             onDragOver={(e) => e.preventDefault()}
@@ -147,9 +145,7 @@ function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
           </div>
         </div>
         <div>
-          <p className="text-text-muted mb-2 text-sm">
-            Ordena el código aquí:
-          </p>
+          <p className="text-text-muted mb-2 text-sm">Ordena el código aquí:</p>
           <div
             className={`drag-target ${draggedItem ? 'drag-over' : ''}`}
             onDragOver={(e) => e.preventDefault()}

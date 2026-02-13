@@ -1,6 +1,6 @@
 import ChallengeDetailModal from '@/pages/challenges/components/ChallengeDetailModal'
 import CreateChallengeModal from '@/pages/challenges/components/CreateChallengeModal'
-import { challengeApi } from '@/services/endpoints/challenge'
+import { challengeApi } from '@/services/endpoints/challenges'
 import { useAuthStore } from '@/store/useAuthStore'
 import { Challenge } from '@/types/challenge'
 import { useEffect, useState } from 'react'

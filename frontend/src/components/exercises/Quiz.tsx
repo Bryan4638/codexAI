@@ -1,4 +1,4 @@
-import { exerciseApi } from '@/services/endpoints/exercise'
+import { exerciseApi } from '@/services/endpoints/exercises'
 import { useAuthStore } from '@/store/useAuthStore'
 import type { QuizExercise } from '@/types/exercise'
 import type { QuizFeedback } from '@/types/feedback'

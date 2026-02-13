@@ -1,4 +1,4 @@
-import { challengeApi } from '@/services/endpoints/challenge'
+import { challengeApi } from '@/services/endpoints/challenges'
 import { CreateChallengeFormData } from '@/types/challenge'
 import { ChangeEvent, FormEvent, useState } from 'react'
 

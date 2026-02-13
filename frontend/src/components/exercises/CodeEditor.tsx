@@ -1,4 +1,4 @@
-import { exerciseApi } from '@/services/endpoints/exercise'
+import { exerciseApi } from '@/services/endpoints/exercises'
 import { useAuthStore } from '@/store/useAuthStore'
 import type { CodeEditorExercise } from '@/types/exercise'
 import type { CodeEditorFeedback } from '@/types/feedback'

@@ -1,4 +1,4 @@
-import { badgeApi } from '@/services/endpoints/badge'
+import { badgeApi } from '@/services/endpoints/badges'
 import { BadgeWithDescription, UserBadgeData } from '@/types/badge'
 import { useEffect, useState } from 'react'
 

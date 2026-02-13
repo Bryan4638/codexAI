@@ -4,6 +4,7 @@ import { ExerciseResponse, LessonExercise } from '@/types/exercise'
 export const exerciseApi = {
   async getAll(params: Record<string, any> = {}): Promise<LessonExercise[]> {
     const data: ExerciseResponse = await api.get('/exercises', { params })
+    console.log('data.exercises valor', data.exercises)
     return data.exercises
   },
 
