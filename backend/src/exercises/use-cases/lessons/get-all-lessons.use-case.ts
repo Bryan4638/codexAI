@@ -18,7 +18,6 @@ export class GetAllLessonsUseCase {
     return this.lessonRepository.find({
       where,
       order: { order: 'ASC' },
-      relations: ['exercises'],
     });
   }
 }

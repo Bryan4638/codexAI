@@ -15,10 +15,10 @@ export class UserProgress {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ name: 'user_id' })
+  @Column({ name: 'user_id', type: 'uuid' })
   userId: string;
 
-  @Column({ name: 'exercise_id' })
+  @Column({ name: 'exercise_id', type: 'uuid' })
   exerciseId: string;
 
   @CreateDateColumn({ name: 'completed_at' })

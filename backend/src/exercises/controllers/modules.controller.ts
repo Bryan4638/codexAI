@@ -7,11 +7,20 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { Module } from '../entities/module.entity';
 import { CreateModuleDto, UpdateModuleDto } from '../dto/module.dto';
 import { ModulesService } from '../services/modules.service';
+import { CurrentUser } from '../../auth/decorators/current-user.decorator';
+import { User } from '../../auth/entities/user.entity';
+import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard';
 
 @ApiTags('Modules')
 @Controller('modules')
@@ -19,13 +28,15 @@ export class ModulesController {
   constructor(private readonly modulesService: ModulesService) {}
 
   @Get()
+  @UseGuards(OptionalJwtAuthGuard)
   @ApiOperation({ summary: 'Obtener todos los módulos' })
   @ApiResponse({
     status: 200,
     description: 'Lista de módulos obtenida exitosamente',
   })
-  async findAll(): Promise<Module[]> {
-    return this.modulesService.findAll();
+  @ApiBearerAuth()
+  async findAll(@CurrentUser() user: User | null): Promise<Module[]> {
+    return this.modulesService.findAll(user?.id);
   }
 
   @Get(':id')

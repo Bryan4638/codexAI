@@ -17,8 +17,8 @@ export class ModulesService {
     private readonly deleteModuleUseCase: DeleteModuleUseCase,
   ) {}
 
-  async findAll(): Promise<Module[]> {
-    return this.getAllModulesUseCase.execute();
+  async findAll(userId?: string): Promise<Module[]> {
+    return this.getAllModulesUseCase.execute(userId);
   }
 
   async findOne(id: string): Promise<Module | null> {

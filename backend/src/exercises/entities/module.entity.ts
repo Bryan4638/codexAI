@@ -39,4 +39,7 @@ export class Module {
 
   @OneToMany('Lesson', 'module')
   lessons: Lesson[];
+
+  totalExercises?: number;
+  completedExercises?: number;
 }
