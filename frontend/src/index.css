@@ -118,10 +118,6 @@ body::after {
   flex-direction: column;
 }
 
-a {
-  text-decoration: none;
-}
-
 p {
   color: var(--color-text-secondary);
   line-height: 1.8;
