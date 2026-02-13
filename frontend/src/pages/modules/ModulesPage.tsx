@@ -1,40 +1,23 @@
+import Error from '@/components/share/Error'
+import Loading from '@/components/share/Loading'
+import { useModules } from '@/hooks/useModules'
 import ModuleCard from '@/pages/modules/components/ModuleCard'
-import { moduleApi } from '@/services/endpoints/module'
 import { Module } from '@/types/module'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function ModulesPage() {
   const [moduleProgress] = useState<
     Record<string, { completed: number; total: number }>
   >({})
-  const [allModules, setAllModules] = useState<any[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
+  const navigate = useNavigate()
+  const { data, isLoading, error } = useModules().getModules
 
-  useEffect(() => {
-    loadModules()
-  }, [])
-
-  const loadModules = async () => {
-    try {
-      const [all] = await Promise.all([moduleApi.getAll()])
-      setAllModules(all || [])
-    } catch (error) {
-      console.error('Error cargando modulos:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  if (loading) {
-    return (
-      <section className="pt-32 max-w-7xl mx-auto px-6 text-center">
-        <p>Cargando modulos...</p>
-      </section>
-    )
-  }
+  if (isLoading) return <Loading section="módulos" />
+  if (error) return <Error section="módulos" />
 
   return (
-    <section className="pt-32 max-w-7xl mx-auto px-6">
+    <section className="py-32 max-w-7xl mx-auto px-6">
       <div className="text-center mb-12">
         <h2 className="text-3xl">Todos los Módulos</h2>
         <p className="mt-2 text-sm">
@@ -42,7 +25,7 @@ export default function ModulesPage() {
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        {allModules.map((module: Module) => {
+        {data?.map((module: Module) => {
           const stats = moduleProgress[module.id] || {
             completed: 0,
             total: 0,
@@ -53,7 +36,12 @@ export default function ModulesPage() {
               : 0
 
           return (
-            <ModuleCard key={module.id} module={module} progress={progress} />
+            <ModuleCard
+              key={module.id}
+              module={module}
+              progress={progress}
+              onClick={() => navigate(`/modules/${module.icon}`)}
+            />
           )
         })}
       </div>
