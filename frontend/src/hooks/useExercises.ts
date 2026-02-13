@@ -11,10 +11,7 @@ export const useExercises = ({ moduleId, lessonId }: UseExercisesParams) => {
 
   const getExercises = useQuery({
     queryKey: ['exercises', moduleId, lessonId],
-    queryFn: async () => {
-      console.log('Ejecutando query...')
-      return getAll({ moduleId, lessonId })
-    },
+    queryFn: async () => getAll({ moduleId, lessonId }),
     enabled: !!moduleId && !!lessonId,
   })
   return { getExercises }
