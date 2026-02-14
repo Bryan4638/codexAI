@@ -1,16 +1,15 @@
 import ChallengeDetailModal from '@/pages/challenges/components/ChallengeDetailModal'
 import CreateChallengeModal from '@/pages/challenges/components/CreateChallengeModal'
-import { challengeApi } from '@/services/endpoints/challenges'
+import Error from '@/components/share/Error'
+import Loading from '@/components/share/Loading'
+import { useChallenges } from '@/hooks/useChallenges'
 import { useAuthStore } from '@/store/useAuthStore'
-import { Challenge } from '@/types/challenge'
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 function ChallengesPage() {
   const { user } = useAuthStore()
-  const [challenges, setChallenges] = useState<Challenge[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false)
-  const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(
+  const [selectedChallengeId, setSelectedChallengeId] = useState<string | null>(
     null
   )
   const [filters, setFilters] = useState({
@@ -18,50 +17,26 @@ function ChallengesPage() {
     sort: 'newest',
   })
 
-  useEffect(() => {
-    loadChallenges()
-  }, [filters])
+  const queryFilters = useMemo(() => filters, [filters])
+  const {
+    challengesQuery,
+    toggleReactionMutation,
+    deleteChallengeMutation,
+  } = useChallenges(queryFilters, user?.id)
 
-  const loadChallenges = async () => {
-    setLoading(true)
-    try {
-      const data = await challengeApi.getAll(filters)
-      setChallenges(data || [])
-    } catch (error) {
-      console.error('Error cargando retos:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const challenges = challengesQuery.data ?? []
+  const selectedChallenge = selectedChallengeId
+    ? challenges.find((challenge) => challenge.id === selectedChallengeId) ??
+      null
+    : null
 
   const handleCreateSuccess = () => {
-    loadChallenges()
+    challengesQuery.refetch()
   }
 
   const handleReaction = async (id: string) => {
     try {
-      const data = await challengeApi.toggleReaction(id)
-      setChallenges((prev) =>
-        prev.map((c) => {
-          if (c.id !== id) return c
-          const isLiked = data.liked
-          const reactions = c.reactions || []
-          const newReactions = isLiked
-            ? [...reactions, { userId: user?.id || 'temp' }]
-            : reactions.filter((r) => r.userId !== user?.id)
-
-          return {
-            ...c,
-            reactions: newReactions,
-            _count: {
-              ...c._count,
-              reactions: isLiked
-                ? (c._count?.reactions || 0) + 1
-                : (c._count?.reactions || 1) - 1,
-            },
-          }
-        })
-      )
+      await toggleReactionMutation.mutateAsync(id)
     } catch (error) {
       console.error('Error reaccionando:', error)
     }
@@ -71,8 +46,7 @@ function ChallengesPage() {
     if (!window.confirm('¿Estás seguro de que quieres eliminar este reto?'))
       return
     try {
-      await challengeApi.delete(id)
-      setChallenges((prev) => prev.filter((c) => c.id !== id))
+      await deleteChallengeMutation.mutateAsync(id)
     } catch (error) {
       console.error('Error eliminando:', error)
     }
@@ -130,8 +104,10 @@ function ChallengesPage() {
       </div>
 
       {/* Challenge List */}
-      {loading ? (
-        <p className="text-center">Cargando retos...</p>
+      {challengesQuery.isLoading ? (
+        <Loading section="retos" />
+      ) : challengesQuery.error ? (
+        <Error section="retos" />
       ) : challenges.length === 0 ? (
         <p className="text-center text-text-muted">
           No hay retos aún. ¡Sé el primero en crear uno!
@@ -142,7 +118,7 @@ function ChallengesPage() {
             <div
               key={challenge.id}
               className="glass-card flex flex-col cursor-pointer"
-              onClick={() => setSelectedChallenge(challenge)}
+              onClick={() => setSelectedChallengeId(challenge.id)}
             >
               <div className="flex justify-between items-start mb-2">
                 <span
@@ -212,16 +188,7 @@ function ChallengesPage() {
       {selectedChallenge && (
         <ChallengeDetailModal
           challenge={selectedChallenge}
-          onClose={() => setSelectedChallenge(null)}
-          onReaction={(id: string) => {
-            handleReaction(id)
-            const updated = challenges.find((c) => c.id === id)
-            if (updated) setSelectedChallenge(updated)
-          }}
-          onDelete={(id: string) => {
-            handleDelete(id)
-            setSelectedChallenge(null)
-          }}
+          onClose={() => setSelectedChallengeId(null)}
         />
       )}
     </section>

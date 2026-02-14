@@ -1,4 +1,4 @@
-import { challengeApi } from '@/services/endpoints/challenges'
+import { useChallenges } from '@/hooks/useChallenges'
 import { CreateChallengeFormData } from '@/types/challenge'
 import { ChangeEvent, FormEvent, useState } from 'react'
 
@@ -11,6 +11,7 @@ const inputClasses =
   'w-full p-4 bg-bg-primary border-2 border-neon-cyan/30 rounded-xl text-text-main text-base outline-none transition-all duration-200 focus:border-neon-cyan focus:shadow-neon-cyan'
 
 function CreateChallengeModal({ onClose, onSave }: CreateChallengeModalProps) {
+  const { createChallengeMutation } = useChallenges()
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
   const [formData, setFormData] = useState<CreateChallengeFormData>({
@@ -46,7 +47,7 @@ function CreateChallengeModal({ onClose, onSave }: CreateChallengeModalProps) {
         throw new Error('Los casos de prueba deben ser un JSON válido (Array)')
       }
 
-      await challengeApi.create({
+      await createChallengeMutation.mutateAsync({
         ...formData,
         testCases: parsedTestCases,
       })

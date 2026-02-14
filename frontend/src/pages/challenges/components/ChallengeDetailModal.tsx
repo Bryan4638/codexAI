@@ -1,20 +1,18 @@
+import { useChallenges } from '@/hooks/useChallenges'
 import { useAuthStore } from '@/store/useAuthStore'
 import { Challenge } from '@/types/challenge'
 
 interface ChallengeDetailModalProps {
   challenge: Challenge
   onClose: () => void
-  onReaction?: (id: string) => void
-  onDelete?: (id: string) => void
 }
 
-function ChallengeDetailModal({
-  challenge,
-  onClose,
-  onReaction,
-  onDelete,
-}: ChallengeDetailModalProps) {
+function ChallengeDetailModal({ challenge, onClose }: ChallengeDetailModalProps) {
   const { user } = useAuthStore()
+  const { toggleReactionMutation, deleteChallengeMutation } = useChallenges(
+    undefined,
+    user?.id
+  )
 
   const difficultyStyles: Record<string, string> = {
     easy: 'text-neon-green border-neon-green bg-neon-green/10',
@@ -30,8 +28,11 @@ function ChallengeDetailModal({
 
   const handleDelete = () => {
     if (window.confirm('¿Estás seguro de que quieres eliminar este reto?')) {
-      if (onDelete) onDelete(challenge.id)
-      onClose()
+      deleteChallengeMutation.mutate(challenge.id, {
+        onSuccess: () => {
+          onClose()
+        },
+      })
     }
   }
 
@@ -141,7 +142,7 @@ function ChallengeDetailModal({
         {/* Footer Actions */}
         <div className="flex justify-between items-center pt-6 border-t border-white/8">
           <button
-            onClick={() => onReaction?.(challenge.id)}
+            onClick={() => toggleReactionMutation.mutate(challenge.id)}
             className={`bg-transparent border-none cursor-pointer flex items-center gap-2 text-lg px-4 py-2 rounded-xl transition-all duration-200 hover:scale-105 ${
               isLiked ? 'text-neon-pink' : 'text-text-muted'
             }`}
