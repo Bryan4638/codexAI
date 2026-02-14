@@ -10,6 +10,7 @@ import { useAuthStore } from '@/store/useAuthStore'
 import { Badge } from '@/types/badge'
 import { LessonExercise } from '@/types/exercise'
 import { Module } from '@/types/module'
+import { IconAlertTriangle } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
 
 interface ExerciseViewProps {
@@ -189,8 +190,9 @@ export default function ExerciseView({
           <h1 className="mb-6 text-3xl">Lección</h1>
 
           {!user && (
-            <div className="p-4 bg-neon-orange/10 border border-neon-orange rounded-xl mb-6 text-neon-orange">
-              ⚠️ Inicia sesión para guardar tu progreso y ganar XP
+            <div className="p-4 bg-neon-orange/10 border border-neon-orange rounded-xl mb-6 text-neon-orange flex gap-4">
+              <IconAlertTriangle /> Inicia sesión para guardar tu progreso y
+              ganar XP
             </div>
           )}
 

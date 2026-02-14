@@ -1,4 +1,5 @@
 import { Module } from '@/types/module'
+import { IconBook, IconBook2 } from '@tabler/icons-react'
 
 interface ModuleCardProps {
   module: Module
@@ -33,7 +34,7 @@ export default function ModuleCard({
         </div>
       </main>
       <footer className="flex items-center gap-2 mt-4 text-xs text-text-muted absolute bottom-4 right-4">
-        <span>📚</span>
+        <IconBook2 />
         <span>{module.lessons.length} lecciones</span>
         <span className="ml-auto text-neon-cyan">{progress}% completado</span>
       </footer>
