@@ -1,4 +1,5 @@
 import { UserProfileData } from '@/types/profile'
+import { IconLockFilled, IconMedal, IconUserFilled } from '@tabler/icons-react'
 
 interface Props {
   users: UserProfileData[]
@@ -41,19 +42,21 @@ export default function LeaderboardTable({ users, onUserClick }: Props) {
                         className="w-full h-full rounded-full object-cover"
                       />
                     ) : (
-                      '👤'
+                      <IconUserFilled size={20} />
                     )}
                   </div>
                   <span>{user.username}</span>
                   {!user.isPublic && (
-                    <span className="text-[0.7rem] text-text-muted">🔒</span>
+                    <IconLockFilled size={16} color="#ffffff66" />
                   )}
                 </div>
               </td>
 
               <td className="p-4 text-center text-neon-purple">{user.level}</td>
 
-              <td className="p-4 text-center">{user.badgeCount} 🏅</td>
+              <td className="p-4 text-center flex items-center justify-center gap-2">
+                <IconMedal size={18} color="gold" /> {user.badgeCount}
+              </td>
 
               <td className="p-4 text-center text-neon-cyan font-mono">
                 {user.xp}

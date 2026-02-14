@@ -1,4 +1,5 @@
 import { useAuthStore } from '@/store/useAuthStore'
+import { IconUserFilled } from '@tabler/icons-react'
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -76,7 +77,7 @@ function Header({ onShowAuth }: HeaderProps) {
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
-                  '👤'
+                  <IconUserFilled size={20} />
                 )}
               </span>
               <span className="hidden md:flex items-center gap-2">
@@ -91,7 +92,7 @@ function Header({ onShowAuth }: HeaderProps) {
               className="btn btn-primary shadow-none py-3 px-4"
               onClick={onShowAuth}
             >
-              Login
+              Iniciar Sesión
             </button>
           )}
 

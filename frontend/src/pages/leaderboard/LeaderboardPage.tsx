@@ -1,6 +1,7 @@
 import Error from '@/components/share/Error'
 import Loading from '@/components/share/Loading'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
+import { IconTrophy } from '@tabler/icons-react'
 import { useState } from 'react'
 import LeaderboardPodium from './components/LeaderboardPodium'
 import LeaderboardTable from './components/LeaderboardTable'
@@ -25,8 +26,10 @@ export default function LeaderboardPage() {
 
   return (
     <section className="pt-32 max-w-7xl mx-auto px-6">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl">🏆 Tabla de Posiciones</h2>
+      <div className="flex flex-col items-center justify-center mb-12">
+        <h2 className="text-3xl flex items-center gap-2">
+          <IconTrophy size={50} /> Tabla de Posiciones
+        </h2>
         <p className="mt-2 text-sm">Los mejores estudiantes de CODEX</p>
       </div>
 

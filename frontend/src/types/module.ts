@@ -8,6 +8,8 @@ export interface Module {
   isActive: boolean
   createdAt: string
   updatedAt: string
+  totalExercises: number
+  completedExercises: number
   lessons: Lesson[]
 }
 
