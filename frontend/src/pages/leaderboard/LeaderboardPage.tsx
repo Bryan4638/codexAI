@@ -1,57 +1,31 @@
-import { leaderboardApi } from '@/services/endpoints/leaderboard'
-import { UserProfileData } from '@/types/profile'
-import { useEffect, useState } from 'react'
+import Error from '@/components/share/Error'
+import Loading from '@/components/share/Loading'
+import { useLeaderboard } from '@/hooks/useLeaderboard'
+import { useState } from 'react'
 
 function LeaderboardPage() {
-  const [leaderboard, setLeaderboard] = useState<UserProfileData[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
-  const [profileLoading, setProfileLoading] = useState<boolean>(false)
-  const [userProfile, setUserProfile] = useState<UserProfileData | null>(null)
+  const { leaderboardQuery, userProfileQuery } = useLeaderboard(
+    selectedUser ?? ''
+  )
+  const leaderboard = leaderboardQuery.data?.leaderboard ?? []
+  const userProfile = userProfileQuery.data?.profile ?? null
 
-  useEffect(() => {
-    loadLeaderboard()
-  }, [])
-
-  const loadLeaderboard = async () => {
-    try {
-      const data = await leaderboardApi.getLeaderboard()
-      setLeaderboard(data.leaderboard || [])
-    } catch (error) {
-      console.error('Error cargando leaderboard:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleUserClick = async (userId: string) => {
+  const handleUserClick = (userId: string) => {
     setSelectedUser(userId)
-    setProfileLoading(true)
-    try {
-      const data = await leaderboardApi.getUserProfile(userId)
-      setUserProfile(data.profile)
-    } catch (error) {
-      console.error('Error cargando perfil:', error)
-    } finally {
-      setProfileLoading(false)
-    }
   }
 
   const closeProfile = () => {
     setSelectedUser(null)
-    setUserProfile(null)
   }
 
   const top3 = leaderboard.slice(0, 3)
   const rest = leaderboard.slice(3)
 
-  if (loading) {
-    return (
-      <section className="pt-32 max-w-7xl mx-auto px-6 text-center">
-        <p>Cargando ranking...</p>
-      </section>
-    )
-  }
+  if (leaderboardQuery.isLoading)
+    return <Loading section="ranking" />
+  if (leaderboardQuery.error)
+    return <Error section="ranking" />
 
   return (
     <section className="pt-32 max-w-7xl mx-auto px-6">
@@ -222,7 +196,7 @@ function LeaderboardPage() {
             className="modal max-w-lg text-left"
             onClick={(e) => e.stopPropagation()}
           >
-            {profileLoading ? (
+            {userProfileQuery.isLoading ? (
               <p className="text-center">Cargando perfil...</p>
             ) : userProfile ? (
               <>
