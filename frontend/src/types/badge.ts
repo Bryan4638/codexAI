@@ -14,10 +14,16 @@ export interface Requirement {
   value: number
 }
 
-export interface UserBadgeData {
-  badges: Badge[]
-  unlocked: number // Assuming unlocked is a count?
+export interface UnlockedDate {
+  unlocked_at: string
 }
+
+export interface UserBadgeData {
+  badges: UnlockedDate[]
+  total: number
+  unlocked: number
+}
+
 export interface BadgeResponse {
   badges: BadgeWithDescription[]
 }
