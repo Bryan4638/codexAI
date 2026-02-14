@@ -29,15 +29,27 @@ export class GetLeaderboardUseCase {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async execute(): Promise<GetLeaderboardResult> {
-    const users = await this.userRepository.find({
+  async execute(
+    filters?: {
+      page?: number;
+      limit?: number;
+    },
+    userId?: string,
+  ): Promise<GetLeaderboardResult> {
+    const page = filters?.page || 1;
+    const limit = filters?.limit || 20;
+    const skip = (page - 1) * limit;
+
+    const [users, totalUsers] = await this.userRepository.findAndCount({
       select: ['id', 'username', 'xp', 'level', 'isPublic', 'avatarUrl', 'bio'],
       relations: ['badges'],
       order: { level: 'DESC', xp: 'DESC' },
+      take: limit,
+      skip: skip,
     });
 
-    // Calcular ranking con medallas
-    const leaderboard: LeaderboardEntry[] = users.map((user, index) => {
+    // Helper to map user entity to LeaderboardEntry
+    const mapUserToEntry = (user: User, rank: number): LeaderboardEntry => {
       const userBadges = user.badges
         .map((ub) => {
           const badge = badges.find((b) => b.id === ub.badgeId);
@@ -46,7 +58,7 @@ export class GetLeaderboardUseCase {
         .filter((b): b is { icon: string; name: string } => b !== null);
 
       return {
-        rank: index + 1,
+        rank,
         id: user.id,
         username: user.username,
         xp: user.xp,
@@ -57,22 +69,45 @@ export class GetLeaderboardUseCase {
         badgeCount: userBadges.length,
         topBadge: userBadges[0] || null,
       };
-    });
+    };
 
-    // Ordenar por cantidad de medallas primero, luego por XP
-    leaderboard.sort((a, b) => {
-      if (b.badgeCount !== a.badgeCount) return b.badgeCount - a.badgeCount;
-      return b.xp - a.xp;
-    });
+    // Calcular ranking con medallas
+    const leaderboard: LeaderboardEntry[] = users.map((user, index) =>
+      mapUserToEntry(user, skip + index + 1),
+    );
 
-    // Reasignar ranks después de ordenar
-    leaderboard.forEach((user, index) => {
-      user.rank = index + 1;
-    });
+    let userEntry: LeaderboardEntry | null = null;
+
+    if (userId) {
+      // Check if user is already in the fetched page
+      const userInPage = leaderboard.find((u) => u.id === userId);
+      if (userInPage) {
+        userEntry = userInPage;
+      } else {
+        // If not in page, fetch user details
+        const user = await this.userRepository.findOne({
+          where: { id: userId },
+          relations: ['badges'],
+        });
+
+        if (user) {
+          const count = await this.userRepository
+            .createQueryBuilder('user')
+            .where('user.level > :level', { level: user.level })
+            .orWhere('user.level = :level AND user.xp > :xp', {
+              level: user.level,
+              xp: user.xp,
+            })
+            .getCount();
+
+          userEntry = mapUserToEntry(user, count + 1);
+        }
+      }
+    }
 
     return {
-      leaderboard,
-      totalUsers: leaderboard.length,
+      leaderboard: userEntry ? [...leaderboard, userEntry] : leaderboard,
+      totalUsers,
     };
   }
 }

@@ -1,4 +1,12 @@
-import { Controller, Get, Put, Body, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Put,
+  Body,
+  Param,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -6,9 +14,11 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../auth/entities/user.entity';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { GetLeaderboardDto } from './dto/get-leaderboard.dto';
 import { LeaderboardService } from './leaderboard.service';
 
 @ApiTags('Leaderboard')
@@ -17,13 +27,17 @@ export class LeaderboardController {
   constructor(private readonly leaderboardService: LeaderboardService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Obtener tabla de clasificación' })
+  @UseGuards(OptionalJwtAuthGuard)
+  @ApiOperation({ summary: 'Obtener tabla de clasificación con paginación' })
   @ApiResponse({
     status: 200,
     description: 'Tabla de clasificación obtenida exitosamente',
   })
-  getLeaderboard() {
-    return this.leaderboardService.getLeaderboard();
+  getLeaderboard(
+    @Query() query: GetLeaderboardDto,
+    @CurrentUser() user?: User,
+  ) {
+    return this.leaderboardService.getLeaderboard(query, user?.id);
   }
 
   @Get('profile/:userId')

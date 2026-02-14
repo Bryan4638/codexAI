@@ -3,7 +3,8 @@ import { Challenge, CreateChallengeFormData } from '@/types/challenge'
 
 export const challengeApi = {
   async getAll(params: Record<string, any> = {}): Promise<Challenge[]> {
-    return (await api.get('/challenges', { params })) as Challenge[]
+    const res = await api.get('/challenges', { params })
+    return res.data as Challenge[]
   },
 
   async create(challenge: CreateChallengeFormData): Promise<Challenge> {

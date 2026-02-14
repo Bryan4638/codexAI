@@ -12,8 +12,8 @@ export class LeaderboardService {
     private readonly updateProfileUseCase: UpdateProfileUseCase,
   ) {}
 
-  async getLeaderboard() {
-    return this.getLeaderboardUseCase.execute();
+  async getLeaderboard(query?: any, userId?: string) {
+    return this.getLeaderboardUseCase.execute(query, userId);
   }
 
   async getUserProfile(userId: string) {
