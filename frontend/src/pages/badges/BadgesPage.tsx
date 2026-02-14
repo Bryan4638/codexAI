@@ -3,6 +3,8 @@ import Loading from '@/components/share/Loading'
 import LoginRequired from '@/components/share/LoginRequired'
 import { useBadges } from '@/hooks/useBadges'
 import { BadgeWithDescription } from '@/types/badge'
+import { IconMedal } from '@tabler/icons-react'
+import BadgeCard from './components/BadgeCard'
 
 function BadgesPage() {
   const { getAllUserBadges, getBadges } = useBadges()
@@ -28,9 +30,12 @@ function BadgesPage() {
   }
 
   return (
-    <section className="pt-32 max-w-7xl mx-auto px-6">
-      <header className="text-center mb-12">
-        <h2 className="text-3xl">🏆 Medallas</h2>
+    <section className="py-28 max-w-7xl mx-auto px-6">
+      <header className="flex flex-col justify-center items-center mb-12">
+        <h2 className="text-3xl flex items-center gap-2">
+          <IconMedal size={50} />
+          Medallas
+        </h2>
         <p className="mt-2 text-sm">
           Desbloquea medallas completando ejercicios y alcanzando nuevos niveles
         </p>
@@ -50,29 +55,7 @@ function BadgesPage() {
           {badgesToRender.map((badge) => {
             const unlocked = isUnlocked(badge.id)
             return (
-              <div
-                key={badge.id}
-                className={`glass-card text-center ${
-                  !unlocked ? 'opacity-50 grayscale' : ''
-                }`}
-              >
-                <div className="text-5xl mb-4">{badge.icon}</div>
-                <h4
-                  className={`font-display mb-2 ${
-                    unlocked ? 'text-neon-cyan' : 'text-text-muted'
-                  }`}
-                >
-                  {badge.name}
-                </h4>
-                <p className="text-sm text-text-secondary">
-                  {badge.description}
-                </p>
-                {unlocked && (
-                  <div className="mt-4 inline-block px-4 py-1 bg-neon-green/20 rounded-lg text-xs text-neon-green">
-                    ✓ Desbloqueada
-                  </div>
-                )}
-              </div>
+              <BadgeCard key={badge.id} badge={badge} unlocked={unlocked} />
             )
           })}
         </main>
