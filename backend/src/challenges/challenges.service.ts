@@ -14,7 +14,7 @@ export class ChallengesService {
     private readonly deleteChallengeUseCase: DeleteChallengeUseCase,
   ) {}
 
-  async getChallenges(filters: { difficulty?: string; sort?: string }) {
+  async getChallenges(filters: any) {
     return this.getChallengesUseCase.execute(filters);
   }
 

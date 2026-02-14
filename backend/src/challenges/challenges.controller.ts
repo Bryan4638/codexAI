@@ -19,6 +19,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../auth/entities/user.entity';
 import { CreateChallengeDto } from './dto/create-challenge.dto';
+import { GetChallengesDto } from './dto/get-challenges.dto';
 import { ChallengesService } from './challenges.service';
 
 @ApiTags('Challenges')
@@ -27,26 +28,13 @@ export class ChallengesController {
   constructor(private readonly challengesService: ChallengesService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todos los desafíos' })
-  @ApiQuery({
-    name: 'difficulty',
-    required: false,
-    description: 'Filtrar por dificultad',
-  })
-  @ApiQuery({
-    name: 'sort',
-    required: false,
-    description: 'Ordenar resultados',
-  })
+  @ApiOperation({ summary: 'Obtener todos los desafíos con paginación' })
   @ApiResponse({
     status: 200,
     description: 'Lista de desafíos obtenida exitosamente',
   })
-  getChallenges(
-    @Query('difficulty') difficulty?: string,
-    @Query('sort') sort?: string,
-  ) {
-    return this.challengesService.getChallenges({ difficulty, sort });
+  getChallenges(@Query() query: GetChallengesDto) {
+    return this.challengesService.getChallenges(query);
   }
 
   @Post()
