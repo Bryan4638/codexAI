@@ -12,7 +12,7 @@ export const badgeApi = {
 
   async getProgress(): Promise<any> {
     const prog = api.get('/badges/progress')
-    // console.log('Progreso', prog)
+    console.log('Progreso', prog)
     return prog
   },
 }

@@ -66,7 +66,7 @@ function CreateChallengeModal({ onClose, onSave }: CreateChallengeModalProps) {
         className="modal max-w-[600px] text-left"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="mb-8 text-center">🚀 Crear Reto</h2>
+        <h2 className="mb-8 text-center">Crear Reto</h2>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

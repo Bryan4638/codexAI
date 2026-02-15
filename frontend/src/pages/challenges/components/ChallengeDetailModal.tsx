@@ -1,13 +1,22 @@
 import { useChallenges } from '@/hooks/useChallenges'
 import { useAuthStore } from '@/store/useAuthStore'
 import { Challenge } from '@/types/challenge'
+import {
+  IconHeart,
+  IconTrash,
+  IconUserFilled,
+  IconX,
+} from '@tabler/icons-react'
 
 interface ChallengeDetailModalProps {
   challenge: Challenge
   onClose: () => void
 }
 
-function ChallengeDetailModal({ challenge, onClose }: ChallengeDetailModalProps) {
+function ChallengeDetailModal({
+  challenge,
+  onClose,
+}: ChallengeDetailModalProps) {
   const { user } = useAuthStore()
   const { toggleReactionMutation, deleteChallengeMutation } = useChallenges(
     undefined,
@@ -35,10 +44,7 @@ function ChallengeDetailModal({ challenge, onClose }: ChallengeDetailModalProps)
       })
     }
   }
-
-  const isLiked = challenge.reactions?.some(
-    (r: any) => r.userId === user?.id
-  )
+  const hasReacted = challenge.reactions?.some((r) => r.userId === user?.id)
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -60,7 +66,7 @@ function ChallengeDetailModal({ challenge, onClose }: ChallengeDetailModalProps)
             className="bg-transparent border-none cursor-pointer text-2xl text-text-muted leading-none p-1 hover:text-text-main transition-colors"
             title="Cerrar"
           >
-            ✕
+            <IconX />
           </button>
         </div>
 
@@ -77,7 +83,7 @@ function ChallengeDetailModal({ challenge, onClose }: ChallengeDetailModalProps)
             />
           ) : (
             <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-xl">
-              👤
+              <IconUserFilled />
             </div>
           )}
           <div>
@@ -90,7 +96,7 @@ function ChallengeDetailModal({ challenge, onClose }: ChallengeDetailModalProps)
 
         {/* Description */}
         <div className="mb-8">
-          <h4 className="text-neon-cyan mb-2 font-display">📝 Descripción</h4>
+          <h4 className="text-neon-cyan mb-2 font-display">Descripción</h4>
           <p className="text-text-secondary leading-relaxed whitespace-pre-wrap">
             {challenge.description}
           </p>
@@ -99,9 +105,7 @@ function ChallengeDetailModal({ challenge, onClose }: ChallengeDetailModalProps)
         {/* Initial Code */}
         {challenge.initialCode && (
           <div className="mb-8">
-            <h4 className="text-neon-cyan mb-2 font-display">
-              💻 Código Inicial
-            </h4>
+            <h4 className="text-neon-cyan mb-2 font-display">Código Inicial</h4>
             <div className="bg-bg-primary border border-neon-cyan/20 rounded-xl p-6 overflow-auto max-h-52">
               <pre className="font-mono text-sm m-0 whitespace-pre-wrap break-words">
                 {challenge.initialCode}
@@ -114,7 +118,7 @@ function ChallengeDetailModal({ challenge, onClose }: ChallengeDetailModalProps)
         {challenge.testCases && challenge.testCases.length > 0 && (
           <div className="mb-8">
             <h4 className="text-neon-cyan mb-2 font-display">
-              🧪 Casos de Prueba
+              Casos de Prueba
             </h4>
             <div className="flex flex-col gap-2">
               {challenge.testCases.map((testCase, index: number) => (
@@ -122,9 +126,7 @@ function ChallengeDetailModal({ challenge, onClose }: ChallengeDetailModalProps)
                   key={index}
                   className="bg-neon-purple/10 border border-neon-purple/30 rounded-lg p-4 font-mono text-sm"
                 >
-                  <div className="text-text-muted mb-1">
-                    Caso {index + 1}:
-                  </div>
+                  <div className="text-text-muted mb-1">Caso {index + 1}:</div>
                   <div className="text-neon-purple">
                     <span className="text-text-secondary">Input:</span>{' '}
                     {JSON.stringify(testCase.input)}
@@ -143,20 +145,19 @@ function ChallengeDetailModal({ challenge, onClose }: ChallengeDetailModalProps)
         <div className="flex justify-between items-center pt-6 border-t border-white/8">
           <button
             onClick={() => toggleReactionMutation.mutate(challenge.id)}
-            className={`bg-transparent border-none cursor-pointer flex items-center gap-2 text-lg px-4 py-2 rounded-xl transition-all duration-200 hover:scale-105 ${
-              isLiked ? 'text-neon-pink' : 'text-text-muted'
-            }`}
+            className={`cursor-pointer flex items-center gap-1 transition-transform duration-200 hover:scale-110 ${hasReacted ? 'text-neon-pink' : 'text-text-muted'}`}
           >
-            ❤️ {challenge._count?.reactions || 0} Me gusta
+            <IconHeart fill={hasReacted ? 'currentColor' : 'none'} />
+            {challenge._count?.reactions || 0}
           </button>
 
           <div className="flex gap-4">
-            {user && user.id === challenge.authorId && (
+            {user && user.username === challenge.author?.username && (
               <button
                 onClick={handleDelete}
                 className="btn btn-secondary !text-neon-pink !border-neon-pink"
               >
-                🗑️ Eliminar
+                <IconTrash size={20} /> Eliminar
               </button>
             )}
             <button onClick={onClose} className="btn btn-primary">

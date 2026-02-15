@@ -2,9 +2,7 @@ import CodeEditor from '@/components/exercises/CodeEditor'
 import DragDrop from '@/components/exercises/DragDrop'
 import FillBlank from '@/components/exercises/FillBlank'
 import Quiz from '@/components/exercises/Quiz'
-import Error from '@/components/share/Error'
-import Loading from '@/components/share/Loading'
-import { useExercises } from '@/hooks//useExercises'
+import { useExercises } from '@/hooks/useExercises'
 import { badgeApi } from '@/services/endpoints/badges'
 import { useAuthStore } from '@/store/useAuthStore'
 import { Badge } from '@/types/badge'
@@ -16,6 +14,7 @@ import { useEffect, useState } from 'react'
 interface ExerciseViewProps {
   module: Module
   lessonId: string
+  lessonTitle: string
   onBack: () => void
   onNewBadges: (badges: Badge[]) => void
 }
@@ -23,6 +22,7 @@ interface ExerciseViewProps {
 export default function ExerciseView({
   module,
   lessonId,
+  lessonTitle,
   onBack,
   onNewBadges,
 }: ExerciseViewProps) {
@@ -32,16 +32,12 @@ export default function ExerciseView({
     data: exercises = [],
     isLoading,
     error,
-  } = useExercises({
-    moduleId: module.icon,
-    lessonId,
-  }).getExercises
+  } = useExercises({ lessonId }).getExercises
 
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState<number>(0)
   const [completedExercises, setCompletedExercises] = useState<number[]>([])
 
   useEffect(() => {
-    console.log('Ejercicios:', exercises)
     const initializeProgress = async () => {
       if (!user || exercises.length === 0) return
 
@@ -83,13 +79,8 @@ export default function ExerciseView({
     initializeProgress()
   }, [exercises, user])
 
-  if (isLoading) {
-    return <div>Cargando ejercicios...</div>
-  }
-
-  if (error) {
-    return <div>Error cargando ejercicios</div>
-  }
+  if (isLoading) return <div>Cargando ejercicios...</div>
+  if (error) return <div>Error cargando ejercicios</div>
 
   if (exercises.length === 0) {
     return <div>No hay ejercicios para esta lección.</div>
@@ -161,14 +152,6 @@ export default function ExerciseView({
     }
   }
 
-  if (isLoading) {
-    return <Loading section="ejercicios" />
-  }
-
-  if (error) {
-    return <Error section="ejercicios" />
-  }
-  const lesson = module?.lessons.find((l) => l.id === lessonId)
   if (exercises.length !== 0) {
     return (
       <div className="py-24 max-w-7xl mx-auto px-6">
@@ -182,9 +165,9 @@ export default function ExerciseView({
               ← Volver
             </span>
             <span className="text-text-muted">/</span>
-            <span className="text-text-muted">{module?.name}</span>
+            <span className="text-text-muted">{module.name}</span>
             <span className="text-text-muted">/</span>
-            <span>{lesson?.title}</span>
+            <span>{lessonTitle}</span>
           </div>
 
           <h1 className="mb-6 text-3xl">Lección</h1>

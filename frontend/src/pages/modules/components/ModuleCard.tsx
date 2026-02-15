@@ -1,5 +1,5 @@
 import { Module } from '@/types/module'
-import { IconBook, IconBook2 } from '@tabler/icons-react'
+import { IconBook2 } from '@tabler/icons-react'
 
 interface ModuleCardProps {
   module: Module

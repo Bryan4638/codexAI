@@ -1,10 +1,14 @@
 import api from '@/services/api'
 import { ExerciseResponse, LessonExercise } from '@/types/exercise'
 
+interface GetExercisesParams {
+  lessonId: string
+  difficulty?: string
+}
+
 export const exerciseApi = {
-  async getAll(params: Record<string, any> = {}): Promise<LessonExercise[]> {
+  async getAll(params: GetExercisesParams): Promise<LessonExercise[]> {
     const data: ExerciseResponse = await api.get('/exercises', { params })
-    console.log('data.exercises valor', data.exercises)
     return data.exercises
   },
 

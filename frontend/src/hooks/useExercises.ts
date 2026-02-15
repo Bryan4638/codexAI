@@ -2,17 +2,17 @@ import { exerciseApi } from '@/services/endpoints/exercises'
 import { useQuery } from '@tanstack/react-query'
 
 interface UseExercisesParams {
-  moduleId: string
   lessonId: string
+  difficulty?: string
 }
 
-export const useExercises = ({ moduleId, lessonId }: UseExercisesParams) => {
+export const useExercises = ({ lessonId, difficulty }: UseExercisesParams) => {
   const { getAll } = exerciseApi
 
   const getExercises = useQuery({
-    queryKey: ['exercises', moduleId, lessonId],
-    queryFn: async () => getAll({ moduleId, lessonId }),
-    enabled: !!moduleId && !!lessonId,
+    queryKey: ['exercises', lessonId, difficulty],
+    queryFn: () => getAll({ lessonId, ...(difficulty ? { difficulty } : {}) }),
+    enabled: Boolean(lessonId),
   })
   return { getExercises }
 }

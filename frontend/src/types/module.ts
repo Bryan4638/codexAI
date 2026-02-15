@@ -1,3 +1,5 @@
+import { Lesson } from '@/types/lesson'
+
 export interface Module {
   id: string
   moduleNumber: number
@@ -11,15 +13,4 @@ export interface Module {
   totalExercises: number
   completedExercises: number
   lessons: Lesson[]
-}
-
-export interface Lesson {
-  id: string
-  title: string
-  description: string
-  order: number
-  isActive: boolean
-  createdAt: string
-  updatedAt: string
-  moduleId: string
 }
