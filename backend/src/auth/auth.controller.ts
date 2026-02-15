@@ -23,6 +23,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './entities/user.entity';
 import { Throttle } from '@nestjs/throttler';
+import { env } from '../config/env';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -47,7 +48,7 @@ export class AuthController {
   async googleAuthRedirect(@Req() req, @Res() res) {
     const { accessToken, refreshToken } = req.user;
     res.redirect(
-      `http://localhost:5173?token=${accessToken}&refreshToken=${refreshToken}`,
+      `${env.FRONT_URL}?token=${accessToken}&refreshToken=${refreshToken}`,
     );
   }
 
@@ -70,7 +71,7 @@ export class AuthController {
     const { accessToken, refreshToken } = req.user;
     console.log(accessToken, refreshToken);
     res.redirect(
-      `http://localhost:5173?token=${accessToken}&refreshToken=${refreshToken}`,
+      `${env.FRONT_URL}?token=${accessToken}&refreshToken=${refreshToken}`,
     );
   }
 

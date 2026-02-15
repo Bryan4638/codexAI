@@ -8,11 +8,8 @@ export interface Challenge {
     username: string
     avatarUrl?: string
   }
-  reactions?: { userId: string }[]
-  _count?: {
-    reactions: number
-    solutions?: number
-  }
+  hasReacted?: boolean
+  reactionsCount?: number
   createdAt?: string
   initialCode: string
   testCases: { input: string; output: string }[]

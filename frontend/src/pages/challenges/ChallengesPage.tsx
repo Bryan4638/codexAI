@@ -120,9 +120,6 @@ function ChallengesPage() {
       ) : (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
           {challenges.map((challenge) => {
-            const hasReacted = challenge.reactions?.some(
-              (r) => r.userId === user?.id
-            )
             return (
               <div
                 key={challenge.id}
@@ -173,10 +170,10 @@ function ChallengesPage() {
                       e.stopPropagation()
                       handleReaction(challenge.id)
                     }}
-                    className={`cursor-pointer flex items-center gap-1 transition-transform duration-200 hover:scale-110 ${hasReacted ? 'text-neon-pink' : 'text-text-muted'}`}
+                    className={`cursor-pointer flex items-center gap-1 transition-transform duration-200 hover:scale-110 ${challenge.hasReacted ? 'text-neon-pink' : 'text-text-muted'}`}
                   >
-                    <IconHeart fill={hasReacted ? 'currentColor' : 'none'} />
-                    {challenge._count?.reactions || 0}
+                    <IconHeart fill={challenge.hasReacted ? 'currentColor' : 'none'} />
+                    {challenge.reactionsCount || 0}
                   </button>
                 </div>
               </div>

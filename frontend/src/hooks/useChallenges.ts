@@ -7,8 +7,12 @@ export const useChallenges = (
   userId?: string
 ) => {
   const queryClient = useQueryClient()
-  const { getAll, create, toggleReaction, delete: deleteChallenge } =
-    challengeApi
+  const {
+    getAll,
+    create,
+    toggleReaction,
+    delete: deleteChallenge,
+  } = challengeApi
 
   const challengesQuery = useQuery({
     queryKey: ['challenges', filters],
@@ -49,26 +53,16 @@ export const useChallenges = (
       updateChallengesCache((items) =>
         items.map((challenge) => {
           if (challenge.id !== id) return challenge
-          const reactions = challenge.reactions ?? []
-          const hasLiked = reactions.some((r) => r.userId === userId)
-          const nextReactions = isLiked
-            ? hasLiked
-              ? reactions
-              : [...reactions, { userId }]
-            : reactions.filter((r) => r.userId !== userId)
 
-          const currentCount = challenge._count?.reactions ?? 0
+          const currentCount = challenge.reactionsCount ?? 0
           const nextCount = isLiked
-            ? currentCount + (hasLiked ? 0 : 1)
-            : Math.max(currentCount - (hasLiked ? 1 : 0), 0)
+            ? currentCount + (challenge.hasReacted ? 0 : 1)
+            : Math.max(currentCount - (challenge.hasReacted ? 1 : 0), 0)
 
           return {
             ...challenge,
-            reactions: nextReactions,
-            _count: {
-              ...challenge._count,
-              reactions: nextCount,
-            },
+            reactionsCount: nextCount,
+            hasReacted: isLiked,
           }
         })
       )

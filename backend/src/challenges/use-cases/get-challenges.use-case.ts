@@ -3,6 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOptionsOrder } from 'typeorm';
 import { Challenge } from '../entities/challenge.entity';
 
+interface GetChallengesUseCaseProps {
+  difficulty?: string;
+  sort?: string;
+  page?: number;
+  limit?: number;
+  currentUserId?: string;
+}
+
 @Injectable()
 export class GetChallengesUseCase {
   constructor(
@@ -10,13 +18,7 @@ export class GetChallengesUseCase {
     private readonly challengeRepository: Repository<Challenge>,
   ) {}
 
-  async execute(filters?: {
-    difficulty?: string;
-    sort?: string;
-    page?: number;
-    limit?: number;
-    currentUserId?: string;
-  }) {
+  async execute(filters?: GetChallengesUseCaseProps) {
     const page = filters?.page || 1;
     const limit = filters?.limit || 20;
     const skip = (page - 1) * limit;

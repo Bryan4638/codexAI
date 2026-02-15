@@ -48,6 +48,9 @@ const envSchema = z.object({
   OTP_EXPIRES_MINUTES: z.preprocess(Number, z.number().default(5)),
   RATE_LIMIT_TTL: z.preprocess(Number, z.number().default(60)),
   RATE_LIMIT_LIMIT: z.preprocess(Number, z.number().default(10)),
+
+  // ─── Front url ───────────────────────────────────────────
+  FRONT_URL: z.string().default('http://localhost:5173'),
 });
 
 const { success, data, error } = envSchema.safeParse(process.env);
