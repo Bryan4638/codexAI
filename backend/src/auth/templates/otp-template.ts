@@ -1,0 +1,182 @@
+export const getOtpEmailTemplate = (code: string): string => {
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verification Code</title>
+  <style>
+    /* Reset */
+    body, table, td, div, p, a {
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+    }
+    table {
+      border-collapse: collapse !important;
+    }
+    
+    /* Variables fallback */
+    .bg-dark { background-color: #0a0a0f; }
+    .text-cyan { color: #00f0ff; }
+    .text-purple { color: #8b5cf6; }
+    .text-white { color: #ffffff; }
+    .text-gray { color: rgba(255, 255, 255, 0.7); }
+    
+    /* Main Styles */
+    body {
+    background-color: white;
+    color: #ffffff;
+    }
+
+    .wrapper {
+    width: 100%;
+    table-layout: fixed;
+    background-color: white;
+    padding-bottom: 40px;
+    }
+
+    .main-table {
+    background-color: white;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 600px;
+    border-spacing: 0;
+    font-family: sans-serif;
+    color: #ffffff;
+    }
+
+    /* Glass Effect Container */
+    .glass-container {
+      background: rgba(20, 20, 30, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 40px;
+      margin: 20px;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+      text-align: center;
+    }
+
+    /* Logo / Header */
+    .header-logo {
+      margin-bottom: 30px;
+    }
+    .logo-text {
+      font-family: 'Verdana', sans-serif; /* Fallback for Orbitron */
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #00f0ff; /* Fallback */
+      display: inline-block;
+    }
+
+    /* Content */
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+    
+    .description {
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 30px;
+    }
+
+    /* OTP Box */
+    .otp-box {
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 0 auto 30px auto;
+      width: fit-content;
+      text-align: center;
+    }
+    
+    .otp-code {
+      font-family: 'Courier New', monospace; /* Fallback for JetBrains Mono */
+      font-size: 32px;
+      font-weight: bold;
+      letter-spacing: 8px;
+      color: #00f0ff;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+      margin: 0;
+    }
+
+    /* Footer */
+    .footer {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 40px;
+      text-align: center;
+    }
+    
+    .footer-link {
+      color: #8b5cf6;
+      text-decoration: none;
+    }
+
+    /* Decorative Elements */
+    .accent-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.5), transparent);
+      margin: 30px 0;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <table class="main-table">
+      <tr>
+        <td align="center">
+          
+          <!-- Glass Card -->
+          <div class="glass-container">
+            <!-- Header -->
+            <div class="header-logo">
+               <span class="logo-text">Learn-Code</span>
+            </div>
+
+            <!-- Body -->
+            <h1 class="title">Verification Code</h1>
+            
+            <p class="description">
+              You requested a secure login for your Learn-Code account.<br>
+              Please use the following verification code to complete your sign-in.
+            </p>
+
+            <!-- OTP -->
+            <div class="otp-box">
+              <p class="otp-code">${code}</p>
+            </div>
+
+            <p class="description" style="font-size: 13px; margin-bottom: 0;">
+              This code will expire in <strong>5 minutes</strong>.<br>
+              If you didn't request this, you can safely ignore this email.
+            </p>
+
+            <hr class="accent-line">
+
+            <!-- Footer -->
+            <div class="footer">
+              <p>&copy; ${new Date().getFullYear()} Learn-Code Platform. All rights reserved.</p>
+              <br>
+              <a href="#" class="footer-link">Help Center</a> &bull; <a href="#" class="footer-link">Privacy Policy</a>
+            </div>
+          </div>
+          
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>
+`;
+};

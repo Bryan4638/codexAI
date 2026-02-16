@@ -51,6 +51,10 @@ const envSchema = z.object({
 
   // ─── Front url ───────────────────────────────────────────
   FRONT_URL: z.string().default('http://localhost:5173'),
+
+  // ─── Resend api key ───────────────────────────────────────────
+  RESEND_API_KEY: z.string().optional(),
+  RESEND_FROM_SEND: z.string().optional(),
 });
 
 const { success, data, error } = envSchema.safeParse(process.env);

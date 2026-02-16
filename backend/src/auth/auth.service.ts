@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -8,6 +12,9 @@ import { EmailCode } from './entities/email-code.entity';
 import * as bcrypt from 'bcrypt';
 import { authenticator } from './utils/otp.config';
 import { randomUUID } from 'crypto';
+import { env } from '../config/env';
+import { Resend } from 'resend';
+import { getOtpEmailTemplate } from './templates/otp-template';
 
 // Native date helpers
 const addMinutesNative = (date: Date, minutes: number) =>
@@ -83,6 +90,22 @@ export class AuthService {
       expiresAt: addMinutesNative(new Date(), 5),
     });
 
+    const resend = new Resend(env.RESEND_API_KEY);
+    const { data, error } = await resend.emails.send({
+      from: `Learncode.bryandev.dev <${env.RESEND_FROM_SEND}>`,
+      to: email,
+      subject: 'Learn-Code - Verification Code',
+      html: getOtpEmailTemplate(code),
+    });
+
+    if (error) {
+      console.error('Error sending email:', error);
+      throw new InternalServerErrorException(
+        'Failed to send verification code',
+      );
+    }
+
+    console.log(data);
     console.log(`[DEV] OTP for ${email}: ${code}`);
     return { message: 'Code sent (check logs for dev)' };
   }
