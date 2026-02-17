@@ -78,7 +78,7 @@ export class GetLeaderboardUseCase {
 
     let userEntry: LeaderboardEntry | null = null;
 
-    if (userId) {
+    if (userId && !leaderboard.some((u) => u.id === userId)) {
       // Check if user is already in the fetched page
       const userInPage = leaderboard.find((u) => u.id === userId);
       if (userInPage) {
