@@ -17,7 +17,7 @@ export default function LessonsPage() {
     isLoading: isLoadingModules,
     error: modulesError,
   } = useModules().getModules
-  const module = modules?.find((item) => item.icon === modulePath)
+  const module = modules?.find((item) => item.id === modulePath)
   const {
     data: lessons = [],
     isLoading: isLoadingLessons,
@@ -59,7 +59,17 @@ export default function LessonsPage() {
       {/* Header */}
       <header className="text-left">
         <div className="flex items-top gap-6 mb-4">
-          <span className="text-xl sm:text-4xl">{module.icon}</span>
+          <div className="w-16 h-16 bg-neon-cyan/10 rounded-xl flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110 overflow-hidden">
+            <img
+              src={`/icons/${encodeURIComponent(module.icon)}.png`}
+              alt={`${module.name} icon`}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none'
+                e.currentTarget.parentElement!.innerHTML = module.icon
+              }}
+            />
+          </div>
           <div>
             <h1 className="mb-1 text-3xl">{module.name}</h1>
             <p className="m-0 text-sm">{module.description}</p>

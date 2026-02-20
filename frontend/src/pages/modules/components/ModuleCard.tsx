@@ -13,23 +13,34 @@ export default function ModuleCard({
   onClick,
 }: ModuleCardProps) {
   return (
-    <article onClick={onClick} className="module-card">
+    <article
+      onClick={onClick}
+      className="module-card flex flex-col h-[250px] p-5"
+    >
       <header>
         <span className="font-display text-4xl font-black text-white/5 absolute top-4 right-4">
           0{module.moduleNumber}
         </span>
-        <div className="w-16 h-16 bg-neon-cyan/10 rounded-xl flex items-center justify-center text-3xl mb-4 transition-all duration-300 group-hover:scale-110">
-          {module.icon}
+        <div className="w-16 h-16 bg-neon-cyan/10 rounded-xl flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110 overflow-hidden">
+          <img
+            src={`/icons/${encodeURIComponent(module.icon)}.png`}
+            alt={`${module.name} icon`}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none'
+              e.currentTarget.parentElement!.innerHTML = module.icon
+            }}
+          />
         </div>
-        <h3 className="font-display text-lg font-semibold mb-2 text-pretty">
+        <h3 className="font-display text-base font-semibold mb-2 text-pretty line-clamp-1 overflow-hidden text-ellipsis">
           {module.name}
         </h3>
       </header>
-      <main className="mb-8 my-auto">
-        <p className="text-sm text-text-secondary mb-4 text-pretty">
+      <main className="mb-8 flex-1 flex flex-col">
+        <p className="text-sm text-text-secondary mb-2 text-pretty line-clamp-2 overflow-hidden text-ellipsis">
           {module.description}
         </p>
-        <div className="progress-bar">
+        <div className="progress-bar mt-auto">
           <div className="progress-fill" style={{ width: `${progress}%` }} />
         </div>
       </main>

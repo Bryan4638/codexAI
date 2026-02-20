@@ -25,7 +25,7 @@ export default function ModulesGrid() {
             : 0
         const handleClick = () => {
           setModuleId(module.id)
-          navigate(`/modules/${module.icon}`)
+          navigate(`/modules/${module.id}`)
         }
         return (
           <ModuleCard

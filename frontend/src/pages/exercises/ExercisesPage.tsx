@@ -15,7 +15,7 @@ export default function ExercisesPage() {
     error: modulesError,
   } = useModules().getModules
 
-  const module = modules?.find((m) => m.icon === modulePath)
+  const module = modules?.find((m) => m.id === modulePath)
   const {
     data: lessons = [],
     isLoading: isLoadingLessons,
@@ -39,7 +39,7 @@ export default function ExercisesPage() {
       lessonId={lesson.id}
       lessonTitle={lesson.title}
       module={module}
-      onBack={() => navigate(`/modules/${module.icon}`)}
+      onBack={() => navigate(`/modules/${module.id}`)}
       onNewBadges={(badges) => {
         console.log('Medallas nuevas:', badges)
       }}
