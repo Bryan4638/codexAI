@@ -179,10 +179,10 @@ function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
             loading
           }
         >
-          {loading ? '⏳ Validando...' : '✓ Verificar Orden'}
+          {loading ? '⏳ VALIDANDO...' : '✓ VERIFICAR ORDEN'}
         </button>
         <button className="btn btn-secondary" onClick={handleReset}>
-          ↺ Reiniciar
+          ↺ REINICIAR
         </button>
       </div>
       {feedback && (

@@ -178,61 +178,52 @@ export default function ExerciseView({
               ganar XP
             </div>
           )}
-
-          {/* Progress */}
-          <div className="glass-card p-6 mb-8">
-            <div className="flex justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <span className="text-text-secondary">
-                  Progreso de la lección
-                </span>
-                <span className="inline-flex items-center gap-2 px-4 py-1 bg-neon-cyan/10 border border-neon-cyan/30 rounded-full text-sm text-neon-cyan font-mono">
-                  {currentExercise?.type}
-                </span>
-              </div>
-              <span className="text-neon-cyan font-mono text-sm">
-                {completedExercises.length} / {exercises.length} ejercicios
-              </span>
-            </div>
-            <div className="progress-bar">
-              <div
-                className="progress-fill"
-                style={{
-                  width: `${
-                    exercises.length
-                      ? (completedExercises.length / exercises.length) * 100
-                      : 0
-                  }%`,
-                }}
-              />
-            </div>
-          </div>
         </div>
 
-        <div className="max-w-3xl mx-auto">
-          {renderExercise()}
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-gradient-card shadow-[0_8px_32px_rgba(0,0,0,0.4)] relative overflow-hidden rounded-2xl border border-white/8 p-10 backdrop-blur-[20px]">
+            <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"></div>
+            {/* Header del Ejercicio */}
+            <div className="flex justify-between items-center mb-8">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-sm font-medium tracking-wider text-white">
+                {currentExercise?.type === 'dragDrop' && '🎯 ORDENAR CÓDIGO'}
+                {currentExercise?.type === 'quiz' && '❓ QUIZ'}
+                {currentExercise?.type === 'code' && '💻 CÓDIGO'}
+                {currentExercise?.type === 'fillBlank' && '📝 COMPLETAR'}
+              </span>
+              <span className="text-text-muted text-sm font-medium">
+                Ejercicio {currentExerciseIndex + 1} de {exercises.length}
+              </span>
+            </div>
 
-          <div className="mt-8 flex justify-between">
-            <button
-              className="btn btn-secondary"
-              onClick={handlePrevExercise}
-              disabled={currentExerciseIndex === 0}
-            >
-              ← Anterior
-            </button>
+            {/* Contenido del Ejercicio */}
+            <div className="mb-8">{renderExercise()}</div>
 
-            <button
-              className="btn btn-secondary"
-              onClick={
-                currentExerciseIndex === exercises.length - 1
-                  ? onBack
-                  : handleNextExercise
-              }
-            >
-              {currentExerciseIndex === exercises.length - 1
-                ? 'Finalizar ✅'
-                : 'Siguiente →'}
-            </button>
+            {/* Navegación Inferior */}
+            <div className="mt-8 flex justify-between items-center pt-8">
+              <button
+                className="btn btn-secondary"
+                onClick={handlePrevExercise}
+                style={{
+                  visibility: currentExerciseIndex === 0 ? 'hidden' : 'visible',
+                }}
+              >
+                ← ANTERIOR
+              </button>
+
+              <button
+                className="btn btn-secondary"
+                onClick={
+                  currentExerciseIndex === exercises.length - 1
+                    ? onBack
+                    : handleNextExercise
+                }
+              >
+                {currentExerciseIndex === exercises.length - 1
+                  ? 'FINALIZAR →'
+                  : 'SIGUIENTE →'}
+              </button>
+            </div>
           </div>
         </div>
       </div>

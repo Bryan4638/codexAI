@@ -446,13 +446,13 @@ code {
 
   /* Quiz Options */
   .quiz-option {
-    @apply flex cursor-pointer items-center gap-4 rounded-xl border-2 border-white/10 bg-white/[0.02] p-5 transition-all duration-300;
+    @apply flex cursor-pointer items-center gap-4 rounded-xl border border-white/5 bg-white/[0.02] p-5 transition-all duration-300;
   }
   .quiz-option:hover {
     @apply border-neon-cyan/50 bg-neon-cyan/5;
   }
   .quiz-option.selected {
-    @apply border-neon-cyan bg-neon-cyan/10;
+    @apply border-neon-cyan bg-neon-cyan/5;
   }
   .quiz-option.correct {
     @apply border-neon-green bg-neon-green/10;
@@ -463,7 +463,7 @@ code {
     animation: shake 0.5s ease;
   }
   .quiz-option-marker {
-    @apply font-display flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/5 text-sm font-bold;
+    @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-white/10 font-mono text-sm font-bold text-white/70;
   }
   .quiz-option.selected .quiz-option-marker {
     @apply bg-neon-cyan/20 text-neon-cyan;
@@ -474,23 +474,29 @@ code {
 
   /* Drag & Drop */
   .drag-drop-container {
-    @apply grid grid-cols-2 gap-6 max-md:grid-cols-1;
+    @apply flex flex-col gap-6;
   }
   .drag-source,
   .drag-target {
-    @apply flex min-h-[150px] flex-col gap-2 rounded-xl border-2 border-dashed border-white/20 p-4 transition-all duration-300;
+    @apply flex min-h-[150px] gap-3 rounded-xl border-2 border-dashed border-white/10 p-4 transition-all duration-300;
+  }
+  .drag-source {
+    @apply flex-wrap content-start items-start;
+  }
+  .drag-target {
+    @apply flex-col items-start;
   }
   .drag-target.drag-over {
-    @apply border-neon-cyan/60 bg-neon-cyan/5;
+    @apply border-neon-cyan/40 bg-neon-cyan/5;
   }
   .drag-item {
-    @apply bg-bg-card cursor-grab rounded-lg border border-white/10 p-3 font-mono text-sm transition-all duration-200 select-none;
+    @apply cursor-grab rounded-lg border-none bg-gradient-to-r from-[#4f46e5] to-[#a855f7] p-3 font-mono text-sm text-white shadow-md transition-all duration-200 select-none;
   }
   .drag-item:hover {
-    @apply border-neon-cyan/50 bg-neon-cyan/5;
+    @apply brightness-110;
   }
   .drag-item:active {
-    @apply scale-105 cursor-grabbing;
+    @apply scale-105 cursor-grabbing opacity-90;
   }
   .drag-target-placeholder {
     @apply text-text-muted py-8 text-center text-sm italic;

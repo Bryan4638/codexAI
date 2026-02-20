@@ -104,7 +104,7 @@ function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
           onClick={handleSubmit}
           disabled={!selected || loading || !user}
         >
-          {loading ? '⏳ Validando...' : 'Verificar Respuesta'}
+          {loading ? '⏳ VALIDANDO...' : 'VERIFICAR RESPUESTA'}
         </button>
       )}
       {submitted && result && (
