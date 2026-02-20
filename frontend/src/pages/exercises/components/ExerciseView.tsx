@@ -154,7 +154,7 @@ export default function ExerciseView({
 
   if (exercises.length !== 0) {
     return (
-      <div className="py-24 max-w-7xl mx-auto px-6">
+      <div className="py-28 max-w-7xl mx-auto px-6">
         <div className="mb-8">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 mb-8">

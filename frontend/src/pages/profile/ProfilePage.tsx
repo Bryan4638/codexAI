@@ -30,6 +30,8 @@ function ProfilePage() {
       ])
       setProgress(progressData)
       setBadges(badgesData)
+      console.log(user)
+      console.log(badges)
     } catch (error) {
       console.error('Error cargando datos:', error)
     } finally {

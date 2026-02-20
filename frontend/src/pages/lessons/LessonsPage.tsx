@@ -35,7 +35,7 @@ export default function LessonsPage() {
 
   if (!module) {
     return (
-      <section className="pt-32 max-w-7xl mx-auto px-6">
+      <section className="py-28 max-w-7xl mx-auto px-6">
         <div className="mb-8">
           <Link to="/modules" className="text-neon-cyan hover:underline">
             ← Volver a módulos
@@ -49,7 +49,7 @@ export default function LessonsPage() {
   }
 
   return (
-    <section className="pt-32 max-w-7xl mx-auto px-6">
+    <section className="py-28 max-w-7xl mx-auto px-6">
       <div className="mb-8">
         <Link to="/modules" className="text-neon-cyan hover:underline">
           ← Volver a módulos
