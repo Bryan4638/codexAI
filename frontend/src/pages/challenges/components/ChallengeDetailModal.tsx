@@ -69,12 +69,12 @@ function ChallengeDetailModal({
           {challenge.author?.avatarUrl ? (
             <img
               src={challenge.author.avatarUrl}
-              alt=""
+              alt={challenge.author.username}
               className="w-10 h-10 rounded-full border-2 border-neon-cyan"
             />
           ) : (
             <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-xl">
-              <IconUserFilled />
+              <IconUserFilled className="text-white/60" />
             </div>
           )}
           <div>
