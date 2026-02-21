@@ -63,7 +63,7 @@ function AppLayout() {
 
       {/* Badge Notification */}
       {newBadgeNotification && (
-        <div className="fixed top-24 right-5 p-6 bg-gradient-card border-2 border-neon-green rounded-2xl z-[1001] animate-slide-up max-w-xs">
+        <div className="fixed top-24 right-5 p-6 bg-gradient-card border-2 border-neon-green rounded-2xl z-1001 animate-slide-up max-w-xs">
           <div className="text-3xl text-center mb-2">
             🎉 {newBadgeNotification.icon}
           </div>
