@@ -29,12 +29,6 @@ function ChallengeDetailModal({
     hard: 'text-neon-pink border-neon-pink bg-neon-pink/10',
   }
 
-  const difficultyLabels: Record<string, string> = {
-    easy: 'Fácil',
-    medium: 'Medio',
-    hard: 'Difícil',
-  }
-
   const handleDelete = () => {
     if (window.confirm('¿Estás seguro de que quieres eliminar este reto?')) {
       deleteChallengeMutation.mutate(challenge.id, {
@@ -44,23 +38,24 @@ function ChallengeDetailModal({
       })
     }
   }
-  const hasReacted = challenge.reactions?.some((r) => r.userId === user?.id)
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <section className="modal-overlay" onClick={onClose}>
       <div
-        className="modal max-w-[700px] text-left max-h-[90vh] overflow-y-auto"
+        className="modal max-w-175 text-left min-h-fit max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex justify-between items-start mb-6">
-          <span
-            className={`text-xs px-3 py-1 rounded-full border ${difficultyStyles[challenge.difficulty] || ''}`}
-          >
-            {difficultyLabels[challenge.difficulty] ||
-              challenge.difficulty.toUpperCase()}
-          </span>
-
+        <header className="flex justify-between items-start">
+          <div className="mb-6 flex items-center justify-start gap-6">
+            {/* Title */}
+            <h2 className="text-3xl">{challenge.title}</h2>
+            <span
+              className={`text-xs px-3 py-1 rounded-full border ${difficultyStyles[challenge.difficulty] || ''}`}
+            >
+              {challenge.difficulty.toUpperCase()}
+            </span>
+          </div>
           <button
             onClick={onClose}
             className="bg-transparent border-none cursor-pointer text-2xl text-text-muted leading-none p-1 hover:text-text-main transition-colors"
@@ -68,13 +63,9 @@ function ChallengeDetailModal({
           >
             <IconX />
           </button>
-        </div>
-
-        {/* Title */}
-        <h2 className="mb-6 text-3xl">{challenge.title}</h2>
-
+        </header>
         {/* Author info */}
-        <div className="flex items-center gap-3 mb-8 p-4 bg-white/[0.03] rounded-xl">
+        <div className="flex items-center gap-3 mb-8 p-4 bg-white/3 rounded-xl">
           {challenge.author?.avatarUrl ? (
             <img
               src={challenge.author.avatarUrl}
@@ -107,7 +98,7 @@ function ChallengeDetailModal({
           <div className="mb-8">
             <h4 className="text-neon-cyan mb-2 font-display">Código Inicial</h4>
             <div className="bg-bg-primary border border-neon-cyan/20 rounded-xl p-6 overflow-auto max-h-52">
-              <pre className="font-mono text-sm m-0 whitespace-pre-wrap break-words">
+              <pre className="font-mono text-sm m-0 whitespace-pre-wrap wrap-break-word">
                 {challenge.initialCode}
               </pre>
             </div>
@@ -145,28 +136,28 @@ function ChallengeDetailModal({
         <div className="flex justify-between items-center pt-6 border-t border-white/8">
           <button
             onClick={() => toggleReactionMutation.mutate(challenge.id)}
-            className={`cursor-pointer flex items-center gap-1 transition-transform duration-200 hover:scale-110 ${hasReacted ? 'text-neon-pink' : 'text-text-muted'}`}
+            className={`cursor-pointer flex items-center gap-1 transition-transform duration-200 hover:scale-110 ${challenge.hasReacted ? 'text-neon-pink' : 'text-text-muted'}`}
           >
-            <IconHeart fill={hasReacted ? 'currentColor' : 'none'} />
-            {challenge._count?.reactions || 0}
+            <IconHeart fill={challenge.hasReacted ? 'currentColor' : 'none'} />
+            {challenge.reactionsCount || 0}
           </button>
 
           <div className="flex gap-4">
             {user && user.username === challenge.author?.username && (
               <button
                 onClick={handleDelete}
-                className="btn btn-secondary !text-neon-pink !border-neon-pink"
+                className="btn btn-secondary text-neon-pink! border-neon-pink! shadow-none hover:bg-neon-pink/10"
               >
                 <IconTrash size={20} /> Eliminar
               </button>
             )}
-            <button onClick={onClose} className="btn btn-primary">
+            <button onClick={onClose} className="btn btn-secondary shadow-none">
               Cerrar
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 

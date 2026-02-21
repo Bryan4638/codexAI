@@ -1,4 +1,4 @@
-/* LEARN-CODE - Educational Programming Platform */
+/* chamba—code - Educational Programming Platform */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import 'tailwindcss';
 
@@ -19,8 +19,8 @@
   --color-bg-card: rgba(20, 20, 30, 0.8);
 
   /* Text */
-  --color-text-main: #ffffff;
-  --color-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-text-main: #f1f1f5;
+  --color-text-secondary: #e0fbff;
   --color-text-muted: rgba(255, 255, 255, 0.4);
 
   /* Gradients */

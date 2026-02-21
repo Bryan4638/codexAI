@@ -16,7 +16,7 @@ export default function Footer() {
                 </span>
               </div>
               <h2 className="font-display text-xl text-text-main tracking-wider">
-                <span className="text-neon-cyan">learn—code</span>
+                <span className="text-neon-cyan">chamba—code</span>
               </h2>
             </div>
 
@@ -132,7 +132,7 @@ export default function Footer() {
           <p className="text-text-muted text-xs">
             © {new Date().getFullYear()}{' '}
             <span className="text-neon-cyan font-display tracking-wider">
-              learn—code
+              chamba—code
             </span>{' '}
             • Todos los derechos reservados
           </p>

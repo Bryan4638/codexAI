@@ -30,7 +30,7 @@ function Header({ onShowAuth }: HeaderProps) {
           <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center text-xl text-bg-primary">
             {'</>'}
           </div>
-          <span>LEARN-CODE</span>
+          <span>chamba—code</span>
         </Link>
 
         {/* Desktop Nav */}
