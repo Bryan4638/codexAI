@@ -64,7 +64,7 @@ export const useProgressStore = create<ProgressState>()(
       },
     }),
     {
-      name: 'codex-progress', // name of the item in the storage (must be unique)
+      name: 'learn-code-progress', // name of the item in the storage (must be unique)
     }
   )
 )

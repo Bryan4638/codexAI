@@ -11,7 +11,7 @@ export const authApi = {
       email,
       code,
     })) as AuthResponse
-    if (data.token) localStorage.setItem('codex-token', data.token)
+    if (data.token) localStorage.setItem('learn-code-token', data.token)
     return data
   },
 
@@ -20,10 +20,10 @@ export const authApi = {
   },
 
   logout() {
-    localStorage.removeItem('codex-token')
+    localStorage.removeItem('learn-code-token')
   },
 
   isLoggedIn() {
-    return !!localStorage.getItem('codex-token')
+    return !!localStorage.getItem('learn-code-token')
   },
 }
