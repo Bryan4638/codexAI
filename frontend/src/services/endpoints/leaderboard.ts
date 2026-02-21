@@ -3,7 +3,7 @@ import {
   LeaderboardProfileResponse,
   LeaderboardResponse,
 } from '@/types/leaderboard'
-import { UserProfileData } from '@/types/profile'
+import { ProfileFormData, UserProfileData } from '@/types/profile'
 
 export const leaderboardApi = {
   async getLeaderboard(): Promise<LeaderboardResponse> {
@@ -16,7 +16,7 @@ export const leaderboardApi = {
     )) as LeaderboardProfileResponse
   },
 
-  async updateProfile(profileData: any): Promise<UserProfileData> {
+  async updateProfile(profileData: ProfileFormData): Promise<UserProfileData> {
     return api.put('/leaderboard/profile', profileData)
   },
 }

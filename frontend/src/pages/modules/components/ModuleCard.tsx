@@ -13,10 +13,7 @@ export default function ModuleCard({
   onClick,
 }: ModuleCardProps) {
   return (
-    <article
-      onClick={onClick}
-      className="module-card flex flex-col h-[250px] p-5"
-    >
+    <article onClick={onClick} className="module-card flex flex-col h-auto p-6">
       <header>
         <span className="font-display text-4xl font-black text-white/5 absolute top-4 right-4">
           0{module.moduleNumber}
@@ -46,7 +43,7 @@ export default function ModuleCard({
       </main>
       <footer className="flex items-center gap-2 mt-4 text-xs text-text-muted absolute bottom-4 right-4">
         <IconBook2 />
-        <span>{module.completedExercises} lecciones</span>
+        <span>{module.totalExercises} lecciones</span>
         <span className="ml-auto text-neon-cyan">{progress}% completado</span>
       </footer>
     </article>

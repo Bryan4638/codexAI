@@ -1,16 +1,22 @@
 import EditProfileModal from '@/pages/profile/components/EditProfileModal'
 import { badgeApi } from '@/services/endpoints/badges'
 import { useAuthStore } from '@/store/useAuthStore'
-import { UserBadgeData } from '@/types/badge'
-import { ProgressData } from '@/types/profile'
+import { UserBadgeData, UserProgress } from '@/types/badge'
+import {
+  IconChartBar,
+  IconHistory,
+  IconTrophy,
+  IconUserFilled,
+} from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 function ProfilePage() {
   const { user, logout } = useAuthStore()
-  const [progress, setProgress] = useState<ProgressData | null>(null)
+  const [progress, setProgress] = useState<UserProgress | null>(null)
   const [badges, setBadges] = useState<UserBadgeData>({
     badges: [],
+    total: 0,
     unlocked: 0,
   })
 
@@ -19,8 +25,12 @@ function ProfilePage() {
   const navigate = useNavigate()
 
   useEffect(() => {
+    if (!user) {
+      setLoading(false)
+      return
+    }
     loadData()
-  }, [])
+  }, [user])
 
   const loadData = async () => {
     try {
@@ -30,8 +40,6 @@ function ProfilePage() {
       ])
       setProgress(progressData)
       setBadges(badgesData)
-      console.log(user)
-      console.log(badges)
     } catch (error) {
       console.error('Error cargando datos:', error)
     } finally {
@@ -66,7 +74,15 @@ function ProfilePage() {
       {/* Profile Header */}
       <div className="flex items-center gap-6 mb-12 max-md:flex-col max-md:text-center">
         <div className="w-24 h-24 bg-gradient-primary rounded-full flex items-center justify-center text-4xl shrink-0">
-          👤
+          {user?.avatarUrl ? (
+            <img
+              src={user.avatarUrl}
+              alt="Avatar"
+              className="w-full h-full rounded-full"
+            />
+          ) : (
+            <IconUserFilled size={42} />
+          )}
         </div>
         <div className="flex-1">
           <h1 className="mb-1 text-4xl">{user?.username}</h1>
@@ -77,15 +93,15 @@ function ProfilePage() {
             </p>
           )}
         </div>
-        <div className="flex gap-4">
+        <div className="flex items-center gap-3 max-sm:w-full max-sm:flex-col">
           <button
             onClick={() => setShowEditProfile(true)}
-            className="btn btn-secondary flex items-center gap-1"
+            className="btn btn-secondary"
           >
-            ✏️ Editar Perfil
+            Editar Perfil
           </button>
           <button
-            className="btn bg-neon-pink/20 text-neon-pink border border-neon-pink"
+            className="border-neon-pink text-neon-pink transition-colors duration-300 btn btn-secondary shadow-none hover:bg-neon-pink/30"
             onClick={handleLogout}
           >
             Cerrar Sesión
@@ -143,17 +159,22 @@ function ProfilePage() {
         {/* Badges */}
         <div>
           <h3 className="mb-6 flex items-center gap-2">
-            🏆 Medallas ({badges.unlocked}/{badges.badges.length})
+            <IconTrophy size={24} /> Medallas ({badges.unlocked}/{badges.total})
           </h3>
           <div className="flex flex-wrap gap-4">
             {badges.badges.length > 0 ? (
-              badges.badges.map((badge) => (
+              badges.badges.map((badge, index) => (
                 <div
-                  key={badge.id}
+                  key={`${badge.unlocked_at}-${index}`}
                   className="glass-card !p-6 text-center min-w-[120px] flex-1"
                 >
-                  <div className="text-4xl mb-1">{badge.icon}</div>
-                  <div className="text-sm font-semibold">{badge.name}</div>
+                  <div className="text-4xl mb-1 flex justify-center">
+                    {badge.icon}
+                  </div>
+                  <h4 className="text-sm font-semibold">{badge.name}</h4>
+                  <div className="text-xs text-text-muted mt-1">
+                    {new Date(badge.unlocked_at).toLocaleDateString()}
+                  </div>
                 </div>
               ))
             ) : (
@@ -168,7 +189,9 @@ function ProfilePage() {
         <div>
           {progress?.moduleProgress && (
             <>
-              <h3 className="mb-6">📊 Progreso por Módulo</h3>
+              <h3 className="mb-6 flex items-center gap-2">
+                <IconChartBar size={24} /> Progreso por Módulo
+              </h3>
               <div className="glass-card !p-6">
                 {Object.entries(progress.moduleProgress).map(
                   ([moduleId, data]) => (
@@ -185,7 +208,7 @@ function ProfilePage() {
                         <div
                           className="progress-fill"
                           style={{
-                            width: `${(data.completed / data.total) * 100}%`,
+                            width: `${data.total > 0 ? (data.completed / data.total) * 100 : 0}%`,
                           }}
                         />
                       </div>
@@ -201,7 +224,9 @@ function ProfilePage() {
       {/* Activity History */}
       {progress?.history && progress.history.length > 0 && (
         <div className="mt-12">
-          <h3 className="mb-6">📜 Historial de Actividad</h3>
+          <h3 className="mb-6 flex items-center gap-2">
+            <IconHistory size={24} /> Historial de Actividad
+          </h3>
           <div className="glass-card !p-0 overflow-hidden">
             <div className="max-h-[400px] overflow-y-auto">
               {progress.history.map((item, index) => (

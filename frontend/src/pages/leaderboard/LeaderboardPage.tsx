@@ -1,3 +1,4 @@
+import Footer from '@/components/nav/Footer'
 import Error from '@/components/share/Error'
 import Loading from '@/components/share/Loading'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
@@ -21,31 +22,31 @@ export default function LeaderboardPage() {
   const rest = leaderboard.slice(3)
 
   if (leaderboardQuery.isLoading) return <Loading section="ranking" />
-
   if (leaderboardQuery.error) return <Error section="ranking" />
-
   return (
-    <section className="py-28 max-w-7xl mx-auto px-6">
-      <div className="flex flex-col items-center justify-center mb-12">
-        <h2 className="text-3xl flex items-center gap-2">
-          <IconTrophy size={50} /> Tabla de Posiciones
-        </h2>
-        <p className="mt-2 text-sm">
-          Los mejores estudiantes de <strong>chamba—code</strong>
-        </p>
-      </div>
+    <>
+      <section className="py-28 max-w-7xl mx-auto px-6">
+        <div className="flex flex-col items-center justify-center mb-12">
+          <h2 className="text-3xl flex items-center gap-4">
+            <IconTrophy size={50} /> Tabla de Posiciones
+          </h2>
+          <p className="mt-2 text-sm">
+            Los mejores estudiantes de{' '}
+            <strong className="font-display">chamba—code</strong>
+          </p>
+        </div>
 
-      <LeaderboardPodium top3={top3} onUserClick={setSelectedUser} />
-
-      <LeaderboardTable users={rest} onUserClick={setSelectedUser} />
-
-      {selectedUser && (
-        <ProfileModal
-          isLoading={userProfileQuery.isLoading}
-          profile={userProfile}
-          onClose={() => setSelectedUser(null)}
-        />
-      )}
-    </section>
+        <LeaderboardPodium top3={top3} onUserClick={setSelectedUser} />
+        <LeaderboardTable users={rest} onUserClick={setSelectedUser} />
+        {selectedUser && (
+          <ProfileModal
+            isLoading={userProfileQuery.isLoading}
+            profile={userProfile}
+            onClose={() => setSelectedUser(null)}
+          />
+        )}
+      </section>
+      <Footer />
+    </>
   )
 }

@@ -32,7 +32,7 @@ export default function PodiumCard({
             className="w-full h-full rounded-full object-cover"
           />
         ) : (
-          <IconUserFilled size={40} />
+          <IconUserFilled size={40} className="text-white/60" />
         )}
       </div>
 

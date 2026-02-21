@@ -1,4 +1,14 @@
+import { Badge } from '@/types/badge'
 import { UserProfileData } from '@/types/profile'
+import {
+  IconBrandGithub,
+  IconBrandLinkedin,
+  IconBrandX,
+  IconLock,
+  IconUserFilled,
+  IconWorld,
+} from '@tabler/icons-react'
+import ProfileStatsCard from './ProfileStatsCard'
 
 interface ProfileModalProps {
   isLoading: boolean
@@ -22,7 +32,7 @@ export default function ProfileModal({
         ) : profile ? (
           <>
             {/* Header del Perfil */}
-            <div className="flex items-center gap-6 mb-8">
+            <header className="flex items-center gap-6">
               <div className="w-20 h-20 bg-gradient-primary rounded-full flex items-center justify-center text-3xl">
                 {profile.avatarUrl ? (
                   <img
@@ -31,38 +41,36 @@ export default function ProfileModal({
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
-                  '👤'
+                  <IconUserFilled size={40} className="text-white/60" />
                 )}
               </div>
               <div>
-                <h2 className="mb-1">
+                <h2 className="mb-1 flex items-center gap-3">
                   {profile.username}
-                  {!profile.isPublic && ' 🔒'}
                 </h2>
                 <p className="text-text-secondary m-0">Nivel {profile.level}</p>
               </div>
-            </div>
+            </header>
 
             {profile.isPublic ? (
               <>
                 {/* Stats */}
-                <div className="grid grid-cols-3 gap-4 mb-8">
-                  <div className="glass-card !p-4 text-center">
-                    <div className="text-2xl text-neon-cyan">{profile.xp}</div>
-                    <div className="text-xs text-text-muted">XP</div>
-                  </div>
-                  <div className="glass-card !p-4 text-center">
-                    <div className="text-2xl text-neon-purple">
-                      {profile.badgeCount}
-                    </div>
-                    <div className="text-xs text-text-muted">MEDALLAS</div>
-                  </div>
-                  <div className="glass-card !p-4 text-center">
-                    <div className="text-2xl text-neon-green">
-                      {profile.exercisesCompleted}
-                    </div>
-                    <div className="text-xs text-text-muted">EJERCICIOS</div>
-                  </div>
+                <div className="grid grid-cols-3 gap-4 my-8">
+                  <ProfileStatsCard
+                    stat={profile.xp}
+                    statName="XP"
+                    className="text-neon-cyan"
+                  />
+                  <ProfileStatsCard
+                    stat={profile.badgeCount}
+                    statName="Medallas"
+                    className="text-neon-purple"
+                  />
+                  <ProfileStatsCard
+                    stat={profile.exercisesCompleted}
+                    statName="Ejercicios"
+                    className="text-neon-green"
+                  />
                 </div>
 
                 {/* Bio */}
@@ -78,7 +86,7 @@ export default function ProfileModal({
                   profile.contact?.linkedin ||
                   profile.contact?.twitter ||
                   profile.contact?.website) && (
-                  <div className="mb-8">
+                  <section className="mb-8">
                     <h4 className="mb-2 text-text-secondary">Contacto</h4>
                     <div className="flex gap-4 flex-wrap">
                       {profile.contact.github && (
@@ -86,9 +94,9 @@ export default function ProfileModal({
                           href={`https://github.com/${profile.contact.github}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-neon-cyan hover:underline"
+                          className="text-neon-cyan hover:underline flex items-center gap-1"
                         >
-                          🐙 GitHub
+                          <IconBrandGithub size={18} /> GitHub
                         </a>
                       )}
                       {profile.contact.linkedin && (
@@ -96,9 +104,9 @@ export default function ProfileModal({
                           href={`https://linkedin.com/in/${profile.contact.linkedin}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-neon-cyan hover:underline"
+                          className="text-neon-cyan hover:underline flex items-center gap-1"
                         >
-                          💼 LinkedIn
+                          <IconBrandLinkedin size={18} /> LinkedIn
                         </a>
                       )}
                       {profile.contact.twitter && (
@@ -106,9 +114,9 @@ export default function ProfileModal({
                           href={`https://twitter.com/${profile.contact.twitter}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-neon-cyan hover:underline"
+                          className="text-neon-cyan hover:underline flex items-center gap-1"
                         >
-                          𝕏 Twitter
+                          <IconBrandX size={18} /> X (Twitter)
                         </a>
                       )}
                       {profile.contact.website && (
@@ -116,21 +124,21 @@ export default function ProfileModal({
                           href={profile.contact.website}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-neon-cyan hover:underline"
+                          className="text-neon-cyan hover:underline flex items-center gap-1"
                         >
-                          🌐 Web
+                          <IconWorld size={18} /> Portafolio
                         </a>
                       )}
                     </div>
-                  </div>
+                  </section>
                 )}
 
                 {/* Badges */}
                 {profile.badges && profile.badges.length > 0 && (
-                  <div>
+                  <section>
                     <h4 className="mb-2 text-text-secondary">Medallas</h4>
                     <div className="flex flex-wrap gap-2">
-                      {profile.badges.map((badge: any) => (
+                      {profile.badges.map((badge: Badge) => (
                         <div
                           key={badge.id}
                           className="px-4 py-2 bg-neon-green/10 border border-neon-green/30 rounded-xl text-sm"
@@ -139,17 +147,19 @@ export default function ProfileModal({
                         </div>
                       ))}
                     </div>
-                  </div>
+                  </section>
                 )}
               </>
             ) : (
-              <div className="text-center py-8 text-text-muted">
-                <div className="text-5xl mb-4">🔒</div>
-                <p>Este perfil es privado</p>
-                <p className="text-sm">
-                  Solo puedes ver el nombre y {profile.badgeCount} medallas
+              <section className="text-center flex flex-col items-center justify-center py-8">
+                <div className="mb-4">
+                  <IconLock size={58} />
+                </div>
+                <h2>Este perfil es privado</h2>
+                <p className="text-sm text-text-muted">
+                  Solo puedes ver su nombre y su nivel alcanzado
                 </p>
-              </div>
+              </section>
             )}
 
             <button className="btn btn-secondary w-full mt-8" onClick={onClose}>

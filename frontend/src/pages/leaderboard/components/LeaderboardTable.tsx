@@ -42,7 +42,9 @@ export default function LeaderboardTable({ users, onUserClick }: Props) {
                         className="w-full h-full rounded-full object-cover"
                       />
                     ) : (
-                      <IconUserFilled size={20} />
+                      <div className="w-7 h-7 rounded-full bg-bg-tertiary flex items-center justify-center border border-white/10">
+                        <IconUserFilled size={14} className="text-text-muted" />
+                      </div>
                     )}
                   </div>
                   <span>{user.username}</span>

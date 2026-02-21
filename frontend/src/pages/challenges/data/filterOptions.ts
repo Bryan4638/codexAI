@@ -1,9 +1,9 @@
 import { SelectOption } from '@/components/share/CustomDropdown'
 import {
-  IconAlertTriangle,
   IconClock,
   IconLayersIntersect,
   IconMoodHappyFilled,
+  IconMoodSmileFilled,
   IconSkull,
   IconTrendingUp,
 } from '@tabler/icons-react'
@@ -24,7 +24,7 @@ export const difficultyOptions: SelectOption[] = [
   {
     id: 'medium',
     label: 'Media',
-    icon: IconAlertTriangle,
+    icon: IconMoodSmileFilled,
     colorClass: 'text-neon-cyan',
   },
   {

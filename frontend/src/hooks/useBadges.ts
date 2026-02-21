@@ -18,5 +18,5 @@ export const useBadges = () => {
     queryKey: ['user-progress'],
     queryFn: () => getProgress(),
   })
-  return { getBadges, getAllUserBadges }
+  return { getBadges, getAllUserBadges, getUserProgress }
 }

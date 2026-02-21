@@ -1,6 +1,19 @@
 import EditProfileModal from '@/pages/profile/components/EditProfileModal'
 import { badgeApi } from '@/services/endpoints/badges'
 import { useAuthStore } from '@/store/useAuthStore'
+import type {
+  HistoryEntry,
+  ModuleProgress,
+  UserBadgeData,
+  UserProgress,
+} from '@/types/badge'
+import {
+  IconChartBar,
+  IconHistory,
+  IconPencilCode,
+  IconTrophy,
+  IconUserFilled,
+} from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
 
 interface UserProfileProps {
@@ -9,8 +22,8 @@ interface UserProfileProps {
 
 function UserProfile({ onClose }: UserProfileProps) {
   const { user, logout } = useAuthStore()
-  const [progress, setProgress] = useState<any>(null) // Use any or strict type if defined elsewhere
-  const [badges, setBadges] = useState<any>({
+  const [progress, setProgress] = useState<UserProgress | null>(null)
+  const [badges, setBadges] = useState<UserBadgeData>({
     badges: [],
     total: 0,
     unlocked: 0,
@@ -98,7 +111,7 @@ function UserProfile({ onClose }: UserProfileProps) {
               fontSize: '2rem',
             }}
           >
-            👤
+            <IconUserFilled size={38} />
           </div>
           <div style={{ flex: 1 }}>
             <h2 style={{ marginBottom: 'var(--spacing-xs)' }}>
@@ -134,7 +147,7 @@ function UserProfile({ onClose }: UserProfileProps) {
               gap: 'var(--spacing-xs)',
             }}
           >
-            ✏️ Editar
+            <IconPencilCode size={16} /> Editar
           </button>
         </div>
 
@@ -231,16 +244,17 @@ function UserProfile({ onClose }: UserProfileProps) {
 
         {/* Medallas */}
         <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-          <h3
-            style={{
-              marginBottom: 'var(--spacing-md)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 'var(--spacing-sm)',
-            }}
-          >
-            🏆 Medallas ({badges.unlocked}/{badges.total})
-          </h3>
+            <h3
+              style={{
+                marginBottom: 'var(--spacing-md)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 'var(--spacing-sm)',
+              }}
+            >
+              <IconTrophy size={20} /> Medallas ({badges.unlocked}/
+              {badges.total})
+            </h3>
           <div
             style={{
               display: 'flex',
@@ -249,9 +263,9 @@ function UserProfile({ onClose }: UserProfileProps) {
             }}
           >
             {badges.badges.length > 0 ? (
-              badges.badges.map((badge: any) => (
+              badges.badges.map((badge, index) => (
                 <div
-                  key={badge.id}
+                  key={`${badge.unlocked_at}-${index}`}
                   style={{
                     padding: 'var(--spacing-md)',
                     background: 'rgba(0, 255, 136, 0.1)',
@@ -261,9 +275,11 @@ function UserProfile({ onClose }: UserProfileProps) {
                     minWidth: '100px',
                   }}
                 >
-                  <div style={{ fontSize: '2rem' }}>{badge.icon}</div>
+                  <div style={{ fontSize: '2rem' }}>
+                    <IconTrophy size={28} />
+                  </div>
                   <div style={{ fontSize: '0.8rem', fontWeight: '600' }}>
-                    {badge.name}
+                    Medalla desbloqueada
                   </div>
                 </div>
               ))
@@ -278,11 +294,18 @@ function UserProfile({ onClose }: UserProfileProps) {
         {/* Progreso por módulo */}
         {progress?.moduleProgress && (
           <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-            <h3 style={{ marginBottom: 'var(--spacing-md)' }}>
-              📊 Progreso por Módulo
+            <h3
+              style={{
+                marginBottom: 'var(--spacing-md)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 'var(--spacing-sm)',
+              }}
+            >
+              <IconChartBar size={20} /> Progreso por Módulo
             </h3>
             {Object.entries(progress.moduleProgress).map(
-              ([moduleId, data]: [string, any]) => (
+              ([moduleId, data]: [string, ModuleProgress]) => (
                 <div
                   key={moduleId}
                   style={{ marginBottom: 'var(--spacing-md)' }}
@@ -305,7 +328,7 @@ function UserProfile({ onClose }: UserProfileProps) {
                     <div
                       className="progress-fill"
                       style={{
-                        width: `${(data.completed / data.total) * 100}%`,
+                        width: `${data.total > 0 ? (data.completed / data.total) * 100 : 0}%`,
                       }}
                     />
                   </div>
@@ -318,8 +341,15 @@ function UserProfile({ onClose }: UserProfileProps) {
         {/* Historial de Actividad */}
         {progress?.history && progress.history.length > 0 && (
           <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-            <h3 style={{ marginBottom: 'var(--spacing-md)' }}>
-              📜 Historial de Actividad
+            <h3
+              style={{
+                marginBottom: 'var(--spacing-md)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 'var(--spacing-sm)',
+              }}
+            >
+              <IconHistory size={20} /> Historial de Actividad
             </h3>
             <div
               style={{
@@ -328,7 +358,7 @@ function UserProfile({ onClose }: UserProfileProps) {
                 paddingRight: '10px',
               }}
             >
-              {progress.history.map((item: any, index: number) => (
+              {progress.history.map((item: HistoryEntry, index: number) => (
                 <div
                   key={`${item.id}-${index}`}
                   className="glass-card"

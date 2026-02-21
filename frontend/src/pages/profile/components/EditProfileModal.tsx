@@ -1,6 +1,18 @@
 import { leaderboardApi } from '@/services/endpoints/leaderboard'
 import { useAuthStore } from '@/store/useAuthStore'
 import { ProfileFormData } from '@/types/profile'
+import {
+  IconBrandGithub,
+  IconBrandLinkedin,
+  IconBrandTwitter,
+  IconDeviceFloppy,
+  IconHourglass,
+  IconLink,
+  IconLock,
+  IconLockOpen,
+  IconPencilCode,
+  IconWorld,
+} from '@tabler/icons-react'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 interface EditProfileModalProps {
@@ -84,7 +96,9 @@ function EditProfileModal({ onClose, onSave }: EditProfileModalProps) {
         className="modal max-w-lg text-left"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="mb-8 text-center">✏️ Editar Perfil</h2>
+        <h2 className="mb-8 text-center flex items-center justify-center gap-2">
+          <IconPencilCode /> Editar Perfil
+        </h2>
 
         <form onSubmit={handleSubmit}>
           {/* Bio */}
@@ -103,11 +117,15 @@ function EditProfileModal({ onClose, onSave }: EditProfileModalProps) {
           </div>
 
           {/* Social Links */}
-          <h4 className="mb-4 text-neon-cyan">🔗 Redes Sociales</h4>
+          <h4 className="mb-4 text-neon-cyan flex items-center gap-2">
+            <IconLink size={18} /> Redes Sociales
+          </h4>
 
           <div className="mb-4">
             <label className="block mb-2 text-text-secondary text-sm">
-              🐙 GitHub (usuario)
+              <span className="inline-flex items-center gap-2">
+                <IconBrandGithub size={16} /> GitHub (usuario)
+              </span>
             </label>
             <input
               type="text"
@@ -121,7 +139,9 @@ function EditProfileModal({ onClose, onSave }: EditProfileModalProps) {
 
           <div className="mb-4">
             <label className="block mb-2 text-text-secondary text-sm">
-              💼 LinkedIn (usuario)
+              <span className="inline-flex items-center gap-2">
+                <IconBrandLinkedin size={16} /> LinkedIn (usuario)
+              </span>
             </label>
             <input
               type="text"
@@ -135,7 +155,9 @@ function EditProfileModal({ onClose, onSave }: EditProfileModalProps) {
 
           <div className="mb-4">
             <label className="block mb-2 text-text-secondary text-sm">
-              𝕏 Twitter (usuario)
+              <span className="inline-flex items-center gap-2">
+                <IconBrandTwitter size={16} /> Twitter (usuario)
+              </span>
             </label>
             <input
               type="text"
@@ -149,7 +171,9 @@ function EditProfileModal({ onClose, onSave }: EditProfileModalProps) {
 
           <div className="mb-8">
             <label className="block mb-2 text-text-secondary text-sm">
-              🌐 Sitio Web (URL completa)
+              <span className="inline-flex items-center gap-2">
+                <IconWorld size={16} /> Sitio Web (URL completa)
+              </span>
             </label>
             <input
               type="url"
@@ -172,10 +196,13 @@ function EditProfileModal({ onClose, onSave }: EditProfileModalProps) {
                 className="w-5 h-5 accent-neon-cyan"
               />
               <div>
-                <div className="font-semibold">
-                  {formData.isPublic
-                    ? '🔓 Perfil Público'
-                    : '🔒 Perfil Privado'}
+                <div className="font-semibold flex items-center gap-2">
+                  {formData.isPublic ? (
+                    <IconLockOpen size={18} />
+                  ) : (
+                    <IconLock size={18} />
+                  )}
+                  {formData.isPublic ? 'Perfil Público' : 'Perfil Privado'}
                 </div>
                 <div className="text-sm text-text-secondary">
                   {formData.isPublic
@@ -205,7 +232,15 @@ function EditProfileModal({ onClose, onSave }: EditProfileModalProps) {
               className="btn btn-primary flex-1"
               disabled={loading}
             >
-              {loading ? '⏳ Guardando...' : '💾 Guardar'}
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <IconHourglass size={18} /> Guardando...
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-2">
+                  <IconDeviceFloppy size={18} /> Guardar
+                </span>
+              )}
             </button>
           </div>
         </form>
