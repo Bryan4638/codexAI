@@ -1,4 +1,5 @@
 import AuthModal from '@/components/auth/AuthModal'
+import Footer from '@/components/nav/Footer'
 import Header from '@/components/nav/Header'
 import { useAuthStore } from '@/store/useAuthStore'
 import { useEffect, useState } from 'react'
@@ -77,13 +78,7 @@ function AppLayout() {
         <Outlet />
       </main>
 
-      <footer className="py-4 border-t border-white/8 text-center mt-auto">
-        <p className="text-text-muted text-xs">
-          Desarrollado con 💜 por <span className="text-neon-cyan">CODEX</span>{' '}
-          • Aprende a programar de forma interactiva
-        </p>
-      </footer>
-
+      <Footer />
       {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
     </>
   )

@@ -6,7 +6,7 @@ export default function LoginRequired() {
 
   return (
     <>
-      <section className="pt-32 max-w-7xl mx-auto px-6 text-center">
+      <section className="py-28 max-w-7xl mx-auto px-6 text-center">
         <h2 className="text-3xl">Acceso Restringido</h2>
         <p className="mb-10 mt-2 text-sm">
           Inicia sesión para desbloquear medallas.

@@ -25,7 +25,7 @@ export default function LeaderboardPage() {
   if (leaderboardQuery.error) return <Error section="ranking" />
 
   return (
-    <section className="pt-32 max-w-7xl mx-auto px-6">
+    <section className="py-28 max-w-7xl mx-auto px-6">
       <div className="flex flex-col items-center justify-center mb-12">
         <h2 className="text-3xl flex items-center gap-2">
           <IconTrophy size={50} /> Tabla de Posiciones
