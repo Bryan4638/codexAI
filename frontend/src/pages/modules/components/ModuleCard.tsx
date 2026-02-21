@@ -46,7 +46,7 @@ export default function ModuleCard({
       </main>
       <footer className="flex items-center gap-2 mt-4 text-xs text-text-muted absolute bottom-4 right-4">
         <IconBook2 />
-        <span>{module.lessons.length} lecciones</span>
+        <span>{module.completedExercises} lecciones</span>
         <span className="ml-auto text-neon-cyan">{progress}% completado</span>
       </footer>
     </article>
