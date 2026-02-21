@@ -1,3 +1,4 @@
+import AuthInitializer from '@/components/auth/AuthInitializer'
 import AppRouter from '@/routes/AppRouter'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
@@ -6,7 +7,9 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AppRouter />
+      <AuthInitializer>
+        <AppRouter />
+      </AuthInitializer>
       {/* <ReactQueryDevtools /> */}
     </QueryClientProvider>
   )
