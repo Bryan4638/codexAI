@@ -31,7 +31,7 @@ export default function Footer() {
               </h4>
               <p className="text-text-secondary text-xs flex gap-2 items-center hover:text-neon-green transition">
                 <IconMail size={14} />
-                learncode@learncode.bryandev.dev
+                chambacode@chambacode.bryandev.dev
               </p>
             </div>
           </div>
