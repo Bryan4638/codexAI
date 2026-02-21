@@ -2,27 +2,20 @@ import { exerciseApi } from '@/services/endpoints/exercises'
 import { useAuthStore } from '@/store/useAuthStore'
 import type { QuizExercise } from '@/types/exercise'
 import type { QuizFeedback } from '@/types/feedback'
+import {
+  IconBulb,
+  IconCheck,
+  IconHourglass,
+  IconPlayerPlayFilled,
+  IconXboxX,
+} from '@tabler/icons-react'
 import { useState } from 'react'
+import { ExerciseHeader } from './ExerciseHeader'
 
 interface QuizProps {
   exercise: QuizExercise
   onComplete: () => void
   onNewBadges?: (badges: any[]) => void
-}
-
-const difficultyMap: Record<string, { classes: string; label: string }> = {
-  beginner: {
-    classes: 'bg-neon-green/20 border-neon-green text-neon-green',
-    label: '🌱 Básico',
-  },
-  intermediate: {
-    classes: 'bg-neon-orange/20 border-neon-orange text-neon-orange',
-    label: '🌿 Intermedio',
-  },
-  advanced: {
-    classes: 'bg-neon-pink/20 border-neon-pink text-neon-pink',
-    label: '🌳 Avanzado',
-  },
 }
 
 function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
@@ -75,15 +68,13 @@ function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
     return classes
   }
 
-  const diff = difficultyMap[exercise.difficulty] || difficultyMap.beginner
-
   return (
     <div>
-      <p className="exercise-prompt">{exercise.prompt}</p>
-      <div className="inline-flex gap-2 mb-4">
-        <span className={`badge-difficulty ${diff.classes}`}>{diff.label}</span>
-        <span className="badge-xp">+{exercise.xpReward} XP</span>
-      </div>
+      <ExerciseHeader
+        prompt={exercise.prompt}
+        difficulty={exercise.difficulty}
+        xpReward={exercise.xpReward}
+      />
       <div className="flex flex-col gap-4">
         {exercise.data?.options?.map((option) => (
           <div
@@ -104,23 +95,37 @@ function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
           onClick={handleSubmit}
           disabled={!selected || loading || !user}
         >
-          {loading ? '⏳ VALIDANDO...' : 'VERIFICAR RESPUESTA'}
+          {loading ? (
+            <span className="flex items-center gap-2">
+              <IconHourglass /> VALIDANDO...
+            </span>
+          ) : (
+            <span className="flex items-center gap-2">
+              <IconPlayerPlayFilled /> VERIFICAR RESPUESTA
+            </span>
+          )}
         </button>
       )}
       {submitted && result && (
         <div className={`feedback ${result.correct ? 'success' : 'error'}`}>
-          <span className="feedback-icon">{result.correct ? '✓' : '✗'}</span>
+          <span className="feedback-icon">
+            {result.correct ? (
+              <IconCheck color="#00ff88" size={40} />
+            ) : (
+              <IconXboxX color="#ff2d92" size={40} />
+            )}
+          </span>
           <div className="feedback-text">
             <div className="feedback-title">
-              {result.correct ? '¡Correcto!' : 'Incorrecto'}
+              {result.correct ? '¡Correcto! ' : 'Incorrecto'}
               {result.xpEarned &&
                 result.xpEarned > 0 &&
                 ` (+${result.xpEarned} XP)`}
             </div>
             <div className="feedback-message">{result.message}</div>
             {result.explanation && (
-              <div className="mt-2 italic opacity-90">
-                💡 {result.explanation}
+              <div className="mt-2 italic opacity-90 flex items-center gap-2">
+                <IconBulb size={26} /> {result.explanation}
               </div>
             )}
           </div>

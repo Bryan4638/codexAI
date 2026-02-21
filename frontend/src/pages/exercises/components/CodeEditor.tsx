@@ -2,27 +2,19 @@ import { exerciseApi } from '@/services/endpoints/exercises'
 import { useAuthStore } from '@/store/useAuthStore'
 import type { CodeEditorExercise } from '@/types/exercise'
 import type { CodeEditorFeedback } from '@/types/feedback'
+import {
+  IconHourglass,
+  IconPlayerPlayFilled,
+  IconRestore,
+} from '@tabler/icons-react'
 import { useState } from 'react'
+import { ExerciseHeader } from './ExerciseHeader'
+import { FeedbackMessage } from './FeedbackMessage'
 
 interface CodeEditorProps {
   exercise: CodeEditorExercise
   onComplete: () => void
   onNewBadges?: (badges: any[]) => void
-}
-
-const difficultyMap: Record<string, { classes: string; label: string }> = {
-  beginner: {
-    classes: 'bg-neon-green/20 border-neon-green text-neon-green',
-    label: '🌱 Básico',
-  },
-  intermediate: {
-    classes: 'bg-neon-orange/20 border-neon-orange text-neon-orange',
-    label: '🌿 Intermedio',
-  },
-  advanced: {
-    classes: 'bg-neon-pink/20 border-neon-pink text-neon-pink',
-    label: '🌳 Avanzado',
-  },
 }
 
 function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
@@ -85,15 +77,13 @@ function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
     }
   }
 
-  const diff = difficultyMap[exercise.difficulty] || difficultyMap.beginner
-
   return (
     <div>
-      <p className="exercise-prompt">{exercise.prompt}</p>
-      <div className="inline-flex gap-2 mb-4">
-        <span className={`badge-difficulty ${diff.classes}`}>{diff.label}</span>
-        <span className="badge-xp">+{exercise.xpReward} XP</span>
-      </div>
+      <ExerciseHeader
+        prompt={exercise.prompt}
+        difficulty={exercise.difficulty}
+        xpReward={exercise.xpReward}
+      />
       <div className="code-editor">
         <div className="code-editor-header">
           <div className="code-editor-dots">
@@ -117,43 +107,24 @@ function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
           onClick={handleSubmit}
           disabled={loading}
         >
-          {loading ? '⏳ Validando...' : '▶ Ejecutar'}
+          {loading ? (
+            <span className="flex items-center gap-2">
+              <IconHourglass /> Validando...
+            </span>
+          ) : (
+            <span className="flex items-center gap-2">
+              <IconPlayerPlayFilled /> Ejecutar
+            </span>
+          )}
         </button>
         <button
-          className="btn btn-secondary"
+          className="btn btn-secondary gap-2"
           onClick={() => setCode(exercise.data?.placeholder || '')}
         >
-          ↺ Reiniciar
+          <IconRestore /> Reiniciar
         </button>
       </div>
-      {feedback && (
-        <div className={`feedback ${feedback.type}`}>
-          <span className="feedback-icon">
-            {feedback.type === 'success' ? '✓' : '✗'}
-          </span>
-          <div className="feedback-text">
-            <div className="feedback-title">
-              {feedback.type === 'success'
-                ? '¡Correcto!'
-                : 'Inténtalo de nuevo'}
-              {feedback.xpEarned &&
-                feedback.xpEarned > 0 &&
-                ` (+${feedback.xpEarned} XP)`}
-            </div>
-            <div className="feedback-message">{feedback.message}</div>
-            {feedback.explanation && (
-              <div className="mt-2 italic opacity-90">
-                💡 {feedback.explanation}
-              </div>
-            )}
-            {feedback.levelUp && (
-              <div className="mt-2 text-neon-cyan">
-                🎉 ¡Subiste al nivel {feedback.newLevel}!
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      {feedback && <FeedbackMessage feedback={feedback} />}
     </div>
   )
 }
