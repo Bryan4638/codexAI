@@ -9,7 +9,7 @@ const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('learn-code-token')
+  const token = localStorage.getItem('chamba-code-access-token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }

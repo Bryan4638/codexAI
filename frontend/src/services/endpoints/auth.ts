@@ -11,7 +11,10 @@ export const authApi = {
       email,
       code,
     })) as AuthResponse
-    if (data.token) localStorage.setItem('learn-code-token', data.token)
+    if (data.accessToken)
+      localStorage.setItem('chamba-code-access-token', data.accessToken)
+    if (data.refreshToken)
+      localStorage.setItem('chamba-code-refresh-token', data.refreshToken)
     return data
   },
 
@@ -20,10 +23,7 @@ export const authApi = {
   },
 
   logout() {
-    localStorage.removeItem('learn-code-token')
-  },
-
-  isLoggedIn() {
-    return !!localStorage.getItem('learn-code-token')
+    localStorage.removeItem('chamba-code-access-token')
+    localStorage.removeItem('chamba-code-refresh-token')
   },
 }

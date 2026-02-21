@@ -21,9 +21,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   loading: true,
   otpSent: false,
   email: '',
-
   setUser: (user) => set({ user }),
-
   requestOtp: async (email) => {
     try {
       await authApi.requestEmailCode(email)
@@ -32,49 +30,42 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       throw e
     }
   },
-
   verifyOtp: async (code) => {
     const { email } = get()
     try {
       const data = await authApi.verifyEmailCode(email, code)
-      set({ user: data.user, otpSent: false, email: '' })
+      const user = await authApi.getMe()
+      set({ user, otpSent: false, email: '' })
       return data
     } catch (e) {
       throw e
     }
   },
-
   logout: () => {
     authApi.logout()
     set({ user: null, otpSent: false, email: '' })
   },
-
   resetAuth: () => {
     set({ otpSent: false, email: '' })
   },
-
   updateUser: (updates) => {
     set((state) => ({
       user: state.user ? { ...state.user, ...updates } : null,
     }))
   },
-
   checkAuth: async () => {
-    if (authApi.isLoggedIn()) {
-      try {
-        const data = await authApi.getMe()
-        set({ user: data })
-      } catch (error) {
-        console.error('Error verificando auth:', error)
-        authApi.logout()
-        set({ user: null })
-      }
-    } else {
-      set({ user: null })
+    const token = localStorage.getItem('chamba-code-access-token')
+    if (!token) {
+      set({ user: null, loading: false })
+      return
     }
-    set({ loading: false })
+    try {
+      const user = await authApi.getMe()
+      set({ user })
+    } catch (error) {
+      console.error('Error verificando auth:', error)
+      authApi.logout()
+      set({ user: null, loading: false })
+    }
   },
 }))
-
-// Initialize auth check
-useAuthStore.getState().checkAuth()
