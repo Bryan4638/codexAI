@@ -19,9 +19,9 @@ function AppLayout() {
     const refreshToken = params.get('refreshToken')
 
     if (token) {
-      localStorage.setItem('learn-code-token', token)
+      localStorage.setItem('chamba-code-token', token)
       if (refreshToken)
-        localStorage.setItem('learn-code-refresh-token', refreshToken)
+        localStorage.setItem('chamba-code-refresh-token', refreshToken)
 
       // Clean URL
       window.history.replaceState({}, document.title, window.location.pathname)

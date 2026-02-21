@@ -30,7 +30,7 @@ export default function LeaderboardPage() {
         <h2 className="text-3xl flex items-center gap-2">
           <IconTrophy size={50} /> Tabla de Posiciones
         </h2>
-        <p className="mt-2 text-sm">Los mejores estudiantes de LEARN-CODE</p>
+        <p className="mt-2 text-sm">Los mejores estudiantes de chamba-code</p>
       </div>
 
       <LeaderboardPodium top3={top3} onUserClick={setSelectedUser} />
