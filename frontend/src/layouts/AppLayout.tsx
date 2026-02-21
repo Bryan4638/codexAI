@@ -1,5 +1,4 @@
 import AuthModal from '@/components/auth/AuthModal'
-import Footer from '@/components/nav/Footer'
 import Header from '@/components/nav/Header'
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
@@ -29,7 +28,6 @@ function AppLayout() {
         <Outlet />
       </main>
 
-      <Footer />
       {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
     </>
   )

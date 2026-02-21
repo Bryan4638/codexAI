@@ -1,3 +1,4 @@
+import Footer from '@/components/nav/Footer'
 import Error from '@/components/share/Error'
 import Loading from '@/components/share/Loading'
 import LoginRequired from '@/components/share/LoginRequired'
@@ -6,7 +7,7 @@ import { BadgeWithDescription } from '@/types/badge'
 import { IconMedal } from '@tabler/icons-react'
 import BadgeCard from './components/BadgeCard'
 
-function BadgesPage() {
+export default function BadgesPage() {
   const { getAllUserBadges, getBadges } = useBadges()
   const {
     data: userBadges,
@@ -30,38 +31,40 @@ function BadgesPage() {
   }
 
   return (
-    <section className="py-28 max-w-7xl mx-auto px-6">
-      <header className="flex flex-col justify-center items-center mb-12">
-        <h2 className="text-3xl flex items-center gap-2">
-          <IconMedal size={50} />
-          Medallas
-        </h2>
-        <p className="mt-2 text-sm">
-          Desbloquea medallas completando ejercicios y alcanzando nuevos niveles
-        </p>
-        <div className="inline-flex mt-6 px-6 py-4 bg-neon-green/10 border border-neon-green/30 rounded-2xl">
-          <span className="text-neon-green font-display">
-            {unlockedCount || 0} / {totalCount} desbloqueadas
-          </span>
-        </div>
-      </header>
+    <>
+      <section className="py-28 max-w-7xl mx-auto px-6">
+        <header className="flex flex-col justify-center items-center mb-12">
+          <h2 className="text-3xl flex items-center gap-4">
+            <IconMedal size={50} />
+            Medallas
+          </h2>
+          <p className="mt-2 text-sm">
+            Desbloquea medallas completando ejercicios y alcanzando nuevos
+            niveles
+          </p>
+          <div className="inline-flex mt-6 px-6 py-4 bg-neon-green/10 border border-neon-green/30 rounded-2xl">
+            <span className="text-neon-green font-display">
+              {unlockedCount || 0} / {totalCount} desbloqueadas
+            </span>
+          </div>
+        </header>
 
-      {badgesToRender.length === 0 ? (
-        <p className="text-center text-sm text-text-secondary">
-          Aún no tienes medallas desbloqueadas.
-        </p>
-      ) : (
-        <main className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-6">
-          {badgesToRender.map((badge) => {
-            const unlocked = isUnlocked(badge.id)
-            return (
-              <BadgeCard key={badge.id} badge={badge} unlocked={unlocked} />
-            )
-          })}
-        </main>
-      )}
-    </section>
+        {badgesToRender.length === 0 ? (
+          <p className="text-center text-sm text-text-secondary">
+            Aún no tienes medallas desbloqueadas.
+          </p>
+        ) : (
+          <main className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-6">
+            {badgesToRender.map((badge) => {
+              const unlocked = isUnlocked(badge.id)
+              return (
+                <BadgeCard key={badge.id} badge={badge} unlocked={unlocked} />
+              )
+            })}
+          </main>
+        )}
+      </section>
+      <Footer />
+    </>
   )
 }
-
-export default BadgesPage

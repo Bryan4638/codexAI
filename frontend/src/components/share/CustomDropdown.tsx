@@ -14,7 +14,6 @@ interface CyberSelectProps {
   options: SelectOption[]
   value: string
   onChange: (id: string) => void
-  placeholder?: string
   className?: string
 }
 
@@ -22,7 +21,6 @@ const CyberSelect: React.FC<CyberSelectProps> = ({
   options,
   value,
   onChange,
-  placeholder = 'Seleccionar...',
   className = '',
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -46,13 +44,13 @@ const CyberSelect: React.FC<CyberSelectProps> = ({
   const SelectedIcon = selected?.icon
 
   return (
-    <div className={`relative w-68 ${className}`} ref={dropdownRef}>
+    <div className={`relative w-auto ${className}`} ref={dropdownRef}>
       {/* Botón Principal (Trigger) */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={`
-          w-full flex items-center justify-between px-4 py-2.5
+          w-full flex items-center justify-between gap-6 px-4 py-2.5
           bg-bg-secondary border rounded-xl transition-all duration-300
           ${
             isOpen
@@ -69,9 +67,9 @@ const CyberSelect: React.FC<CyberSelectProps> = ({
             />
           )}
           <span
-            className={`font-medium ${selected ? 'text-white' : 'text-white/40'}`}
+            className={`font-display font-medium ${selected ? 'text-white' : 'text-white/40'}`}
           >
-            {selected ? selected.label : placeholder}
+            {selected ? selected.label : 'Selecciona...'}
           </span>
         </div>
         <IconChevronDown

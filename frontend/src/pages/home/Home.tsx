@@ -1,3 +1,4 @@
+import Footer from '@/components/nav/Footer'
 import Hero from '@/pages/home/components/Hero'
 import LearningPath from '@/pages/home/components/LearningPath'
 
@@ -6,6 +7,7 @@ export default function Home() {
     <>
       <Hero />
       <LearningPath />
+      <Footer />
     </>
   )
 }
