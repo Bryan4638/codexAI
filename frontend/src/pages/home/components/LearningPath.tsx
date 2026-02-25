@@ -10,16 +10,15 @@ export default function LearningPath() {
   const navigate = useNavigate()
 
   return (
-    <section className="relative overflow-hidden grid-background py-20">
-      {/* Background Vector Path removed from here to place inside nodes container */}
+    <section className="relative overflow-hidden py-12">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,240,255,0.05),transparent_50%)]"></div>
 
-      <div className="relative z-10 px-6 max-w-4xl mx-auto">
-        {/* Intro Text */}
-        <div className="text-center pt-8 pb-20">
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-4 bg-clip-text text-transparent bg-linear-to-r from-neon-cyan to-neon-purple drop-shadow-[0_0_15px_rgba(0,240,255,0.5)]">
+      <div className="relative z-10 px-6 max-w-5xl mx-auto">
+        <div className="text-center pt-8">
+          <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(0,240,255,0.3)]">
             El Camino del Chambeador Dragón
           </h2>
-          <p className="text-lg text-text-secondary max-w-2xl mx-auto font-body">
+          <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
             Desbloquea tu verdadero potencial. Sigue la ruta de fuego y código
             para convertirte en un maestro del desarrollo de software. Cada nodo
             es un reto, cada módulo es una llama que forjará tus habilidades.
@@ -27,192 +26,175 @@ export default function LearningPath() {
           </p>
         </div>
 
-        <div className="relative">
-          {/* Background Vector Path (Illustrative ZigZag) */}
-          <div className="absolute inset-x-0 top-[200px] bottom-[-50px] pointer-events-none opacity-40 flex justify-center">
-            <svg
-              className="w-full max-w-[600px] h-full"
+        <div className="relative min-h-[2000px]">
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 800 2000"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient
+                id="pathGradient"
+                x1="0%"
+                y1="0%"
+                x2="0%"
+                y2="100%"
+              >
+                <stop offset="0%" stopColor="#00f0ff" stopOpacity="0.6" />
+                <stop offset="25%" stopColor="#8b5cf6" stopOpacity="0.6" />
+                <stop offset="50%" stopColor="#ff2d92" stopOpacity="0.6" />
+                <stop offset="75%" stopColor="#ff00ff" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#00f0ff" stopOpacity="0.6" />
+              </linearGradient>
+
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <path
+              d="M 400 100
+                 C 400 200, 400 250, 550 350
+                 S 700 450, 650 600
+                 S 500 700, 250 850
+                 S 100 1000, 200 1150
+                 S 400 1250, 550 1350
+                 S 650 1450, 500 1600
+                 S 300 1750, 400 1900"
+              stroke="url(#pathGradient)"
+              strokeWidth="4"
               fill="none"
-              preserveAspectRatio="none"
-              viewBox="0 0 400 1500"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                className="lightning-path"
-                d="M200 0 V100 L300 300 L100 600 L300 900 L100 1200 L200 1500"
-                stroke="url(#paint0_linear)"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="6"
-              ></path>
-              <defs>
-                <linearGradient
-                  gradientUnits="userSpaceOnUse"
-                  id="paint0_linear"
-                  x1="200"
-                  x2="200"
-                  y1="0"
-                  y2="1500"
-                >
-                  <stop stopColor="var(--color-neon-cyan)"></stop>
-                  <stop
-                    offset="0.25"
-                    stopColor="var(--color-neon-purple)"
-                  ></stop>
-                  <stop offset="0.5" stopColor="var(--color-neon-pink)"></stop>
-                  <stop
-                    offset="0.75"
-                    stopColor="var(--color-neon-magenta)"
-                  ></stop>
-                  <stop offset="1" stopColor="var(--color-neon-cyan)"></stop>
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
+              strokeLinecap="round"
+              strokeDasharray="10 5"
+              filter="url(#glow)"
+              className="animate-pulse"
+            />
 
-          <div className="space-y-40 relative z-10 py-10 flex flex-col items-center">
-            {/* Node 1: Center */}
-            <div className="w-full flex justify-center">
-              <div
-                className="flex flex-col items-center gap-4 cursor-pointer group"
+            <circle cx="400" cy="100" r="8" fill="#00f0ff" filter="url(#glow)">
+              <animate
+                attributeName="r"
+                values="8;12;8"
+                dur="2s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle cx="550" cy="350" r="8" fill="#8b5cf6" filter="url(#glow)">
+              <animate
+                attributeName="r"
+                values="8;12;8"
+                dur="2s"
+                begin="0.4s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle cx="650" cy="600" r="8" fill="#ff2d92" filter="url(#glow)">
+              <animate
+                attributeName="r"
+                values="8;12;8"
+                dur="2s"
+                begin="0.8s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle cx="250" cy="850" r="8" fill="#ff00ff" filter="url(#glow)">
+              <animate
+                attributeName="r"
+                values="8;12;8"
+                dur="2s"
+                begin="1.2s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle cx="550" cy="1350" r="8" fill="#00f0ff" filter="url(#glow)">
+              <animate
+                attributeName="r"
+                values="8;12;8"
+                dur="2s"
+                begin="1.6s"
+                repeatCount="indefinite"
+              />
+            </circle>
+          </svg>
+
+          <div className="relative z-10 space-y-0">
+            <div className="absolute left-1/2 -translate-x-1/2 top-[80px]">
+              <PathNode
+                title="Programming Languages"
+                subtitle="JS • Python • C++"
+                color="cyan"
                 onClick={() => navigate('/modules')}
-              >
-                <div className="w-32 h-32 md:w-40 md:h-40 flex items-center justify-center z-20 group-hover:scale-110 transition-transform relative">
-                  <img
-                    src={nodeProgramming}
-                    alt="Programming"
-                    className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(0,240,255,0.8)]"
-                  />
-                </div>
-                <div className="bg-bg-dark/90 border border-neon-cyan/40 p-3 rounded-lg backdrop-blur-md w-48 text-center shadow-lg group-hover:border-neon-cyan transition-colors mt-2">
-                  <h3 className="text-sm font-bold text-neon-cyan">
-                    Programming Languages
-                  </h3>
-                  <p className="text-[10px] text-neon-cyan/60 mt-1 uppercase tracking-tighter">
-                    JS • Python • C++
-                  </p>
-                </div>
-              </div>
+                image={nodeProgramming}
+                alt="Programming Languages"
+              />
             </div>
 
-            {/* Node 2: Right */}
-            <div className="w-full flex justify-end pr-8 sm:pr-24">
-              <div
-                className="flex flex-col items-center gap-4 cursor-pointer group"
+            <div className="absolute right-[15%] top-[330px]">
+              <PathNode
+                title="System Design"
+                subtitle="Architecture Blueprints"
+                color="purple"
                 onClick={() => navigate('/modules')}
-              >
-                <div className="w-32 h-32 md:w-40 md:h-40 flex items-center justify-center z-20 group-hover:scale-110 transition-transform relative">
-                  <img
-                    src={nodeArchitecture}
-                    alt="Architecture"
-                    className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(139,92,246,0.8)]"
-                  />
-                </div>
-                <div className="bg-bg-dark/90 border border-neon-purple/40 p-3 rounded-lg backdrop-blur-md w-48 text-center shadow-lg group-hover:border-neon-purple transition-colors mt-2">
-                  <h3 className="text-sm font-bold text-neon-purple">
-                    System Design
-                  </h3>
-                  <p className="text-[10px] text-neon-purple/60 mt-1 uppercase tracking-tighter">
-                    Architecture Blueprints
-                  </p>
-                </div>
-              </div>
+                image={nodeArchitecture}
+                alt="System Design"
+              />
             </div>
 
-            {/* Node 3: Left */}
-            <div className="w-full flex justify-start pl-8 sm:pl-24">
-              <div
-                className="flex flex-col items-center gap-4 cursor-pointer group"
+            <div className="absolute right-[30%] top-[680px]">
+              <PathNode
+                title="DevOps & CI/CD"
+                subtitle="Pipeline & Automation"
+                color="pink"
                 onClick={() => navigate('/modules')}
-              >
-                <div className="w-32 h-32 md:w-40 md:h-40 flex items-center justify-center z-20 group-hover:scale-110 transition-transform relative">
-                  <img
-                    src={nodeDevops}
-                    alt="DevOps"
-                    className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(255,45,146,0.8)]"
-                  />
-                </div>
-                <div className="bg-bg-dark/90 border border-neon-pink/40 p-3 rounded-lg backdrop-blur-md w-48 text-center shadow-lg group-hover:border-neon-pink transition-colors mt-2">
-                  <h3 className="text-sm font-bold text-neon-pink">
-                    DevOps &amp; CI/CD
-                  </h3>
-                  <p className="text-[10px] text-neon-pink/60 mt-1 uppercase tracking-tighter">
-                    Pipeline &amp; Automation
-                  </p>
-                </div>
-              </div>
+                image={nodeDevops}
+                alt="DevOps & CI/CD"
+              />
             </div>
 
-            {/* Node 4: Right */}
-            <div className="w-full flex justify-end pr-8 sm:pr-24">
-              <div
-                className="flex flex-col items-center gap-4 cursor-pointer group"
+            <div className="absolute left-[10%] top-[830px]">
+              <PathNode
+                title="Advanced Coding"
+                subtitle="Terminal Challenges"
+                color="magenta"
                 onClick={() => navigate('/challenges')}
-              >
-                <div className="w-52 h-52 md:w-40 md:h-40 flex items-center justify-center z-20 group-hover:scale-110 transition-transform relative">
-                  <img
-                    src={nodeTerminal}
-                    alt="Terminal"
-                    className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(255,0,255,0.8)]"
-                  />
-                </div>
-                <div className="bg-bg-dark/90 border border-neon-magenta/40 p-3 rounded-lg backdrop-blur-md w-48 text-center shadow-lg group-hover:border-neon-magenta transition-colors mt-2">
-                  <h3 className="text-sm font-bold text-neon-magenta">
-                    Advanced Coding
-                  </h3>
-                  <p className="text-[10px] text-neon-magenta/60 mt-1 uppercase tracking-tighter">
-                    Terminal Challenges
-                  </p>
-                </div>
-              </div>
+                image={nodeTerminal}
+                alt="Advanced Coding"
+              />
             </div>
 
-            {/* Node 5: Left */}
-            <div className="w-full flex justify-start pl-8 sm:pl-24">
-              <div
-                className="flex flex-col items-center gap-4 cursor-pointer group"
+            <div className="absolute right-[15%] top-[1330px]">
+              <PathNode
+                title="Databases & Cloud"
+                subtitle="Infrastructure Scales"
+                color="cyan"
                 onClick={() => navigate('/modules')}
-              >
-                <div className="w-32 h-32 md:w-40 md:h-40 flex items-center justify-center z-20 group-hover:scale-110 transition-transform relative">
-                  <img
-                    src={nodeCloud}
-                    alt="Cloud"
-                    className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(0,240,255,0.8)]"
-                  />
-                </div>
-                <div className="bg-bg-dark/90 border border-neon-cyan/40 p-3 rounded-lg backdrop-blur-md w-48 text-center shadow-lg group-hover:border-neon-cyan transition-colors mt-2">
-                  <h3 className="text-sm font-bold text-neon-cyan">
-                    Databases &amp; Cloud
-                  </h3>
-                  <p className="text-[10px] text-neon-cyan/60 mt-1 uppercase tracking-tighter">
-                    Infrastructure Scales
-                  </p>
-                </div>
-              </div>
+                image={nodeCloud}
+                alt="Databases & Cloud"
+              />
             </div>
           </div>
         </div>
 
-        {/* Mascot Footer Illustration */}
-        <div className="pt-20 pb-10 flex flex-col items-center">
+        <div className="-mt-26 flex flex-col items-center">
           <div className="relative group">
-            {/* Mascot Image Placeholder Area */}
-            <div className="relative w-72 h-72 mx-auto overflow-visible">
-              <div className="absolute inset-0 bg-linear-to-t from-neon-cyan/20 to-transparent rounded-full blur-3xl opacity-50"></div>
+            <div className="w-72 h-72 mx-auto mb-8 flex items-center justify-center rounded-2xl overflow-hidden bg-gradient-to-b from-slate-800/50 to-transparent">
               <img
-                alt="Dragon mascot using a laptop"
-                className="w-full h-full object-contain relative z-10 filter drop-shadow-[0_0_20px_rgba(0,238,255,0.5)] rounded-2xl"
                 src={dragonMascot}
+                alt="Dragon mascot"
+                className="w-full h-full object-contain filter drop-shadow-[0_0_30px_rgba(0,240,255,0.4)]"
               />
             </div>
-            {/* Neon Sign */}
-            <div className="mb-8 px-6 py-2 border-2 border-neon-pink rounded-lg bg-neon-pink/10 shadow-[0_0_15px_#ff2d92]">
-              <h2 className="text-neon-pink font-bold text-xl tracking-widest text-center">
+            <div className="px-8 py-3 border-2 border-pink-500 rounded-xl bg-pink-500/10 shadow-[0_0_30px_#ff2d92] backdrop-blur-sm">
+              <h2 className="text-pink-500 font-bold text-2xl tracking-widest text-center">
                 CHAMBEADOR DRAGON
               </h2>
             </div>
-            <div className="mt-6 text-center max-w-xs mx-auto">
-              <p className="text-slate-400 text-sm italic">
+            <div className="mt-6 text-center max-w-md mx-auto">
+              <p className="text-slate-400 text-sm italic leading-relaxed">
                 "Keep grinding, coder. The system is your playground."
               </p>
             </div>
@@ -220,5 +202,83 @@ export default function LearningPath() {
         </div>
       </div>
     </section>
+  )
+}
+
+interface PathNodeProps {
+  title: string
+  subtitle: string
+  color: 'cyan' | 'purple' | 'pink' | 'magenta'
+  onClick: () => void
+  image: string
+  alt: string
+}
+
+function PathNode({
+  title,
+  subtitle,
+  color,
+  onClick,
+  image,
+  alt,
+}: PathNodeProps) {
+  const colorClasses = {
+    cyan: {
+      border: 'border-cyan-400/40 hover:border-cyan-400',
+      text: 'text-cyan-400',
+      glow: 'hover:shadow-[0_0_30px_rgba(0,240,255,0.5)]',
+      bg: 'bg-cyan-500/10',
+      imageGlow: 'drop-shadow-[0_0_20px_rgba(0,240,255,0.8)]',
+    },
+    purple: {
+      border: 'border-purple-500/40 hover:border-purple-500',
+      text: 'text-purple-400',
+      glow: 'hover:shadow-[0_0_30px_rgba(139,92,246,0.5)]',
+      bg: 'bg-purple-500/10',
+      imageGlow: 'drop-shadow-[0_0_20px_rgba(139,92,246,0.8)]',
+    },
+    pink: {
+      border: 'border-pink-500/40 hover:border-pink-500',
+      text: 'text-pink-400',
+      glow: 'hover:shadow-[0_0_30px_rgba(255,45,146,0.5)]',
+      bg: 'bg-pink-500/10',
+      imageGlow: 'drop-shadow-[0_0_20px_rgba(255,45,146,0.8)]',
+    },
+    magenta: {
+      border: 'border-fuchsia-500/40 hover:border-fuchsia-500',
+      text: 'text-fuchsia-400',
+      glow: 'hover:shadow-[0_0_30px_rgba(255,0,255,0.5)]',
+      bg: 'bg-fuchsia-500/10',
+      imageGlow: 'drop-shadow-[0_0_20px_rgba(255,0,255,0.8)]',
+    },
+  }
+
+  const colors = colorClasses[color]
+
+  return (
+    <div
+      className="flex flex-col items-center gap-4 cursor-pointer group transition-all duration-300"
+      onClick={onClick}
+    >
+      <div
+        className={`w-36 h-36 flex items-center justify-center rounded-full ${colors.bg} ${colors.border} border-2 backdrop-blur-md group-hover:scale-110 transition-all duration-300 ${colors.glow} overflow-hidden`}
+      >
+        <img
+          src={image}
+          alt={alt}
+          className={`w-full h-full object-contain filter ${colors.imageGlow}`}
+        />
+      </div>
+      <div
+        className={`${colors.bg} border ${colors.border} p-4 rounded-xl backdrop-blur-md w-56 text-center transition-all duration-300 ${colors.glow}`}
+      >
+        <h3 className={`text-base font-bold ${colors.text}`}>{title}</h3>
+        <p
+          className={`text-xs ${colors.text} opacity-60 mt-2 uppercase tracking-wide`}
+        >
+          {subtitle}
+        </p>
+      </div>
+    </div>
   )
 }
