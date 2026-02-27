@@ -92,9 +92,9 @@ export class AuthService {
 
     const resend = new Resend(env.RESEND_API_KEY);
     const { data, error } = await resend.emails.send({
-      from: `Learncode.bryandev.dev <${env.RESEND_FROM_SEND}>`,
+      from: `Chamba-Code <${env.RESEND_FROM_SEND}>`,
       to: email,
-      subject: 'Learn-Code - Verification Code',
+      subject: 'Chamba-Code - Verification Code',
       html: getOtpEmailTemplate(code),
     });
 

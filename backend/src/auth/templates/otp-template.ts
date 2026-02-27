@@ -141,14 +141,14 @@ export const getOtpEmailTemplate = (code: string): string => {
           <div class="glass-container">
             <!-- Header -->
             <div class="header-logo">
-               <span class="logo-text">Learn-Code</span>
+               <span class="logo-text">Chamba-Code</span>
             </div>
 
             <!-- Body -->
             <h1 class="title">Verification Code</h1>
             
             <p class="description">
-              You requested a secure login for your Learn-Code account.<br>
+              You requested a secure login for your Chamba-Code account.<br>
               Please use the following verification code to complete your sign-in.
             </p>
 
@@ -166,7 +166,7 @@ export const getOtpEmailTemplate = (code: string): string => {
 
             <!-- Footer -->
             <div class="footer">
-              <p>&copy; ${new Date().getFullYear()} Learn-Code Platform. All rights reserved.</p>
+              <p>&copy; ${new Date().getFullYear()} Chamba-Code Platform. All rights reserved.</p>
               <br>
               <a href="#" class="footer-link">Help Center</a> &bull; <a href="#" class="footer-link">Privacy Policy</a>
             </div>
