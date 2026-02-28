@@ -24,6 +24,7 @@ import { Reaction } from './challenges/entities/reaction.entity';
 import { Module } from './exercises/entities/module.entity';
 import { Lesson } from './exercises/entities/lesson.entity';
 import { Exercise } from './exercises/entities/exercise.entity';
+import { ExerciseTest } from './exercises/entities/exercise-test.entity';
 
 @NestModule({
   imports: [
@@ -50,6 +51,7 @@ import { Exercise } from './exercises/entities/exercise.entity';
         Module,
         Lesson,
         Exercise,
+        ExerciseTest,
       ],
       synchronize: false, // Use migrations instead
       //logging: env.NODE_ENV !== 'production',

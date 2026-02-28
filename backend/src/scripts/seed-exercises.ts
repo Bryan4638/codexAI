@@ -2,7 +2,9 @@ import { DataSource } from 'typeorm';
 import { Module } from '../exercises/entities/module.entity';
 import { Lesson } from '../exercises/entities/lesson.entity';
 import { Exercise } from '../exercises/entities/exercise.entity';
+import { ExerciseTest } from '../exercises/entities/exercise-test.entity';
 import { exercises } from './data/exercises.data';
+import { exercisesWithTests } from './data/exercises-with-tests.data';
 import * as dotenv from 'dotenv';
 import { User } from '../auth/entities/user.entity';
 import { UserProgress } from '../auth/entities/user-progress.entity';
@@ -23,6 +25,7 @@ const dataSource = new DataSource({
     Module,
     Lesson,
     Exercise,
+    ExerciseTest,
     User,
     UserProgress,
     UserBadge,
@@ -199,6 +202,67 @@ async function seed() {
       console.log(`    Exercise created: ${exData.id}`);
     } else {
       // console.log(`    Exercise ignored: ${exData.id} (already exists)`);
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Sembrar ejercicios CON TESTS (4 ejercicios nuevos)
+  // ─────────────────────────────────────────────────────────────────────────
+  const exerciseTestRepo = dataSource.getRepository(ExerciseTest);
+
+  for (const exData of exercisesWithTests) {
+    const lesson = lessonMap.get(exData.lessonId);
+    if (!lesson) {
+      console.warn(
+        `Lección no encontrada para ejercicio ${exData.id} (lessonId: ${exData.lessonId})`,
+      );
+      continue;
+    }
+
+    // Buscar o crear el ejercicio
+    let exercise = await exerciseRepo.findOne({
+      where: { prompt: exData.prompt, lesson: { id: lesson.id } },
+    });
+
+    if (!exercise) {
+      exercise = exerciseRepo.create({
+        type: exData.type as any,
+        difficulty: exData.difficulty as any,
+        xpReward: exData.xpReward,
+        prompt: exData.prompt,
+        data: exData.data as any,
+        order: 0,
+        isActive: true,
+        lesson: lesson,
+      });
+      await exerciseRepo.save(exercise);
+      console.log(`    Ejercicio con tests creado: ${exData.id}`);
+    } else {
+      console.log(`    Ejercicio ya existe: ${exData.id}`);
+    }
+
+    // Sembrar los tests del ejercicio
+    for (const testData of exData.tests) {
+      const existingTest = await exerciseTestRepo.findOne({
+        where: {
+          description: testData.description,
+          exercise: { id: exercise.id },
+        },
+      });
+
+      if (!existingTest) {
+        const newTest = exerciseTestRepo.create({
+          description: testData.description,
+          input: testData.input,
+          expectedOutput: testData.expectedOutput,
+          isHidden: testData.isHidden,
+          order: testData.order,
+          exercise: exercise,
+        });
+        await exerciseTestRepo.save(newTest);
+        const visibility = testData.isHidden ? '🔒 oculto' : '✅ visible';
+        console.log(`      Test [${visibility}]: ${testData.description}`);
+      }
     }
   }
 

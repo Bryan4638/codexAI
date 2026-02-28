@@ -1,6 +1,6 @@
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
 import Queue from 'bull';
-import { DockerManagerService } from './docker-manager.service';
+import { DockerManagerService, TestCaseConfig } from './docker-manager.service';
 import { env } from '../../config/env';
 
 interface ExecutionJob {
@@ -8,6 +8,7 @@ interface ExecutionJob {
   code: string;
   userId?: string;
   timeout?: number;
+  tests?: TestCaseConfig[];
 }
 
 @Injectable()
@@ -36,19 +37,24 @@ export class QueueManagerService implements OnModuleDestroy {
     console.log('👷 Initializing Queue Worker...');
 
     this.queue.process(5, async (job) => {
-      const { language, code, userId, timeout } = job.data;
+      const { language, code, userId, timeout, tests } = job.data;
 
       console.log(
-        `Job ${job.id}: Processing ${language} execution for user ${userId || 'anonymous'}`,
+        `Job ${job.id}: Processing ${language} execution for user ${userId || 'anonymous'}` +
+          (tests ? ` with ${tests.length} tests` : ''),
       );
 
       try {
-        const result = await this.dockerManager.executeCode(
-          language,
-          code,
-          timeout,
-        );
-        return result;
+        if (tests && tests.length > 0) {
+          return await this.dockerManager.executeWithTests(
+            language,
+            code,
+            tests,
+            timeout || 15000,
+          );
+        } else {
+          return await this.dockerManager.executeCode(language, code, timeout);
+        }
       } catch (error: unknown) {
         console.error(`Job ${job.id} failed:`, error);
         throw error;
