@@ -16,8 +16,8 @@ export class ExecuteWithTestsUseCase {
     private readonly userProgressRepo: Repository<UserChallengeProgress>,
   ) {}
 
-  async execute(dto: ExecuteWithTestsDto) {
-    const { challengeId, language, code, userId } = dto;
+  async execute(userId: string, dto: ExecuteWithTestsDto) {
+    const { challengeId, language, code } = dto;
 
     // Obtener tests del reto
     const tests = await this.challengeTestRepo.find({

@@ -7,6 +7,7 @@ import {
   IconUserFilled,
   IconX,
 } from '@tabler/icons-react'
+import { useNavigate } from 'react-router-dom'
 
 interface ChallengeDetailModalProps {
   challenge: Challenge
@@ -18,6 +19,7 @@ function ChallengeDetailModal({
   onClose,
 }: ChallengeDetailModalProps) {
   const { user } = useAuthStore()
+  const navigate = useNavigate()
   const { toggleReactionMutation, deleteChallengeMutation } = useChallenges(
     undefined,
     user?.id
@@ -143,6 +145,15 @@ function ChallengeDetailModal({
           </button>
 
           <div className="flex gap-4">
+            <button
+              onClick={() => {
+                onClose()
+                navigate(`/challenges/${challenge.id}/editor`)
+              }}
+              className="btn btn-primary"
+            >
+              Resolver Reto
+            </button>
             {user && user.username === challenge.author?.username && (
               <button
                 onClick={handleDelete}

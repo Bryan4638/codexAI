@@ -23,13 +23,15 @@ export default function ChallengesPage() {
   const [filters, setFilters] = useState({
     difficulty: 'all',
     sort: 'newest',
+    page: 1,
   })
 
   const queryFilters = useMemo(() => filters, [filters])
   const { challengesQuery, toggleReactionMutation, deleteChallengeMutation } =
     useChallenges(queryFilters, user?.id)
 
-  const challenges = challengesQuery.data ?? []
+  const challenges = challengesQuery.data?.data ?? []
+  const meta = challengesQuery.data?.meta
   const selectedChallenge = selectedChallengeId
     ? (challenges.find((challenge) => challenge.id === selectedChallengeId) ??
       null)
@@ -76,14 +78,16 @@ export default function ChallengesPage() {
               options={difficultyOptions}
               value={filters.difficulty}
               onChange={(val) =>
-                setFilters((prev) => ({ ...prev, difficulty: val }))
+                setFilters((prev) => ({ ...prev, difficulty: val, page: 1 }))
               }
             />
 
             <CyberSelect
               options={sortOptions}
               value={filters.sort}
-              onChange={(val) => setFilters((prev) => ({ ...prev, sort: val }))}
+              onChange={(val) =>
+                setFilters((prev) => ({ ...prev, sort: val, page: 1 }))
+              }
             />
           </div>
 
@@ -103,20 +107,55 @@ export default function ChallengesPage() {
         ) : challenges.length === 0 ? (
           <IsEmpty text="No hay retos aún. ¡Sé el primero en crear uno!" />
         ) : (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
-            {challenges.map((challenge) => {
-              return (
-                <ChallengeCard
-                  key={challenge.id}
-                  challenge={challenge}
-                  currentUser={user!}
-                  onDelete={() => handleDelete(challenge.id)}
-                  onReaction={() => handleReaction(challenge.id)}
-                  onSelect={setSelectedChallengeId}
-                />
-              )
-            })}
-          </div>
+          <>
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+              {challenges.map((challenge) => {
+                return (
+                  <ChallengeCard
+                    key={challenge.id}
+                    challenge={challenge}
+                    currentUser={user!}
+                    onDelete={() => handleDelete(challenge.id)}
+                    onReaction={() => handleReaction(challenge.id)}
+                    onSelect={setSelectedChallengeId}
+                  />
+                )
+              })}
+            </div>
+
+            {/* Pagination Controls */}
+            {meta && meta.lastPage > 1 && (
+              <div className="w-full mt-12 mb-6">
+                <div className="flex justify-between items-center bg-bg-card p-4 rounded-2xl border border-white/10 shadow-card">
+                  <button
+                    className="btn btn-secondary shadow-none px-6"
+                    disabled={filters.page === 1}
+                    onClick={() =>
+                      setFilters((prev) => ({ ...prev, page: prev.page - 1 }))
+                    }
+                  >
+                    Anterior
+                  </button>
+                  <div className="text-text-secondary">
+                    Página{' '}
+                    <span className="text-neon-cyan font-bold">
+                      {meta.page}
+                    </span>{' '}
+                    de {meta.lastPage}
+                  </div>
+                  <button
+                    className="btn btn-secondary shadow-none px-6"
+                    disabled={filters.page >= meta.lastPage}
+                    onClick={() =>
+                      setFilters((prev) => ({ ...prev, page: prev.page + 1 }))
+                    }
+                  >
+                    Siguiente
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         {showCreateModal && (

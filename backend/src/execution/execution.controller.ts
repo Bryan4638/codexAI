@@ -1,9 +1,17 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { ExecuteCodeDto } from './dto/execute-code.dto';
 import { ExecuteWithTestsDto } from './dto/execute-with-tests.dto';
 import { ExecuteCodeUseCase } from './use-cases/execute-code.use-case';
 import { ExecuteWithTestsUseCase } from './use-cases/execute-with-tests.use-case';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { User } from '../auth/entities/user.entity';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 
 @ApiTags('Execution (Sandbox)')
 @Controller('execute')
@@ -25,6 +33,8 @@ export class ExecutionController {
   }
 
   @Post('with-tests')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('jwt')
   @ApiOperation({
     summary: 'Ejecutar código contra Tests',
     description:
@@ -35,7 +45,10 @@ export class ExecutionController {
     status: 404,
     description: 'No se encontraron tests para el ID proveído.',
   })
-  executeWithTests(@Body() dto: ExecuteWithTestsDto) {
-    return this.executeWithTestsUseCase.execute(dto);
+  executeWithTests(
+    @CurrentUser() user: User,
+    @Body() dto: ExecuteWithTestsDto,
+  ) {
+    return this.executeWithTestsUseCase.execute(user.id, dto);
   }
 }
