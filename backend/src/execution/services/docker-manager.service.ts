@@ -240,7 +240,13 @@ export class DockerManagerService implements OnModuleDestroy {
       let __finalResults = [];
       let __minMs = Infinity;
       
-      const __getNow = () => typeof performance !== 'undefined' ? performance.now() : Date.now();
+      const __getNow = () => {
+        if (typeof process !== 'undefined' && process.hrtime) {
+          const t = process.hrtime();
+          return t[0] * 1000 + t[1] / 1000000;
+        }
+        return Date.now();
+      };
       
       // Correr los tests 5 veces para estabilizar el tiempo (warmup V8 y evitar garbage collector pikes)
       for (let run = 0; run < 5; run++) {
@@ -253,7 +259,8 @@ export class DockerManagerService implements OnModuleDestroy {
               ? JSON.parse(t.input) 
               : (t.input ? [t.input] : []);
               
-            const actual = String(${functionName}(...args));
+            const rawResult = ${functionName}(...args);
+            const actual = typeof rawResult === 'object' ? JSON.stringify(rawResult) : String(rawResult);
             __results.push({ id: t.id, passed: actual === t.expectedOutput, actual });
           } catch(e) {
             __results.push({ id: t.id, passed: false, actual: 'ERROR: ' + e.message });
@@ -270,7 +277,8 @@ export class DockerManagerService implements OnModuleDestroy {
         }
       }
       
-      const __cleanMs = Number(__minMs.toFixed(3));
+      let __cleanMs = Number(__minMs.toFixed(3));
+      if (__cleanMs === 0) __cleanMs = 0.001;
       
       // Retornar objeto final al sandbox para que lo serialice en "result"
       ({ results: __finalResults, executionTimeMs: __cleanMs });

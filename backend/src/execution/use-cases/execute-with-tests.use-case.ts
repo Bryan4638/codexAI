@@ -57,6 +57,7 @@ export class ExecuteWithTestsUseCase {
           const originalTest = tests.find((t) => t.id === tr.id);
           return originalTest && !originalTest.isHidden;
         });
+        //const publicResults = result;
 
         // Asegurar que el executionTimeMs sea un número válido y extraerlo
         const timeMs =
