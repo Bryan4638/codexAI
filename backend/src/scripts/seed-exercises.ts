@@ -2,9 +2,7 @@ import { DataSource } from 'typeorm';
 import { Module } from '../exercises/entities/module.entity';
 import { Lesson } from '../exercises/entities/lesson.entity';
 import { Exercise } from '../exercises/entities/exercise.entity';
-import { ExerciseTest } from '../exercises/entities/exercise-test.entity';
 import { exercises } from './data/exercises.data';
-import { exercisesWithTests } from './data/exercises-with-tests.data';
 import * as dotenv from 'dotenv';
 import { User } from '../auth/entities/user.entity';
 import { UserProgress } from '../auth/entities/user-progress.entity';
@@ -25,7 +23,6 @@ const dataSource = new DataSource({
     Module,
     Lesson,
     Exercise,
-    ExerciseTest,
     User,
     UserProgress,
     UserBadge,
@@ -205,7 +202,7 @@ async function seed() {
     }
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
+  /* ─────────────────────────────────────────────────────────────────────────
   // Sembrar ejercicios CON TESTS (4 ejercicios nuevos)
   // ─────────────────────────────────────────────────────────────────────────
   const exerciseTestRepo = dataSource.getRepository(ExerciseTest);
@@ -264,7 +261,7 @@ async function seed() {
         console.log(`      Test [${visibility}]: ${testData.description}`);
       }
     }
-  }
+  } */
 
   console.log('Seeding complete');
   await dataSource.destroy();

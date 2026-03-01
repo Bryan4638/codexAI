@@ -10,6 +10,7 @@ import { UserProgress } from './user-progress.entity';
 import { UserBadge } from './user-badge.entity';
 import { Challenge } from '../../challenges/entities/challenge.entity';
 import type { Reaction } from '../../challenges/entities/reaction.entity';
+import { UserChallengeProgress } from '../../challenges/entities/user-challenge-progress.entity';
 
 @Entity('users')
 export class User {
@@ -75,4 +76,7 @@ export class User {
 
   @OneToMany('Reaction', 'user')
   reactions: Reaction[];
+
+  @OneToMany(() => UserChallengeProgress, (progress) => progress.user)
+  challengeProgress: UserChallengeProgress[];
 }

@@ -9,6 +9,8 @@ import {
 } from 'typeorm';
 import type { User } from '../../auth/entities/user.entity';
 import type { Reaction } from './reaction.entity';
+import { ChallengeTest } from './challenge-test.entity';
+import { UserChallengeProgress } from './user-challenge-progress.entity';
 
 @Entity('challenges')
 export class Challenge {
@@ -42,4 +44,10 @@ export class Challenge {
 
   @OneToMany('Reaction', 'challenge')
   reactions: Reaction[];
+
+  @OneToMany(() => ChallengeTest, (test) => test.challenge, { cascade: true })
+  tests: ChallengeTest[];
+
+  @OneToMany(() => UserChallengeProgress, (progress) => progress.challenge)
+  userProgress: UserChallengeProgress[];
 }

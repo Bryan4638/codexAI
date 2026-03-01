@@ -24,7 +24,8 @@ import { Reaction } from './challenges/entities/reaction.entity';
 import { Module } from './exercises/entities/module.entity';
 import { Lesson } from './exercises/entities/lesson.entity';
 import { Exercise } from './exercises/entities/exercise.entity';
-import { ExerciseTest } from './exercises/entities/exercise-test.entity';
+import { ChallengeTest } from './challenges/entities/challenge-test.entity';
+import { UserChallengeProgress } from './challenges/entities/user-challenge-progress.entity';
 
 @NestModule({
   imports: [
@@ -51,7 +52,8 @@ import { ExerciseTest } from './exercises/entities/exercise-test.entity';
         Module,
         Lesson,
         Exercise,
-        ExerciseTest,
+        ChallengeTest,
+        UserChallengeProgress,
       ],
       synchronize: false, // Use migrations instead
       //logging: env.NODE_ENV !== 'production',

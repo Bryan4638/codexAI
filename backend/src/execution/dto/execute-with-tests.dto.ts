@@ -9,12 +9,12 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class ExecuteWithTestsDto {
   @ApiProperty({
-    description: 'ID de Base de datos del Ejercicio a evaluar',
+    description: 'ID de Base de datos del Reto a evaluar',
     example: 'd290f1ee-6c54-4b01-90e6-d701748f0851',
   })
-  @IsUUID('4', { message: 'El ID del ejercicio debe ser un UUID válido' })
+  @IsUUID('4', { message: 'El ID del reto debe ser un UUID válido' })
   @IsNotEmpty()
-  exerciseId: string;
+  challengeId: string;
 
   @ApiProperty({
     description: 'Lenguaje en el que el código está escrito',

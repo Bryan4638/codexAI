@@ -12,7 +12,6 @@ import { UserBadge } from '../auth/entities/user-badge.entity';
 import { Module } from './entities/module.entity';
 import { Lesson } from './entities/lesson.entity';
 import { Exercise } from './entities/exercise.entity';
-import { ExerciseTest } from './entities/exercise-test.entity';
 import { GetAllExercisesUseCase } from './use-cases/get-all-exercises.use-case';
 import { GetExerciseByIdUseCase } from './use-cases/get-exercise-by-id.use-case';
 import { ValidateExerciseUseCase } from './use-cases/validate-exercise.use-case';
@@ -57,7 +56,6 @@ const useCases = [
       Module,
       Lesson,
       Exercise,
-      ExerciseTest,
     ]),
     AuthModule,
   ],

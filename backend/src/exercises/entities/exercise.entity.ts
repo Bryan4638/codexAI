@@ -9,7 +9,6 @@ import {
   JoinColumn,
 } from 'typeorm';
 import type { Lesson } from './lesson.entity';
-import type { ExerciseTest } from './exercise-test.entity';
 
 export type ExerciseType = 'code' | 'quiz' | 'dragDrop' | 'fillBlank';
 export type ExerciseDifficulty = 'beginner' | 'intermediate' | 'advanced';
@@ -58,7 +57,4 @@ export class Exercise {
   @ManyToOne('Lesson', 'exercises', { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'lesson_id' })
   lesson: Lesson;
-
-  @OneToMany('ExerciseTest', 'exercise')
-  tests: ExerciseTest[];
 }
