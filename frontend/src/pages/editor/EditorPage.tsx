@@ -34,6 +34,16 @@ export default function EditorPage() {
   const [isExecuting, setIsExecuting] = useState(false)
 
   useEffect(() => {
+    if (!user) {
+      Swal.fire(
+        'Atención',
+        'Debes iniciar sesión para acceder al editor',
+        'warning'
+      )
+      navigate('/challenges')
+      return
+    }
+
     async function fetchChallenge() {
       if (!id) return
       try {
@@ -54,8 +64,9 @@ export default function EditorPage() {
         setLoading(false)
       }
     }
+
     fetchChallenge()
-  }, [id, navigate])
+  }, [id, navigate, user])
 
   const handleExecuteFree = async () => {
     if (!code.trim()) return
@@ -86,7 +97,6 @@ export default function EditorPage() {
     try {
       const res = await executionApi.executeWithTests({
         challengeId: id,
-        userId: user.id,
         language: 'javascript',
         code,
       })
@@ -234,6 +244,11 @@ export default function EditorPage() {
                     : '✗ Algunos tests fallaron'}
                   {` (${Number(testResults.executionTimeMs).toFixed(2)}ms)`}
                 </div>
+                {testResults.error && (
+                  <div className="p-3 rounded border bg-neon-pink/10 border-neon-pink/30 text-neon-pink whitespace-pre-wrap">
+                    {testResults.error}
+                  </div>
+                )}
                 {testResults.testResults.map((tr, idx) => (
                   <div
                     key={idx}

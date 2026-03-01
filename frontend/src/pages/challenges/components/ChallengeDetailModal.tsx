@@ -147,6 +147,26 @@ function ChallengeDetailModal({
           <div className="flex gap-4">
             <button
               onClick={() => {
+                if (!user) {
+                  import('sweetalert2').then(({ default: Swal }) => {
+                    Swal.fire({
+                      toast: true,
+                      position: 'bottom-end',
+                      icon: 'warning',
+                      title: 'Debes iniciar sesión para resolver retos',
+                      showConfirmButton: false,
+                      timer: 3000,
+                      background: '#101018',
+                      color: '#ff6b35',
+                      iconColor: '#ff6b35',
+                      customClass: {
+                        popup:
+                          'border border-[#ff6b35]/30 rounded-xl shadow-[0_0_15px_rgba(255,107,53,0.15)] font-display text-sm backdrop-blur-md !z-[9999]',
+                      },
+                    })
+                  })
+                  return
+                }
                 onClose()
                 navigate(`/challenges/${challenge.id}/editor`)
               }}

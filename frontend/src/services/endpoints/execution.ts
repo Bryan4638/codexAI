@@ -7,7 +7,6 @@ export interface ExecuteRequest {
 
 export interface ExecuteWithTestsRequest extends ExecuteRequest {
   challengeId: string
-  userId: string
 }
 
 export interface TestCaseResult {
@@ -20,6 +19,7 @@ export interface ExecuteWithTestsResponse {
   allPassed: boolean
   testResults: TestCaseResult[]
   executionTimeMs: number
+  error?: string
 }
 
 export interface ExecuteResponse {
