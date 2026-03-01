@@ -89,7 +89,7 @@ function Header({ onShowAuth }: HeaderProps) {
             </Link>
           ) : (
             <button
-              className="btn btn-primary shadow-none py-3 px-4"
+              className="btn btn-primary shadow-none sm:py-3 sm:px-4 sm:text-md py-2 text-xs px-0"
               onClick={onShowAuth}
             >
               Iniciar Sesión
