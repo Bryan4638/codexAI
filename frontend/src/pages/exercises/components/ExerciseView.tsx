@@ -154,7 +154,7 @@ export default function ExerciseView({
     <div className="py-28 max-w-7xl mx-auto px-6">
       <div className="mb-8">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 mb-8">
+        <div className="flex items-center gap-2 mb-8 text-sm sm:text-md">
           <span
             onClick={onBack}
             className="cursor-pointer text-neon-cyan hover:underline"
@@ -178,29 +178,29 @@ export default function ExerciseView({
       </div>
 
       <div className="max-w-4xl mx-auto">
-        <div className="bg-gradient-card shadow-card relative overflow-hidden rounded-2xl border border-white/8 p-10 backdrop-blur-[20px]">
+        <div className="bg-gradient-card shadow-card relative overflow-hidden rounded-2xl border border-white/8 p-6 backdrop-blur-[20px]">
           <div className="absolute top-0 right-0 left-0 h-px bg-linear-to-r from-transparent via-cyan-400/50 to-transparent"></div>
           {/* Header del Ejercicio */}
           <div className="flex justify-between items-center mb-8">
             <span className="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-sm font-medium tracking-wider">
               {currentExercise?.type === 'dragDrop' && (
-                <span className="flex items-center gap-2">
-                  <IconDragDrop size={21} /> ORDENAR CÓDIGO
+                <span className="flex items-center gap-2 text-sm">
+                  <IconDragDrop size={18} /> ORDENAR CÓDIGO
                 </span>
               )}
               {currentExercise?.type === 'quiz' && (
-                <span className="flex items-center gap-2">
-                  <IconQuestionMark size={21} /> QUIZ
+                <span className="flex items-center gap-2 text-sm">
+                  <IconQuestionMark size={18} /> QUIZ
                 </span>
               )}
               {currentExercise?.type === 'code' && (
-                <span className="flex items-center gap-2">
-                  <IconPencilCode size={21} /> CÓDIGO
+                <span className="flex items-center gap-2 text-sm">
+                  <IconPencilCode size={18} /> CÓDIGO
                 </span>
               )}
               {currentExercise?.type === 'fillBlank' && (
-                <span className="flex items-center gap-2">
-                  <IconCode size={21} /> COMPLETAR
+                <span className="flex items-center gap-2 text-sm">
+                  <IconCode size={18} /> COMPLETAR
                 </span>
               )}
             </span>
@@ -213,7 +213,7 @@ export default function ExerciseView({
           <div className="mb-8">{renderExercise()}</div>
 
           {/* Navegación Inferior */}
-          <div className="mt-8 flex justify-between items-center pt-8">
+          <div className="flex justify-between gap-4 items-center pt-8">
             <button
               className="btn btn-secondary"
               onClick={handlePrevExercise}

@@ -109,11 +109,11 @@ function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
         >
           {loading ? (
             <span className="flex items-center gap-2">
-              <IconHourglass /> Validando...
+              <IconHourglass size={18} /> Validando...
             </span>
           ) : (
             <span className="flex items-center gap-2">
-              <IconPlayerPlayFilled /> Ejecutar
+              <IconPlayerPlayFilled size={18} /> Ejecutar
             </span>
           )}
         </button>
@@ -121,7 +121,8 @@ function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
           className="btn btn-secondary gap-2"
           onClick={() => setCode(exercise.data?.placeholder || '')}
         >
-          <IconRestore /> Reiniciar
+          <IconRestore size={18} />
+          <span className="hidden sm:flex">Reiniciar</span>
         </button>
       </div>
       {feedback && <FeedbackMessage feedback={feedback} />}

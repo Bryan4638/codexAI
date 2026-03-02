@@ -171,18 +171,17 @@ function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
         >
           {loading ? (
             <span className="flex items-center gap-2">
-              <IconHourglass /> VALIDANDO...
+              <IconHourglass size={18} /> VALIDANDO...
             </span>
           ) : (
             <span className="flex items-center gap-2">
-              <IconPlayerPlayFilled /> VERIFICAR ORDEN
+              <IconPlayerPlayFilled size={18} /> VERIFICAR ORDEN
             </span>
           )}
         </button>
         <button className="btn btn-secondary" onClick={handleReset}>
-          <span className="flex items-center gap-2">
-            <IconRestore /> REINICIAR
-          </span>
+          <IconRestore size={18} />
+          <span className="hidden sm:flex">Reiniciar</span>
         </button>
       </div>
       {feedback && <FeedbackMessage feedback={feedback} />}
