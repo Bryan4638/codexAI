@@ -24,8 +24,8 @@ export const ChallengeCard = ({
   onReaction,
 }: ChallengeCardProps) => {
   return (
-    <div
-      className={`bg-bg-secondary border rounded-2xl p-5 flex flex-col cursor-pointer transition-all duration-300 hover:border-neon-cyan/50 hover:-translate-y-1 hover:shadow-neon-cyan ${challenge.hasCompleted ? 'border-neon-green/40 shadow-[0_0_15px_rgba(57,255,20,0.05)]' : 'border-white/10'}`}
+    <article
+      className={`bg-bg-secondary relative before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-linear-to-r before:from-transparent before:via-[rgba(0,240,255,0.5)] before:to-transparent before:content-[''] border rounded-2xl p-5 flex flex-col cursor-pointer transition-all duration-300 hover:border-neon-cyan/50 hover:-translate-y-1 hover:shadow-neon-cyan ${challenge.hasCompleted ? 'border-neon-green/40 shadow-[0_0_15px_rgba(57,255,20,0.05)]' : 'border-white/10'}`}
       onClick={() => onSelect(challenge.id)}
     >
       <div className="flex justify-between items-start mb-2">
@@ -87,7 +87,7 @@ export const ChallengeCard = ({
             e.stopPropagation()
             onReaction(challenge.id)
           }}
-          className={`cursor-pointer flex items-center gap-1.5 transition-all duration-200 hover:scale-110 px-2 py-1 rounded-lg hover:bg-white/5 ${
+          className={`cursor-pointedivr flex items-center gap-1.5 transition-all duration-200 hover:scale-110 px-2 py-1 rounded-lg hover:bg-white/5 ${
             challenge.hasReacted ? 'text-neon-pink' : 'text-text-muted'
           }`}
         >
@@ -98,6 +98,6 @@ export const ChallengeCard = ({
           <span className="font-medium">{challenge.reactionsCount || 0}</span>
         </button>
       </div>
-    </div>
+    </article>
   )
 }

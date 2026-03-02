@@ -73,7 +73,7 @@ export default function ChallengesPage() {
           subtitle="Resuelve desafíos creados por otros estudiantes o sube los tuyos"
         />
         {/* Controls & Filters */}
-        <section className="flex justify-between items-start mb-8 flex-col sm:flex-row lex-wrap gap-4 p-4 bg-bg-card rounded-2xl border border-white/10 shadow-card">
+        <section className="flex justify-between items-start mb-8 flex-col sm:flex-row flex-wrap gap-4 p-4 bg-bg-card rounded-2xl border border-white/10 shadow-card">
           <div className="flex gap-4 items-center flex-wrap">
             <CyberSelect
               options={difficultyOptions}

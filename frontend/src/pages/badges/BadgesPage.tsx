@@ -37,7 +37,7 @@ export default function BadgesPage() {
           title="Medallas"
           subtitle="Desbloquea medallas completando ejercicios y alcanzando nuevos niveles"
         />
-        <div className="inline-flex mt-6 px-6 py-4 bg-neon-green/10 border border-neon-green/30 rounded-2xl">
+        <div className="my-6 mx-auto px-6 py-4 bg-neon-green/10 max-w-fit border border-neon-green/30 rounded-2xl flex justify-center items-center">
           <span className="text-neon-green font-display">
             {unlockedCount || 0} / {totalCount} desbloqueadas
           </span>
