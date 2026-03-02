@@ -41,8 +41,8 @@ export class GetChallengesUseCase {
       .addSelect('COUNT(reaction.id)', 'reactionsCount')
       .groupBy('challenge.id')
       .addGroupBy('author.id')
-      .take(limit)
-      .skip(skip)
+      .limit(limit)
+      .offset(skip)
       .orderBy('challenge.createdAt', 'DESC');
 
     if (filters?.difficulty && filters.difficulty !== 'all') {
@@ -52,7 +52,7 @@ export class GetChallengesUseCase {
     }
 
     if (filters?.sort === 'popularity') {
-      qb.orderBy('reactionsCount', 'DESC');
+      qb.orderBy('"reactionsCount"', 'DESC');
     }
 
     if (filters?.currentUserId) {

@@ -39,6 +39,16 @@ export class ChallengesController {
     return this.challengesService.getChallenges(query, user?.id);
   }
 
+  @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('jwt')
+  @ApiOperation({ summary: 'Obtener desafío por ID' })
+  @ApiResponse({ status: 200, description: 'Desafío obtenido exitosamente' })
+  @ApiResponse({ status: 404, description: 'Desafío no encontrado' })
+  getChallenge(@Param('id') id: string) {
+    return this.challengesService.getChallenge(id);
+  }
+
   @Post()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('jwt')

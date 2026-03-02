@@ -9,12 +9,14 @@ import { GetChallengesUseCase } from './use-cases/get-challenges.use-case';
 import { ToggleReactionUseCase } from './use-cases/toggle-reaction.use-case';
 import { DeleteChallengeUseCase } from './use-cases/delete-challenge.use-case';
 import { AuthModule } from '../auth/auth.module';
+import { GetChallengeUseCase } from './use-cases/get-challenge.use-case';
 
 const useCases = [
   CreateChallengeUseCase,
   GetChallengesUseCase,
   ToggleReactionUseCase,
   DeleteChallengeUseCase,
+  GetChallengeUseCase,
 ];
 
 @Module({

@@ -50,20 +50,17 @@ export default function EditorPage() {
       if (!id) return
       try {
         setLoading(true)
-        // Optamos por buscarlo en el getAll por simplicidad, aunque idealmente habría un getById
-        const res = await challengeApi.getAll()
-        const found = res.data.find((c) => c.id === id)
-        if (found) {
-          setChallenge(found)
+        const challengeData = await challengeApi.getById(id)
+        if (challengeData) {
+          setChallenge(challengeData)
           // Priorizar borrador guardado localmente sobre el código inicial
           const savedDraft = localStorage.getItem(`draft_${id}`)
-          setCode(savedDraft || found.initialCode || '')
-        } else {
-          Swal.fire('Error', 'Reto no encontrado', 'error')
-          navigate('/challenges')
+          setCode(savedDraft || challengeData.initialCode || '')
         }
       } catch (error) {
         console.error(error)
+        Swal.fire('Error', 'Reto no encontrado', 'error')
+        navigate('/challenges')
       } finally {
         setLoading(false)
       }

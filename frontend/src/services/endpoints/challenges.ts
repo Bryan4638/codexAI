@@ -11,6 +11,11 @@ export const challengeApi = {
     return res as unknown as PaginatedChallenges
   },
 
+  async getById(id: string): Promise<Challenge> {
+    const res = await api.get(`/challenges/${id}`)
+    return res as unknown as Challenge
+  },
+
   async create(challenge: CreateChallengeFormData): Promise<Challenge> {
     return (await api.post('/challenges', challenge)) as Challenge
   },
