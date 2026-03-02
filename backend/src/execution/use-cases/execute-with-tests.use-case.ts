@@ -79,6 +79,7 @@ export class ExecuteWithTestsUseCase {
                 timeMs < Number(progress.bestExecutionTimeMs)
               ) {
                 progress.bestExecutionTimeMs = timeMs;
+                progress.bestExecutionCode = code;
                 await this.userProgressRepo.save(progress);
               }
             } else {
@@ -87,6 +88,7 @@ export class ExecuteWithTestsUseCase {
                 user: { id: userId },
                 challenge: { id: challengeId },
                 bestExecutionTimeMs: timeMs,
+                bestExecutionCode: code,
               });
               await this.userProgressRepo.save(newProgress);
             }

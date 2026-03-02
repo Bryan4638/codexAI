@@ -1,6 +1,11 @@
 import { Challenge } from '@/types/challenge'
 import { User } from '@/types/user'
-import { IconHeart, IconTrash, IconUserFilled } from '@tabler/icons-react'
+import {
+  IconCircleCheckFilled,
+  IconHeart,
+  IconTrash,
+  IconUserFilled,
+} from '@tabler/icons-react'
 
 interface ChallengeCardProps {
   challenge: Challenge
@@ -25,15 +30,23 @@ export const ChallengeCard = ({
 }: ChallengeCardProps) => {
   return (
     <div
-      className="bg-bg-secondary border border-white/10 rounded-2xl p-5 flex flex-col cursor-pointer transition-all duration-300 hover:border-neon-cyan/50 hover:-translate-y-1 hover:shadow-neon-cyan"
+      className={`bg-bg-secondary border rounded-2xl p-5 flex flex-col cursor-pointer transition-all duration-300 hover:border-neon-cyan/50 hover:-translate-y-1 hover:shadow-neon-cyan ${challenge.hasCompleted ? 'border-neon-green/40 shadow-[0_0_15px_rgba(57,255,20,0.05)]' : 'border-white/10'}`}
       onClick={() => onSelect(challenge.id)}
     >
       <div className="flex justify-between items-start mb-2">
-        <span
-          className={`text-xs px-3 py-1 mb-4 rounded-full border bg-bg-tertiary ${difficultyColors[challenge.difficulty] || ''}`}
-        >
-          {challenge.difficulty.toUpperCase()}
-        </span>
+        <div className="flex gap-2 items-center mb-4">
+          <span
+            className={`text-xs px-3 py-1 rounded-full border bg-bg-tertiary ${difficultyColors[challenge.difficulty] || ''}`}
+          >
+            {challenge.difficulty.toUpperCase()}
+          </span>
+          {challenge.hasCompleted && (
+            <span className="text-neon-green flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-neon-green/10 border border-neon-green/20">
+              <IconCircleCheckFilled size={14} />
+              Completado
+            </span>
+          )}
+        </div>
 
         {currentUser && currentUser.username === challenge.author?.username && (
           <button

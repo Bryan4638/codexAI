@@ -40,6 +40,13 @@ export class UserChallengeProgress {
   })
   bestExecutionTimeMs: number;
 
+  @Column({
+    name: 'best_execution_code',
+    type: 'text',
+    nullable: true,
+  })
+  bestExecutionCode: string;
+
   @Column({ default: 1 })
   attempts: number;
 }

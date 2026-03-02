@@ -10,7 +10,11 @@ import { useAuthStore } from '@/store/useAuthStore'
 import { IconPlus, IconUsers } from '@tabler/icons-react'
 import { useMemo, useState } from 'react'
 import { ChallengeCard } from './components/ChallengeCard'
-import { difficultyOptions, sortOptions } from './data/filterOptions'
+import {
+  difficultyOptions,
+  sortOptions,
+  statusOptions,
+} from './data/filterOptions'
 
 export default function ChallengesPage() {
   const { user } = useAuthStore()
@@ -23,6 +27,7 @@ export default function ChallengesPage() {
   const [filters, setFilters] = useState({
     difficulty: 'all',
     sort: 'newest',
+    completed: 'all',
     page: 1,
   })
 
@@ -79,6 +84,14 @@ export default function ChallengesPage() {
               value={filters.difficulty}
               onChange={(val) =>
                 setFilters((prev) => ({ ...prev, difficulty: val, page: 1 }))
+              }
+            />
+
+            <CyberSelect
+              options={statusOptions}
+              value={filters.completed}
+              onChange={(val) =>
+                setFilters((prev) => ({ ...prev, completed: val, page: 1 }))
               }
             />
 

@@ -22,6 +22,8 @@ export interface Challenge {
   }
   hasReacted?: boolean
   reactionsCount?: number
+  hasCompleted?: boolean
+  bestExecutionCode?: string | null
   createdAt?: string
   initialCode: string
   testCases: { input: string; output: string }[]

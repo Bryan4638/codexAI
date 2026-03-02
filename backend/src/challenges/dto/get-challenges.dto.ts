@@ -13,6 +13,11 @@ export class GetChallengesDto {
   @IsString()
   sort?: string;
 
+  @ApiPropertyOptional({ description: 'Filter by completed state' })
+  @IsOptional()
+  @IsString()
+  completed?: string;
+
   @ApiPropertyOptional({ description: 'Page number', default: 1 })
   @IsOptional()
   @Type(() => Number)
