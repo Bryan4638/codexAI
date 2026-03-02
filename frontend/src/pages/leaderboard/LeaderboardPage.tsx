@@ -1,8 +1,8 @@
 import Footer from '@/components/nav/Footer'
 import Error from '@/components/share/Error'
 import Loading from '@/components/share/Loading'
+import PageHeader from '@/components/share/PageHeader'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
-import { IconTrophy } from '@tabler/icons-react'
 import { useState } from 'react'
 import LeaderboardPodium from './components/LeaderboardPodium'
 import LeaderboardTable from './components/LeaderboardTable'
@@ -26,16 +26,10 @@ export default function LeaderboardPage() {
   return (
     <>
       <section className="py-28 max-w-7xl mx-auto px-6">
-        <div className="flex flex-col items-center justify-center mb-12">
-          <h2 className="text-3xl flex items-center gap-4">
-            <IconTrophy size={50} /> Tabla de Posiciones
-          </h2>
-          <p className="mt-2 text-sm">
-            Los mejores estudiantes de{' '}
-            <strong className="font-display">chamba—code</strong>
-          </p>
-        </div>
-
+        <PageHeader
+          title="Tabla de Posiciones"
+          subtitle="Los mejores estudiantes de chamba—code"
+        />
         <LeaderboardPodium top3={top3} onUserClick={setSelectedUser} />
         <LeaderboardTable users={rest} onUserClick={setSelectedUser} />
         {selectedUser && (
