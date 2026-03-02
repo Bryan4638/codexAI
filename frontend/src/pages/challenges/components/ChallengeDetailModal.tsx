@@ -45,7 +45,7 @@ function ChallengeDetailModal({
       >
         {/* Header */}
         <header className="flex justify-between items-start">
-          <div className="mb-6 flex items-center justify-start gap-6">
+          <div className="mb-6 flex items-center justify-start gap-3 flex-wrap">
             {/* Title */}
             <h2 className="text-3xl m-0">{challenge.title}</h2>
             <div className="flex gap-2 items-center">
