@@ -342,10 +342,10 @@ code {
 
   /* Modal */
   .modal-overlay {
-    @apply fixed inset-0 z-[2000] flex items-center justify-center bg-black/80 backdrop-blur-sm;
+    @apply fixed inset-0 z-2000 flex items-center justify-center bg-black/80 backdrop-blur-sm;
   }
   .modal {
-    @apply bg-gradient-card animate-slide-up w-[90%] max-w-lg rounded-3xl border border-white/8 p-8 text-center;
+    @apply bg-gradient-card animate-slide-up max-h-[90vh] w-[90%] max-w-lg overflow-y-auto rounded-3xl border border-white/8 p-8 text-center;
   }
 
   /* Filter Select */

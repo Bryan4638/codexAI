@@ -157,7 +157,7 @@ function ChallengeDetailModal({
         )}
 
         {/* Footer Actions */}
-        <div className="flex justify-between items-center pt-6 border-t border-white/8">
+        <div className="flex flex-col sm:flex-row justify-between sm:items-center items-start gap-4 pt-6 border-t border-white/8">
           <button
             onClick={() => toggleReactionMutation.mutate(challenge.id)}
             className={`cursor-pointer flex items-center gap-1 transition-transform duration-200 hover:scale-110 ${challenge.hasReacted ? 'text-neon-pink' : 'text-text-muted'}`}
@@ -196,17 +196,17 @@ function ChallengeDetailModal({
             >
               {challenge.hasCompleted ? 'Volver a Resolver' : 'Resolver Reto'}
             </button>
+            <button onClick={onClose} className="btn btn-secondary shadow-none">
+              Cerrar
+            </button>
             {user && user.username === challenge.author?.username && (
               <button
                 onClick={handleDelete}
                 className="btn btn-secondary text-neon-pink! border-neon-pink! shadow-none hover:bg-neon-pink/10"
               >
-                <IconTrash size={20} /> Eliminar
+                <IconTrash size={20} />
               </button>
             )}
-            <button onClick={onClose} className="btn btn-secondary shadow-none">
-              Cerrar
-            </button>
           </div>
         </div>
       </div>

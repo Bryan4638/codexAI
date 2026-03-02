@@ -21,7 +21,7 @@ interface EditProfileModalProps {
 }
 
 const inputClasses =
-  'w-full p-4 bg-bg-primary border-2 border-neon-cyan/30 rounded-xl text-text-main text-base outline-none transition-all duration-200 focus:border-neon-cyan focus:shadow-neon-cyan'
+  'w-full p-2 bg-bg-primary border-2 border-neon-cyan/30 rounded-xl text-text-main text-base outline-none transition-all duration-200 focus:border-neon-cyan focus:shadow-neon-cyan'
 
 function EditProfileModal({ onClose, onSave }: EditProfileModalProps) {
   const { user } = useAuthStore()

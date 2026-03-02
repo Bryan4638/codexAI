@@ -8,7 +8,7 @@ interface CreateChallengeModalProps {
 }
 
 const inputClasses =
-  'w-full p-4 bg-bg-primary border-2 border-neon-cyan/30 rounded-xl text-text-main text-base outline-none transition-all duration-200 focus:border-neon-cyan focus:shadow-neon-cyan'
+  'w-full p-2 bg-bg-primary border-2 border-neon-cyan/30 rounded-xl text-text-main text-base outline-none transition-all duration-200 focus:border-neon-cyan focus:shadow-neon-cyan'
 
 function CreateChallengeModal({ onClose, onSave }: CreateChallengeModalProps) {
   const { createChallengeMutation } = useChallenges()
@@ -164,7 +164,7 @@ function CreateChallengeModal({ onClose, onSave }: CreateChallengeModalProps) {
               className="btn btn-primary flex-1"
               disabled={loading}
             >
-              {loading ? '⏳ Creando...' : '✨ Crear Reto'}
+              {loading ? 'Creando...' : 'Crear Reto'}
             </button>
           </div>
         </form>

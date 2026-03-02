@@ -1,15 +1,13 @@
 import { IconChevronDown, TablerIcon } from '@tabler/icons-react'
 import React, { useEffect, useRef, useState } from 'react'
 
-// Definimos la estructura de cada opción
 export interface SelectOption {
   id: string
   label: string
-  icon?: TablerIcon // Tipo específico de Tabler Icons
+  icon?: TablerIcon
   colorClass?: string
 }
 
-// Definimos las props del componente
 interface CyberSelectProps {
   options: SelectOption[]
   value: string
@@ -26,7 +24,6 @@ const CyberSelect: React.FC<CyberSelectProps> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  // Cerrar al hacer clic fuera del componente
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (

@@ -1,5 +1,5 @@
 import Footer from '@/components/nav/Footer'
-import CyberSelect from '@/components/share/CustomDropdown'
+import CyberSelect from '@/components/share/CyberSelect'
 import Error from '@/components/share/Error'
 import IsEmpty from '@/components/share/IsEmpty'
 import Loading from '@/components/share/Loading'
@@ -119,7 +119,7 @@ export default function ChallengesPage() {
           <IsEmpty text="No hay retos aún. ¡Sé el primero en crear uno!" />
         ) : (
           <>
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+            <main className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
               {challenges.map((challenge) => {
                 return (
                   <ChallengeCard
@@ -132,7 +132,7 @@ export default function ChallengesPage() {
                   />
                 )
               })}
-            </div>
+            </main>
 
             {/* Pagination Controls */}
             {meta && meta.lastPage > 1 && (
@@ -147,13 +147,6 @@ export default function ChallengesPage() {
                   >
                     Anterior
                   </button>
-                  <div className="text-text-secondary">
-                    Página{' '}
-                    <span className="text-neon-cyan font-bold">
-                      {meta.page}
-                    </span>{' '}
-                    de {meta.lastPage}
-                  </div>
                   <button
                     className="btn btn-secondary shadow-none px-6"
                     disabled={filters.page >= meta.lastPage}
@@ -163,6 +156,11 @@ export default function ChallengesPage() {
                   >
                     Siguiente
                   </button>
+                </div>
+                <div className="text-text-secondary flex justify-end gap-1.5 p-4">
+                  Página{' '}
+                  <span className="text-neon-cyan font-bold">{meta.page}</span>{' '}
+                  de {meta.lastPage}
                 </div>
               </div>
             )}

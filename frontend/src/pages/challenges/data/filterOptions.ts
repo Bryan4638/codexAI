@@ -1,4 +1,4 @@
-import { SelectOption } from '@/components/share/CustomDropdown'
+import { SelectOption } from '@/components/share/CyberSelect'
 import {
   IconClock,
   IconLayersIntersect,

@@ -1,5 +1,5 @@
 import { useAuthStore } from '@/store/useAuthStore'
-import { IconUserFilled } from '@tabler/icons-react'
+import { IconMenu2, IconUserFilled, IconX } from '@tabler/icons-react'
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -93,7 +93,7 @@ function Header({ onShowAuth }: HeaderProps) {
                 {user.avatarUrl ? (
                   <img
                     src={user.avatarUrl}
-                    alt=""
+                    alt={user.username}
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
@@ -118,7 +118,7 @@ function Header({ onShowAuth }: HeaderProps) {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? '✕' : '☰'}
+            {isMenuOpen ? <IconX /> : <IconMenu2 />}
           </button>
         </div>
       </div>

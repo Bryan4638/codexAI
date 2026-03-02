@@ -10,7 +10,7 @@ export default function ProfileStatsCard({
   className,
 }: ProfileStatsCardProps) {
   return (
-    <article className="glass-card p-4 text-center">
+    <article className="glass-card p-4 text-center flex flex-col items-center justify-center">
       <span className={`text-2xl ${className}`}>{stat}</span>
       <p className="text-xs text-text-muted uppercase">{statName}</p>
     </article>
