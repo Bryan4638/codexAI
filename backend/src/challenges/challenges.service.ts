@@ -5,6 +5,7 @@ import { GetChallengesUseCase } from './use-cases/get-challenges.use-case';
 import { ToggleReactionUseCase } from './use-cases/toggle-reaction.use-case';
 import { DeleteChallengeUseCase } from './use-cases/delete-challenge.use-case';
 import { GetChallengesDto } from './dto/get-challenges.dto';
+import { GetChallengeUseCase } from './use-cases/get-challenge.use-case';
 
 @Injectable()
 export class ChallengesService {
@@ -13,6 +14,7 @@ export class ChallengesService {
     private readonly getChallengesUseCase: GetChallengesUseCase,
     private readonly toggleReactionUseCase: ToggleReactionUseCase,
     private readonly deleteChallengeUseCase: DeleteChallengeUseCase,
+    private readonly getChallengeUseCase: GetChallengeUseCase,
   ) {}
 
   async getChallenges(filters: GetChallengesDto, userId?: string) {
@@ -20,6 +22,10 @@ export class ChallengesService {
       ...filters,
       currentUserId: userId,
     });
+  }
+
+  async getChallenge(id: string) {
+    return this.getChallengeUseCase.execute(id);
   }
 
   async createChallenge(userId: string, dto: CreateChallengeDto) {

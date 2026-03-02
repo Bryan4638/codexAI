@@ -24,7 +24,7 @@ async function bootstrap() {
   // Swagger Configuration - Solo en desarrollo
   if (env.NODE_ENV !== 'production') {
     const config = new DocumentBuilder()
-      .setTitle('CodexAI Learning Platform API')
+      .setTitle('Chamba-Code Learning Platform API')
       .setDescription(
         'API para módulos, lecciones, ejercicios y progreso de usuarios',
       )
@@ -51,7 +51,7 @@ async function bootstrap() {
 
   await app.listen(PORT);
 
-  console.log(`🚀 CODEX API corriendo en http://localhost:${PORT}`);
+  console.log(`🚀 CHAMBA-CODE API corriendo en http://localhost:${PORT}`);
   console.log(` Usando PostgreSQL con TypeORM`);
 }
 bootstrap();

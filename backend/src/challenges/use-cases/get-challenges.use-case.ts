@@ -8,6 +8,7 @@ interface GetChallengesUseCaseProps {
   sort?: string;
   page?: number;
   limit?: number;
+  completed?: string;
   currentUserId?: string;
 }
 
@@ -26,24 +27,38 @@ export class GetChallengesUseCase {
     const qb = this.challengeRepository
       .createQueryBuilder('challenge')
       .leftJoin('challenge.author', 'author')
-      .leftJoin('challenge.reactions', 'reaction')
-      .select([
-        'challenge.id',
-        'challenge.title',
-        'challenge.description',
-        'challenge.initialCode',
-        'challenge.difficulty',
-        'challenge.createdAt',
-        'challenge.testCases',
-        'author.username',
-        'author.avatarUrl',
-      ])
+      .leftJoin('challenge.reactions', 'reaction');
+
+    if (filters?.currentUserId) {
+      qb.leftJoin(
+        'challenge.userProgress',
+        'progress',
+        'progress.user_id = :userId',
+        { userId: filters.currentUserId },
+      );
+    }
+
+    qb.select([
+      'challenge.id',
+      'challenge.title',
+      'challenge.description',
+      'challenge.initialCode',
+      'challenge.difficulty',
+      'challenge.createdAt',
+      'challenge.testCases',
+      'author.username',
+      'author.avatarUrl',
+    ])
       .addSelect('COUNT(reaction.id)', 'reactionsCount')
       .groupBy('challenge.id')
       .addGroupBy('author.id')
-      .take(limit)
-      .skip(skip)
+      .limit(limit)
+      .offset(skip)
       .orderBy('challenge.createdAt', 'DESC');
+
+    if (filters?.currentUserId) {
+      qb.addGroupBy('progress.id');
+    }
 
     if (filters?.difficulty && filters.difficulty !== 'all') {
       qb.andWhere('challenge.difficulty = :difficulty', {
@@ -51,15 +66,32 @@ export class GetChallengesUseCase {
       });
     }
 
+    if (
+      filters?.currentUserId &&
+      filters?.completed &&
+      filters.completed !== 'all'
+    ) {
+      if (filters.completed === 'completed') {
+        qb.andWhere('progress.id IS NOT NULL');
+      } else if (filters.completed === 'pending') {
+        qb.andWhere('progress.id IS NULL');
+      }
+    }
+
     if (filters?.sort === 'popularity') {
-      qb.orderBy('reactionsCount', 'DESC');
+      qb.orderBy('"reactionsCount"', 'DESC');
     }
 
     if (filters?.currentUserId) {
       qb.addSelect(
         `SUM(CASE WHEN reaction.userId = :userId THEN 1 ELSE 0 END)`,
         'hasReacted',
-      ).setParameter('userId', filters.currentUserId);
+      );
+      qb.addSelect(
+        'CASE WHEN progress.id IS NOT NULL THEN 1 ELSE 0 END',
+        'hasCompleted',
+      );
+      qb.addSelect('progress.best_execution_code', 'bestExecutionCode');
     }
 
     const raw = await qb.getRawMany();
@@ -79,6 +111,8 @@ export class GetChallengesUseCase {
       },
       reactionsCount: Number(row.reactionsCount),
       hasReacted: Boolean(Number(row.hasReacted || 0)),
+      hasCompleted: Boolean(Number(row.hasCompleted || 0)),
+      bestExecutionCode: row.bestExecutionCode || null,
     }));
 
     return {

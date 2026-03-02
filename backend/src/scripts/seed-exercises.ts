@@ -202,6 +202,67 @@ async function seed() {
     }
   }
 
+  /* ─────────────────────────────────────────────────────────────────────────
+  // Sembrar ejercicios CON TESTS (4 ejercicios nuevos)
+  // ─────────────────────────────────────────────────────────────────────────
+  const exerciseTestRepo = dataSource.getRepository(ExerciseTest);
+
+  for (const exData of exercisesWithTests) {
+    const lesson = lessonMap.get(exData.lessonId);
+    if (!lesson) {
+      console.warn(
+        `Lección no encontrada para ejercicio ${exData.id} (lessonId: ${exData.lessonId})`,
+      );
+      continue;
+    }
+
+    // Buscar o crear el ejercicio
+    let exercise = await exerciseRepo.findOne({
+      where: { prompt: exData.prompt, lesson: { id: lesson.id } },
+    });
+
+    if (!exercise) {
+      exercise = exerciseRepo.create({
+        type: exData.type as any,
+        difficulty: exData.difficulty as any,
+        xpReward: exData.xpReward,
+        prompt: exData.prompt,
+        data: exData.data as any,
+        order: 0,
+        isActive: true,
+        lesson: lesson,
+      });
+      await exerciseRepo.save(exercise);
+      console.log(`    Ejercicio con tests creado: ${exData.id}`);
+    } else {
+      console.log(`    Ejercicio ya existe: ${exData.id}`);
+    }
+
+    // Sembrar los tests del ejercicio
+    for (const testData of exData.tests) {
+      const existingTest = await exerciseTestRepo.findOne({
+        where: {
+          description: testData.description,
+          exercise: { id: exercise.id },
+        },
+      });
+
+      if (!existingTest) {
+        const newTest = exerciseTestRepo.create({
+          description: testData.description,
+          input: testData.input,
+          expectedOutput: testData.expectedOutput,
+          isHidden: testData.isHidden,
+          order: testData.order,
+          exercise: exercise,
+        });
+        await exerciseTestRepo.save(newTest);
+        const visibility = testData.isHidden ? '🔒 oculto' : '✅ visible';
+        console.log(`      Test [${visibility}]: ${testData.description}`);
+      }
+    }
+  } */
+
   console.log('Seeding complete');
   await dataSource.destroy();
 }

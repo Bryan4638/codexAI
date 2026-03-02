@@ -61,7 +61,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
     try {
       const user = await authApi.getMe()
-      set({ user })
+      set({ user, loading: false })
     } catch (error) {
       console.error('Error verificando auth:', error)
       authApi.logout()

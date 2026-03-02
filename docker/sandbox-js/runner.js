@@ -6,7 +6,7 @@ const readline = require('readline');
 const globalTimeout = setTimeout(() => {
   console.error('Timeout global alcanzado');
   process.exit(124);
-}, 5000);
+}, 12000);
 
 async function main() {
   const code = await new Promise(resolve => {
@@ -39,12 +39,12 @@ async function main() {
     };
 
     const script = new vm.Script(code, {
-      timeout: 3000,
+      timeout: 10000,
       displayErrors: true
     });
 
     const result = script.runInNewContext(sandbox, {
-      timeout: 3000,
+      timeout: 10000,
       memoryLimit: 50 * 1024 * 1024 // 50MB
     });
 

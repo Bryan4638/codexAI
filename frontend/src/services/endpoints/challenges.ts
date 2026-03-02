@@ -1,10 +1,19 @@
 import api from '@/services/api'
-import { Challenge, CreateChallengeFormData } from '@/types/challenge'
+import {
+  Challenge,
+  CreateChallengeFormData,
+  PaginatedChallenges,
+} from '@/types/challenge'
 
 export const challengeApi = {
-  async getAll(params: Record<string, any> = {}): Promise<Challenge[]> {
+  async getAll(params: Record<string, any> = {}): Promise<PaginatedChallenges> {
     const res = await api.get('/challenges', { params })
-    return res.data as Challenge[]
+    return res as unknown as PaginatedChallenges
+  },
+
+  async getById(id: string): Promise<Challenge> {
+    const res = await api.get(`/challenges/${id}`)
+    return res as unknown as Challenge
   },
 
   async create(challenge: CreateChallengeFormData): Promise<Challenge> {

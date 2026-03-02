@@ -12,6 +12,8 @@ function Header({ onShowAuth }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { pathname } = useLocation()
 
+  const isEditorMode = pathname.includes('/editor')
+
   const navLinks = [
     { to: '/', label: 'Inicio' },
     { to: '/modules', label: 'Módulos' },
@@ -22,10 +24,14 @@ function Header({ onShowAuth }: HeaderProps) {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-1000 bg-bg-primary/80 backdrop-blur-[20px] border-b border-white/8 py-2">
-      <div className="flex items-center justify-between max-w-7xl mx-auto px-6">
+      <div
+        className={`flex items-center mx-auto transition-all duration-500 ease-in-out ${
+          isEditorMode ? 'max-w-full px-8' : 'max-w-7xl px-6'
+        }`}
+      >
         <Link
           to="/"
-          className="flex items-center gap-2 font-display text-xl font-extrabold text-gradient"
+          className="flex items-center shrink-0 gap-2 font-display text-xl font-extrabold text-gradient"
         >
           <div className="w-12 h-12 rounded-full border border-neon-purple flex items-center justify-center">
             <img
@@ -36,6 +42,13 @@ function Header({ onShowAuth }: HeaderProps) {
           </div>
           <span className="hidden sm:block">chamba—code</span>
         </Link>
+
+        {/* Spacer izquierdo animable */}
+        <div
+          className={`transition-all duration-500 ease-in-out ${
+            isEditorMode ? 'w-8 shrink-0 grow-0' : 'flex-1'
+          }`}
+        />
 
         {/* Desktop Nav */}
         <nav
@@ -67,7 +80,10 @@ function Header({ onShowAuth }: HeaderProps) {
           ))}
         </nav>
 
-        <div className="flex items-center gap-4">
+        {/* Spacer derecho (siempre toma resto del espacio libre) */}
+        <div className="flex-1 transition-all duration-500 ease-in-out" />
+
+        <div className="flex items-center shrink-0 gap-4">
           {user ? (
             <Link
               to="/profile"

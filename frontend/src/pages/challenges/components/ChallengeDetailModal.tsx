@@ -3,11 +3,13 @@ import { difficultyStyles } from '@/pages/challenges/data/difficultyStyles'
 import { useAuthStore } from '@/store/useAuthStore'
 import { Challenge } from '@/types/challenge'
 import {
+  IconCircleCheckFilled,
   IconHeart,
   IconTrash,
   IconUserFilled,
   IconX,
 } from '@tabler/icons-react'
+import { useNavigate } from 'react-router-dom'
 
 interface ChallengeDetailModalProps {
   challenge: Challenge
@@ -19,6 +21,7 @@ function ChallengeDetailModal({
   onClose,
 }: ChallengeDetailModalProps) {
   const { user } = useAuthStore()
+  const navigate = useNavigate()
   const { toggleReactionMutation, deleteChallengeMutation } = useChallenges(
     undefined,
     user?.id
@@ -44,12 +47,20 @@ function ChallengeDetailModal({
         <header className="flex justify-between items-start">
           <div className="mb-6 flex items-center justify-start gap-6">
             {/* Title */}
-            <h2 className="text-3xl">{challenge.title}</h2>
-            <span
-              className={`badge-difficulty ${difficultyStyles[challenge.difficulty] || ''}`}
-            >
-              {challenge.difficulty.toUpperCase()}
-            </span>
+            <h2 className="text-3xl m-0">{challenge.title}</h2>
+            <div className="flex gap-2 items-center">
+              <span
+                className={`text-xs px-3 py-1 rounded-full border ${difficultyStyles[challenge.difficulty] || ''}`}
+              >
+                {challenge.difficulty.toUpperCase()}
+              </span>
+              {challenge.hasCompleted && (
+                <span className="text-neon-green flex items-center gap-1 text-xs px-2 py-1 rounded-full bg-neon-green/10 border border-neon-green/20">
+                  <IconCircleCheckFilled size={14} />
+                  Completado
+                </span>
+              )}
+            </div>
           </div>
           <button
             onClick={onClose}
@@ -60,7 +71,7 @@ function ChallengeDetailModal({
           </button>
         </header>
         {/* Author info */}
-        <div className="flex items-center gap-3 mb-8 p-4 bg-white/3 rounded-xl">
+        <div className="flex items-center gap-3 mb-8 p-4 bg-white/3 rounded-xl border border-white/5">
           {challenge.author?.avatarUrl ? (
             <img
               src={challenge.author.avatarUrl}
@@ -89,12 +100,30 @@ function ChallengeDetailModal({
         </div>
 
         {/* Initial Code */}
-        {challenge.initialCode && (
+        {challenge.initialCode && !challenge.bestExecutionCode && (
           <div className="mb-8">
             <h4 className="text-neon-cyan mb-2 font-display">Código Inicial</h4>
             <div className="bg-bg-primary border border-neon-cyan/20 rounded-xl p-6 overflow-auto max-h-52">
               <pre className="font-mono text-sm m-0 whitespace-pre-wrap wrap-break-word">
                 {challenge.initialCode}
+              </pre>
+            </div>
+          </div>
+        )}
+
+        {/* Best Execution Code */}
+        {challenge.bestExecutionCode && (
+          <div className="mb-8">
+            <h4 className="text-neon-green mb-2 font-display flex items-center gap-2">
+              <IconCircleCheckFilled size={18} />
+              Tu Mejor Solución
+            </h4>
+            <div className="bg-bg-primary border border-neon-green/20 rounded-xl p-6 overflow-auto max-h-52 relative">
+              <div className="absolute top-2 right-2 text-xs text-neon-green border border-neon-green/20 bg-neon-green/10 px-2 py-0.5 rounded">
+                Resuelto
+              </div>
+              <pre className="font-mono text-sm m-0 whitespace-pre-wrap wrap-break-word">
+                {challenge.bestExecutionCode}
               </pre>
             </div>
           </div>
@@ -138,6 +167,35 @@ function ChallengeDetailModal({
           </button>
 
           <div className="flex gap-4">
+            <button
+              onClick={() => {
+                if (!user) {
+                  import('sweetalert2').then(({ default: Swal }) => {
+                    Swal.fire({
+                      toast: true,
+                      position: 'bottom-end',
+                      icon: 'warning',
+                      title: 'Debes iniciar sesión para resolver retos',
+                      showConfirmButton: false,
+                      timer: 3000,
+                      background: '#101018',
+                      color: '#ff6b35',
+                      iconColor: '#ff6b35',
+                      customClass: {
+                        popup:
+                          'border border-[#ff6b35]/30 rounded-xl shadow-[0_0_15px_rgba(255,107,53,0.15)] font-display text-sm backdrop-blur-md !z-[9999]',
+                      },
+                    })
+                  })
+                  return
+                }
+                onClose()
+                navigate(`/challenges/${challenge.id}/editor`)
+              }}
+              className="btn btn-primary"
+            >
+              {challenge.hasCompleted ? 'Volver a Resolver' : 'Resolver Reto'}
+            </button>
             {user && user.username === challenge.author?.username && (
               <button
                 onClick={handleDelete}

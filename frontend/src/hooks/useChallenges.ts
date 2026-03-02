@@ -1,6 +1,15 @@
 import { challengeApi } from '@/services/endpoints/challenges'
-import { Challenge, CreateChallengeFormData } from '@/types/challenge'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  Challenge,
+  CreateChallengeFormData,
+  PaginatedChallenges,
+} from '@/types/challenge'
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 
 export const useChallenges = (
   filters?: Record<string, any>,
@@ -20,17 +29,21 @@ export const useChallenges = (
     enabled: Boolean(filters),
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData,
   })
 
   const updateChallengesCache = (
     updater: (items: Challenge[]) => Challenge[]
   ) => {
-    const queries = queryClient.getQueriesData<Challenge[]>({
+    const queries = queryClient.getQueriesData<PaginatedChallenges>({
       queryKey: ['challenges'],
     })
     queries.forEach(([key, data]) => {
       if (!data) return
-      queryClient.setQueryData(key, updater(data))
+      queryClient.setQueryData(key, {
+        ...data,
+        data: updater(data.data),
+      })
     })
   }
 

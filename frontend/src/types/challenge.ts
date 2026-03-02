@@ -1,3 +1,15 @@
+export interface PaginationMeta {
+  total: number
+  page: number
+  lastPage: number
+  limit: number
+}
+
+export interface PaginatedChallenges {
+  data: Challenge[]
+  meta: PaginationMeta
+}
+
 export interface Challenge {
   id: string
   title: string
@@ -10,6 +22,8 @@ export interface Challenge {
   }
   hasReacted?: boolean
   reactionsCount?: number
+  hasCompleted?: boolean
+  bestExecutionCode?: string | null
   createdAt?: string
   initialCode: string
   testCases: { input: string; output: string }[]

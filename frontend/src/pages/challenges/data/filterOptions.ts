@@ -50,3 +50,25 @@ export const sortOptions: SelectOption[] = [
     colorClass: 'text-neon-purple', // Asumiendo que tienes un morado neón
   },
 ]
+
+// --- Opciones para el Select de Estado ---
+export const statusOptions: SelectOption[] = [
+  {
+    id: 'all',
+    label: 'Todos los estados',
+    icon: IconLayersIntersect,
+    colorClass: 'text-white/60',
+  },
+  {
+    id: 'completed',
+    label: 'Completados',
+    icon: IconMoodHappyFilled,
+    colorClass: 'text-neon-green',
+  },
+  {
+    id: 'pending',
+    label: 'Pendientes',
+    icon: IconClock,
+    colorClass: 'text-neon-pink',
+  },
+]

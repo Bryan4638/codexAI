@@ -1,4 +1,3 @@
-
 services:
   # Base de datos (PostgreSQL) - Opcional si usas externa
   postgres:
