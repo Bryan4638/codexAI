@@ -1,3 +1,4 @@
+import chambeadorDragon from '@/assets/chambeador-dragon-header.webp'
 import { useAuthStore } from '@/store/useAuthStore'
 import { IconMenu2, IconUserFilled, IconX } from '@tabler/icons-react'
 import { useState } from 'react'
@@ -35,7 +36,7 @@ function Header({ onShowAuth }: HeaderProps) {
         >
           <div className="w-12 h-12 rounded-full border border-neon-purple flex items-center justify-center">
             <img
-              src="/chambeador-dragon-header.webp"
+              src={chambeadorDragon}
               alt="Imagen de un dragón bien chambeador"
               className="object-cover"
             />
