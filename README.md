@@ -68,10 +68,11 @@ CODEX es una plataforma educativa moderna diseñada para enseñar programación 
 | Tecnología | Versión | Descripción |
 |------------|---------|-------------|
 | Node.js | 18+ | Runtime de JavaScript |
-| Express | 4.x | Framework web |
+| Express | 4.x | Framework web heredado |
+| NestJS | 11.x | Framework backend moderno |
 | TypeScript | 5.x | Tipado estático |
-| Prisma | 5.x | ORM para PostgreSQL |
-| JWT | 9.x | Autenticación |
+| TypeORM | 0.3.x | ORM para PostgreSQL |
+| JWT / Passport| 11.x | Autenticación |
 | Dockerode | 4.x | API de Docker |
 | Bull | 4.x | Cola de trabajos con Redis |
 
@@ -101,16 +102,14 @@ codex/
 │   │   └── services/         # Servicios API
 │   └── package.json
 │
-├── backend/                  # API Express
+├── backend/                  # API NestJS
 │   ├── src/
-│   │   ├── controllers/      # Lógica de endpoints
-│   │   ├── routes/           # Definición de rutas
-│   │   ├── services/         # Servicios (DockerManager, etc.)
-│   │   ├── middleware/       # Auth middleware
-│   │   └── data/             # Datos estáticos (ejercicios, badges)
-│   ├── prisma/
-│   │   ├── schema.prisma     # Esquema de base de datos
-│   │   └── seed.ts           # Datos de prueba
+│   │   ├── app.module.ts     # Módulo principal
+│   │   ├── auth/             # Módulo de Autenticación
+│   │   ├── challenges/       # Módulo de Desafíos
+│   │   ├── exercises/        # Módulo de Ejercicios
+│   │   └── leaderboard/      # Módulo de Leaderboard
+│   │                         # Cada módulo tiene controllers, services, entities y use-cases
 │   └── package.json
 │
 ├── docker/                   # Imágenes Docker para sandboxing
@@ -165,44 +164,27 @@ cd frontend && npm install
 cd ../backend && npm install
 ```
 
-### 4. Configurar base de datos
+### 4. Configurar base de datos e Iniciar Servicios (Docker Compose)
+
+El proyecto utiliza Docker Compose para simplificar el levantamiento de dependencias, incluyendo PostgreSQL, Redis **y la compilación automática de las imágenes de sandbox**.
+
+```bash
+# Desde la raíz del proyecto
+docker compose up -d --build
+```
+
+Esto levantará la base de datos, Redis, y compilará las imágenes de ejecución de código de los distintos lenguajes (`sandbox-js-builder`, `sandbox-python-builder`, etc.).
+
+### 5. Configurar esquema inicial y semillas (Backend)
 
 ```bash
 cd backend
 
-# Generar cliente Prisma
-npm run db:generate
+# Ejecutar las migraciones de TypeORM
+npm run migration:run
 
-# Aplicar migraciones
-npm run db:push
-
-# (Opcional) Cargar datos de prueba
-npx prisma db seed
-```
-
-### 5. Construir imágenes Docker para sandboxing
-
-```bash
-cd docker
-
-# JavaScript
-docker build -t code-platform-js ./sandbox-js
-
-# Python
-docker build -t code-platform-python ./sandbox-python
-
-# Java
-docker build -t code-platform-java ./sandbox-java
-
-# C#
-docker build -t code-platform-csharp ./sandbox-csharp
-```
-
-### 6. Iniciar servicios con Docker Compose
-
-```bash
-# Desde la raíz del proyecto
-docker-compose up -d redis postgres
+# (Opcional) Cargar los retos y ejercicios de prueba a la base de datos
+npm run seed:challenges
 ```
 
 ### 7. Iniciar la aplicación
@@ -482,13 +464,12 @@ cd frontend && npm test
 ### Backend
 
 ```bash
-npm run dev          # Desarrollo con hot-reload
-npm run build        # Compilar TypeScript
-npm run start        # Producción
-npm run db:generate  # Generar cliente Prisma
-npm run db:push      # Sincronizar schema con BD
-npm run db:migrate   # Crear migración
-npm run db:studio    # UI de Prisma Studio
+npm run dev          # Desarrollo con NestJS hot-reload
+npm run build        # Compilar proyecto NestJS
+npm run start:prod   # Iniciar en Producción
+npm run migration:run # Aplicar migraciones TypeORM
+npm run migration:generate # Generar nueva migración
+npm run seed:challenges # Poblar datos de prueba
 ```
 
 ### Frontend
@@ -525,5 +506,5 @@ Desarrollado con ❤️ por el equipo de CODEX
 ---
 
 <div align="center">
-  <sub>Built with 🚀 React + Express + Docker</sub>
+  <sub>Built with 🚀 Vite + React + NestJS + TypeORM + Docker</sub>
 </div>
