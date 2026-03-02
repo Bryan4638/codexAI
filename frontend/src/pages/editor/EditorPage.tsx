@@ -22,7 +22,7 @@ import Swal from 'sweetalert2'
 export default function EditorPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { user } = useAuthStore()
+  const { user, loading: authLoading } = useAuthStore()
 
   const [challenge, setChallenge] = useState<Challenge | null>(null)
   const [loading, setLoading] = useState(true)
@@ -34,6 +34,8 @@ export default function EditorPage() {
   const [isExecuting, setIsExecuting] = useState(false)
 
   useEffect(() => {
+    if (authLoading) return
+
     if (!user) {
       Swal.fire(
         'Atención',
@@ -53,7 +55,9 @@ export default function EditorPage() {
         const found = res.data.find((c) => c.id === id)
         if (found) {
           setChallenge(found)
-          setCode(found.initialCode || '')
+          // Priorizar borrador guardado localmente sobre el código inicial
+          const savedDraft = localStorage.getItem(`draft_${id}`)
+          setCode(savedDraft || found.initialCode || '')
         } else {
           Swal.fire('Error', 'Reto no encontrado', 'error')
           navigate('/challenges')
@@ -66,7 +70,18 @@ export default function EditorPage() {
     }
 
     fetchChallenge()
-  }, [id, navigate, user])
+  }, [id, navigate, user, authLoading])
+
+  // Guarda automáticamente el progreso (Debounce de 1s)
+  useEffect(() => {
+    if (!id || !code.trim() || loading) return
+
+    const timer = setTimeout(() => {
+      localStorage.setItem(`draft_${id}`, code)
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [code, id, loading])
 
   const handleExecuteFree = async () => {
     if (!code.trim()) return
@@ -102,6 +117,9 @@ export default function EditorPage() {
       })
       setTestResults(res)
       if (res.allPassed) {
+        // Limpiar el localStorage al completar el reto con éxito
+        localStorage.removeItem(`draft_${id}`)
+
         Swal.fire({
           toast: true,
           position: 'bottom-end',
@@ -146,7 +164,7 @@ export default function EditorPage() {
     }
   }
 
-  if (loading) return <Loading section="editor" />
+  if (loading || authLoading) return <Loading section="editor" />
   if (!challenge) return null
 
   return (
