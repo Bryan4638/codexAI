@@ -27,10 +27,14 @@ function Header({ onShowAuth }: HeaderProps) {
           to="/"
           className="flex items-center gap-2 font-display text-xl font-extrabold text-gradient"
         >
-          <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center text-xl text-bg-primary">
-            {'</>'}
+          <div className="w-12 h-12 rounded-full border border-neon-purple flex items-center justify-center">
+            <img
+              src="/chambeador-dragon-header.webp"
+              alt="Imagen de un dragón bien chambeador"
+              className="object-cover"
+            />
           </div>
-          <span>chamba—code</span>
+          <span className="hidden sm:block">chamba—code</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -88,10 +92,7 @@ function Header({ onShowAuth }: HeaderProps) {
               </span>
             </Link>
           ) : (
-            <button
-              className="btn btn-primary shadow-none"
-              onClick={onShowAuth}
-            >
+            <button className="btn btn-primary" onClick={onShowAuth}>
               Iniciar Sesión
             </button>
           )}
