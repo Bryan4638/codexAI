@@ -31,7 +31,7 @@ export const ChallengeCard = ({
       <div className="flex justify-between items-start mb-2">
         <div className="flex gap-2 items-center mb-4">
           <span
-            className={`text-xs px-3 py-1 rounded-full border bg-bg-tertiary ${difficultyColors[challenge.difficulty] || ''}`}
+            className={`text-xs px-3 py-1 rounded-full border bg-bg-tertiary ${difficultyStyles[challenge.difficulty] || ''}`}
           >
             {challenge.difficulty.toUpperCase()}
           </span>
