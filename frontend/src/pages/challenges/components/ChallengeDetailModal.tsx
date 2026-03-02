@@ -1,4 +1,5 @@
 import { useChallenges } from '@/hooks/useChallenges'
+import { difficultyStyles } from '@/pages/challenges/data/difficultyStyles'
 import { useAuthStore } from '@/store/useAuthStore'
 import { Challenge } from '@/types/challenge'
 import {
@@ -23,12 +24,6 @@ function ChallengeDetailModal({
     user?.id
   )
 
-  const difficultyStyles: Record<string, string> = {
-    easy: 'text-neon-green border-neon-green bg-neon-green/10',
-    medium: 'text-neon-cyan border-neon-cyan bg-neon-cyan/10',
-    hard: 'text-neon-pink border-neon-pink bg-neon-pink/10',
-  }
-
   const handleDelete = () => {
     if (window.confirm('¿Estás seguro de que quieres eliminar este reto?')) {
       deleteChallengeMutation.mutate(challenge.id, {
@@ -51,7 +46,7 @@ function ChallengeDetailModal({
             {/* Title */}
             <h2 className="text-3xl">{challenge.title}</h2>
             <span
-              className={`text-xs px-3 py-1 rounded-full border ${difficultyStyles[challenge.difficulty] || ''}`}
+              className={`badge-difficulty ${difficultyStyles[challenge.difficulty] || ''}`}
             >
               {challenge.difficulty.toUpperCase()}
             </span>

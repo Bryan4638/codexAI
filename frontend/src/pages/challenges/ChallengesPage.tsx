@@ -66,7 +66,7 @@ export default function ChallengesPage() {
           subtitle="Resuelve desafíos creados por otros estudiantes o sube los tuyos"
         />
         {/* Controls & Filters */}
-        <section className="flex justify-between items-center mb-8 flex-wrap gap-4 p-4 bg-bg-card rounded-2xl border border-white/10 shadow-card">
+        <section className="flex justify-between items-start mb-8 flex-col sm:flex-row lex-wrap gap-4 p-4 bg-bg-card rounded-2xl border border-white/10 shadow-card">
           <div className="flex gap-4 items-center flex-wrap">
             <CyberSelect
               options={difficultyOptions}
@@ -83,12 +83,14 @@ export default function ChallengesPage() {
             />
           </div>
 
-          <button
-            className="btn btn-primary shadow-none"
-            onClick={() => setShowCreateModal(true)}
-          >
-            <IconPlus size={20} /> Crear Reto
-          </button>
+          {user && (
+            <button
+              className="btn btn-primary"
+              onClick={() => setShowCreateModal(true)}
+            >
+              <IconPlus size={20} /> Crear Reto
+            </button>
+          )}
         </section>
 
         {/* Challenge List */}

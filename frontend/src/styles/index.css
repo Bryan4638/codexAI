@@ -380,10 +380,10 @@ code {
 
   /* Difficulty & XP Badge (shared by all exercises) */
   .badge-difficulty {
-    @apply m-auto rounded-lg border px-2 py-0.5 text-xs;
+    @apply flex items-center justify-center rounded-lg border px-2 py-0.5 text-xs;
   }
   .badge-xp {
-    @apply border-neon-purple bg-neon-purple/20 text-neon-purple m-auto rounded-lg border px-2 py-0.5 text-xs;
+    @apply border-neon-purple bg-neon-purple/20 text-neon-purple flex items-center justify-center rounded-lg border px-2 py-0.5 text-xs;
   }
 
   /* Feedback */

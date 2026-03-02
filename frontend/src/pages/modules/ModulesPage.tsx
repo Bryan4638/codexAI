@@ -1,6 +1,6 @@
 import Footer from '@/components/nav/Footer'
-import ModulesGrid from '@/components/share/ModulesGrid'
 import PageHeader from '@/components/share/PageHeader'
+import ModulesGrid from '@/pages/modules/components/ModulesGrid'
 
 export default function ModulesPage() {
   return (

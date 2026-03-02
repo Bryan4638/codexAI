@@ -44,14 +44,14 @@ const CyberSelect: React.FC<CyberSelectProps> = ({
   const SelectedIcon = selected?.icon
 
   return (
-    <div className={`relative w-auto ${className}`} ref={dropdownRef}>
+    <div className={`relative w-full sm:w-auto ${className}`} ref={dropdownRef}>
       {/* Botón Principal (Trigger) */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={`
           w-full flex items-center justify-between gap-6 px-4 py-2.5
-          bg-bg-secondary border rounded-xl transition-all duration-300
+          bg-bg-secondary border rounded-xl transition-all text-sm sm:text-md duration-300
           ${
             isOpen
               ? 'border-neon-cyan shadow-[0_0_15px_rgba(0,240,255,0.2)] ring-1 ring-neon-cyan/30'

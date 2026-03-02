@@ -14,8 +14,7 @@ export default function Hero() {
           </h1>
           <p className="text-pretty">
             Domina los fundamentos de la programación con ejercicios
-            interactivos, retroalimentación instantánea y un diseño que te
-            mantendrá motivado.
+            interactivos y conviértete en el Chambeador Dragón.
           </p>
         </div>
         <div className="flex gap-6 justify-center flex-wrap">

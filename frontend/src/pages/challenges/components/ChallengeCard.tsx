@@ -1,3 +1,4 @@
+import { difficultyStyles } from '@/pages/challenges/data/difficultyStyles'
 import { Challenge } from '@/types/challenge'
 import { User } from '@/types/user'
 import { IconHeart, IconTrash, IconUserFilled } from '@tabler/icons-react'
@@ -10,12 +11,6 @@ interface ChallengeCardProps {
   onReaction: (id: string) => void
 }
 
-const difficultyColors: Record<string, string> = {
-  easy: 'text-neon-green border-neon-green',
-  medium: 'text-neon-cyan border-neon-cyan',
-  hard: 'text-neon-pink border-neon-pink',
-}
-
 export const ChallengeCard = ({
   challenge,
   currentUser,
@@ -25,12 +20,12 @@ export const ChallengeCard = ({
 }: ChallengeCardProps) => {
   return (
     <div
-      className="bg-bg-secondary border border-white/10 rounded-2xl p-5 flex flex-col cursor-pointer transition-all duration-300 hover:border-neon-cyan/50 hover:-translate-y-1 hover:shadow-neon-cyan"
+      className="bg-bg-secondary border border-white/10 rounded-2xl p-5 flex flex-col cursor-pointer transition-all duration-300 hover:border-neon-cyan/50 hover:-translate-y-1 hover:shadow-neon-cyan relative before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-linear-to-r before:from-transparent before:via-[rgba(0,240,255,0.5)] before:to-transparent before:content-['']"
       onClick={() => onSelect(challenge.id)}
     >
-      <div className="flex justify-between items-start mb-2">
+      <div className="flex justify-between items-center mb-3">
         <span
-          className={`text-xs px-3 py-1 mb-4 rounded-full border bg-bg-tertiary ${difficultyColors[challenge.difficulty] || ''}`}
+          className={`badge-difficulty ${difficultyStyles[challenge.difficulty] || ''}`}
         >
           {challenge.difficulty.toUpperCase()}
         </span>
