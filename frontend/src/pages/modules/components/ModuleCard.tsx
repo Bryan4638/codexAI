@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/store/useAuthStore'
 import { Module } from '@/types/module'
 import { IconBook2 } from '@tabler/icons-react'
 
@@ -12,6 +13,8 @@ export default function ModuleCard({
   progress,
   onClick,
 }: ModuleCardProps) {
+  const { user } = useAuthStore()
+
   return (
     <article onClick={onClick} className="module-card flex flex-col h-auto p-6">
       <header>
@@ -37,14 +40,18 @@ export default function ModuleCard({
         <p className="text-sm text-text-secondary mb-2 text-pretty line-clamp-2 overflow-hidden text-ellipsis">
           {module.description}
         </p>
-        <div className="progress-bar mt-auto">
-          <div className="progress-fill" style={{ width: `${progress}%` }} />
-        </div>
+        {user && (
+          <div className="progress-bar mt-auto">
+            <div className="progress-fill" style={{ width: `${progress}%` }} />
+          </div>
+        )}
       </main>
       <footer className="flex items-center gap-2 mt-4 text-xs text-text-muted absolute bottom-4 right-4">
         <IconBook2 />
         <span>{module.totalExercises} lecciones</span>
-        <span className="ml-auto text-neon-cyan">{progress}% completado</span>
+        {user && (
+          <span className="ml-auto text-neon-cya">{progress}% completado</span>
+        )}
       </footer>
     </article>
   )

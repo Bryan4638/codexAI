@@ -30,6 +30,7 @@ export default function ChallengesPage() {
     sort: 'newest',
     completed: 'all',
     page: 1,
+    limit: 21,
   })
 
   const queryFilters = useMemo(() => filters, [filters])

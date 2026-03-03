@@ -1,6 +1,11 @@
 import chambeadorDragon from '@/assets/chambeador-dragon-header.webp'
 import { useAuthStore } from '@/store/useAuthStore'
-import { IconMenu2, IconUserFilled, IconX } from '@tabler/icons-react'
+import {
+  IconLogin,
+  IconMenu2,
+  IconUserFilled,
+  IconX,
+} from '@tabler/icons-react'
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -41,7 +46,7 @@ function Header({ onShowAuth }: HeaderProps) {
               className="object-cover"
             />
           </div>
-          <span className="hidden sm:block">chamba—code</span>
+          <span className="text-xs sm:text-md">chamba—code</span>
         </Link>
 
         {/* Spacer izquierdo animable */}
@@ -110,7 +115,8 @@ function Header({ onShowAuth }: HeaderProps) {
             </Link>
           ) : (
             <button className="btn btn-primary" onClick={onShowAuth}>
-              Iniciar Sesión
+              <span className="hidden sm:block">Iniciar Sesión</span>
+              <IconLogin />
             </button>
           )}
 

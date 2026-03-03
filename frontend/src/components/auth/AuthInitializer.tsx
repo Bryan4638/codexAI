@@ -6,7 +6,7 @@ interface AuthInitializerProps {
   children: ReactNode
 }
 
-export default function AuthInitializer({ children }) {
+export default function AuthInitializer({ children }: AuthInitializerProps) {
   const { checkAuth } = useAuthStore()
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function AuthInitializer({ children }) {
       // Show success toast
       const Toast = Swal.mixin({
         toast: true,
-        position: 'top-end',
+        position: 'bottom-right',
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,

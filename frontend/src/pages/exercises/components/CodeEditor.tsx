@@ -103,7 +103,7 @@ function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
       </div>
       <div className="mt-6 flex gap-4">
         <button
-          className="btn btn-primary"
+          className={`btn btn-primary ${!user ? 'disabled' : ''}`}
           onClick={handleSubmit}
           disabled={loading}
         >
@@ -118,7 +118,7 @@ function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
           )}
         </button>
         <button
-          className="btn btn-secondary gap-2"
+          className={`btn btn-secondary gap-2 ${!user ? 'disabled' : ''}`}
           onClick={() => setCode(exercise.data?.placeholder || '')}
         >
           <IconRestore size={18} />

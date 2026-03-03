@@ -152,7 +152,7 @@ export default function ExerciseView({
 
   return (
     <div className="py-28 max-w-7xl mx-auto px-6">
-      <div className="mb-8">
+      <header className="mb-8">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 mb-8 text-sm sm:text-md">
           <span
@@ -171,17 +171,17 @@ export default function ExerciseView({
 
         {!user && (
           <div className="p-4 bg-neon-orange/10 border border-neon-orange rounded-xl mb-6 text-neon-orange flex gap-4">
-            <IconAlertTriangle /> Inicia sesión para guardar tu progreso y ganar
-            XP
+            <IconAlertTriangle /> Inicia sesión para poder completar ejercicios,
+            guardar tu progreso y ganar XP
           </div>
         )}
-      </div>
+      </header>
 
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-gradient-card shadow-card relative overflow-hidden rounded-2xl border border-white/8 p-6 backdrop-blur-[20px]">
+      <section className="max-w-4xl mx-auto">
+        <header className="bg-gradient-card shadow-card relative overflow-hidden rounded-2xl border border-white/8 p-6 backdrop-blur-[20px]">
           <div className="absolute top-0 right-0 left-0 h-px bg-linear-to-r from-transparent via-cyan-400/50 to-transparent"></div>
           {/* Header del Ejercicio */}
-          <div className="flex justify-between items-center mb-8">
+          <header className="flex justify-between items-center mb-8">
             <span className="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-sm font-medium tracking-wider">
               {currentExercise?.type === 'dragDrop' && (
                 <span className="flex items-center gap-2 text-sm">
@@ -207,10 +207,10 @@ export default function ExerciseView({
             <span className="text-text-muted text-sm font-medium">
               Ejercicio {currentExerciseIndex + 1} de {exercises.length}
             </span>
-          </div>
+          </header>
 
           {/* Contenido del Ejercicio */}
-          <div className="mb-8">{renderExercise()}</div>
+          <main className="mb-8">{renderExercise()}</main>
 
           {/* Navegación Inferior */}
           <div className="flex justify-between gap-4 items-center pt-8">
@@ -243,8 +243,8 @@ export default function ExerciseView({
               )}
             </button>
           </div>
-        </div>
-      </div>
+        </header>
+      </section>
     </div>
   )
 }

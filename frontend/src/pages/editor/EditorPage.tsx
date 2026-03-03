@@ -165,8 +165,8 @@ export default function EditorPage() {
   if (!challenge) return null
 
   return (
-    <div className="min-h-screen bg-bg-primary text-white flex flex-col pt-20">
-      <header className="px-6 py-4 border-b border-white/10 flex items-center justify-between bg-bg-card">
+    <div className="min-h-screen bg-bg-primary text-white flex flex-col pt-16">
+      <header className="px-6 py-4 border-b border-white/10 flex items-left justify-between flex-col sm:flex-row gap-4 bg-bg-card">
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate('/challenges')}
@@ -182,7 +182,7 @@ export default function EditorPage() {
           <button
             onClick={handleExecuteFree}
             disabled={isExecuting}
-            className="btn btn-secondary shadow-none flex items-center gap-2 px-4 py-2"
+            className="btn btn-secondary shadow-none flex items-center gap-1"
           >
             <IconPlayerPlayFilled size={18} />
             {isExecuting ? 'Ejecutando...' : 'Ejecutar (Libre)'}
@@ -190,7 +190,7 @@ export default function EditorPage() {
           <button
             onClick={handleExecuteTests}
             disabled={isExecuting}
-            className="btn btn-primary flex items-center gap-2 px-4 py-2 bg-linear-to-r from-neon-green/80 to-neon-cyan/80 text-black border-none"
+            className="btn btn-primary flex items-center bg-linear-to-r gap-1 from-neon-green/80 to-neon-cyan/80 text-black border-none"
           >
             <IconTestPipe size={18} />
             Ejecutar con Tests
@@ -203,10 +203,10 @@ export default function EditorPage() {
         <div className="hidden lg:block absolute left-2/3 top-0 bottom-0 w-[2px] bg-gradient-primary z-10 -ml-px" />
 
         {/* Panel Izquierdo: Editor y Consola (Más grande) */}
-        <section className="lg:col-span-2 flex flex-col relative z-0">
+        <section className="lg:col-span-2 flex flex-col order-2 sm:order-1 relative z-0">
           {/* Editor Area */}
-          <div className="flex-1 min-h-[50vh] flex flex-col relative border-b border-white/10 pt-2">
-            <h2 className="text-xs font-mono font-bold text-yellow-500 mb-2 absolute top-2 right-4 z-10 bg-yellow-500/10 border border-yellow-500/30 px-3 py-1.5 rounded backdrop-blur-sm shadow-[0_0_10px_rgba(234,179,8,0.2)]">
+          <div className="flex-1 min-h-[50vh] flex flex-col relative border-b border-white/10">
+            <h2 className="text-xs font-mono font-bold text-yellow-500 mb-2 absolute bottom-2 right-4 z-10 bg-yellow-500/10 border border-yellow-500/30 px-3 py-1.5 rounded backdrop-blur-sm shadow-[0_0_10px_rgba(234,179,8,0.2)]">
               JavaScript
             </h2>
             <Editor
@@ -285,10 +285,10 @@ export default function EditorPage() {
         </section>
 
         {/* Panel Derecho: Detalles del Reto (Más pequeño y con fondo diferenciado) */}
-        <section className="lg:col-span-1 bg-[#101018] p-6 overflow-y-auto max-h-[calc(100vh-80px)] flex flex-col gap-6 z-0 shadow-inner">
+        <section className="lg:col-span-1 bg-[#101018] order-1 sm:order-2 p-6 overflow-y-auto max-h-[calc(100vh-80px)] flex flex-col gap-6 z-0 shadow-inner">
           <div>
             <h2 className="text-sm font-bold text-text-muted uppercase tracking-wider mb-4 border-b border-white/10 pb-2">
-              Descripción del Reto
+              Descripción
             </h2>
             <div className="prose prose-invert prose-neon max-w-none text-text-secondary leading-relaxed">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
