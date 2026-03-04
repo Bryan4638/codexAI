@@ -2,20 +2,20 @@ import Footer from '@/components/nav/Footer'
 import CyberSelect from '@/components/share/CyberSelect'
 import Error from '@/components/share/Error'
 import IsEmpty from '@/components/share/IsEmpty'
-import Loading from '@/components/share/Loading'
 import PageHeader from '@/components/share/PageHeader'
+import SkeletonCard from '@/components/share/skeletons/SkeletonCard'
 import { useChallenges } from '@/hooks/useChallenges'
+import { ChallengeCard } from '@/pages/challenges/components/ChallengeCard'
 import ChallengeDetailModal from '@/pages/challenges/components/ChallengeDetailModal'
 import CreateChallengeModal from '@/pages/challenges/components/CreateChallengeModal'
-import { useAuthStore } from '@/store/useAuthStore'
-import { IconPlus } from '@tabler/icons-react'
-import { useMemo, useState } from 'react'
-import { ChallengeCard } from './components/ChallengeCard'
 import {
   difficultyOptions,
   sortOptions,
   statusOptions,
-} from './data/filterOptions'
+} from '@/pages/challenges/data/filterOptions'
+import { useAuthStore } from '@/store/useAuthStore'
+import { IconPlus } from '@tabler/icons-react'
+import { useMemo, useState } from 'react'
 
 export default function ChallengesPage() {
   const { user } = useAuthStore()
@@ -83,7 +83,6 @@ export default function ChallengesPage() {
                 setFilters((prev) => ({ ...prev, difficulty: val, page: 1 }))
               }
             />
-
             <CyberSelect
               options={statusOptions}
               value={filters.completed}
@@ -91,7 +90,6 @@ export default function ChallengesPage() {
                 setFilters((prev) => ({ ...prev, completed: val, page: 1 }))
               }
             />
-
             <CyberSelect
               options={sortOptions}
               value={filters.sort}
@@ -113,7 +111,11 @@ export default function ChallengesPage() {
 
         {/* Challenge List */}
         {challengesQuery.isLoading ? (
-          <Loading section="retos" />
+          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </section>
         ) : challengesQuery.error ? (
           <Error section="retos" />
         ) : challenges.length === 0 ? (

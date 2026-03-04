@@ -1,5 +1,5 @@
 import Error from '@/components/share/Error'
-import Loading from '@/components/share/Loading'
+import SkeletonCard from '@/components/share/skeletons/SkeletonCard'
 import { useModules } from '@/hooks/useModules'
 import ModuleCard from '@/pages/modules/components/ModuleCard'
 import { useCurrentModule } from '@/store/useCurrentModule'
@@ -11,7 +11,14 @@ export default function ModulesGrid() {
   const navigate = useNavigate()
   const { data, isLoading, error } = useModules().getModules
 
-  if (isLoading) return <Loading section="módulos" />
+  if (isLoading)
+    return (
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <SkeletonCard key={i} showBadge={false} lines={2} />
+        ))}
+      </section>
+    )
   if (error) return <Error section="módulos" />
 
   return (

@@ -1,3 +1,5 @@
+import ExerciseSkeleton from '@/components/share/skeletons/ExerciseSkeleton'
+import ModuleHeaderSkeleton from '@/components/share/skeletons/ModuleHeaderSkeleton'
 import { useBadges } from '@/hooks/useBadges'
 import { useExercises } from '@/hooks/useExercises'
 import CodeEditor from '@/pages/exercises/components/CodeEditor'
@@ -12,6 +14,7 @@ import {
   IconAlertTriangle,
   IconArrowLeft,
   IconArrowRight,
+  IconCheck,
   IconCode,
   IconDragDrop,
   IconPencilCode,
@@ -77,7 +80,15 @@ export default function ExerciseView({
     }
   }, [exercises, user, userProgress])
 
-  if (isLoading) return <div>Cargando ejercicios...</div>
+  if (isLoading)
+    return (
+      <section className="py-28 max-w-7xl mx-auto px-6">
+        <ModuleHeaderSkeleton />
+        <div className="mt-12">
+          <ExerciseSkeleton />
+        </div>
+      </section>
+    )
   if (error) return <div>Error cargando ejercicios</div>
 
   if (exercises.length === 0) {
@@ -178,9 +189,10 @@ export default function ExerciseView({
       </header>
 
       <section className="max-w-4xl mx-auto">
+        <div className="absolute top-0 right-0 left-0 h-px bg-linear-to-r from-transparent via-cyan-400/50 to-transparent"></div>
         <header className="bg-gradient-card shadow-card relative overflow-hidden rounded-2xl border border-white/8 p-6 backdrop-blur-[20px]">
           <div className="absolute top-0 right-0 left-0 h-px bg-linear-to-r from-transparent via-cyan-400/50 to-transparent"></div>
-          {/* Header del Ejercicio */}
+          {/* Header */}
           <header className="flex justify-between items-center mb-8">
             <span className="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-sm font-medium tracking-wider">
               {currentExercise?.type === 'dragDrop' && (
@@ -234,7 +246,7 @@ export default function ExerciseView({
             >
               {currentExerciseIndex === exercises.length - 1 ? (
                 <span className="flex items-center gap-1.5">
-                  FINALIZAR <IconArrowRight size={18} />
+                  FINALIZAR <IconCheck size={18} />
                 </span>
               ) : (
                 <span className="flex items-center gap-1.5">
