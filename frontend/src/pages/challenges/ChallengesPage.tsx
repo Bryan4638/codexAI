@@ -34,18 +34,18 @@ export default function ChallengesPage() {
   })
 
   const queryFilters = useMemo(() => filters, [filters])
-  const { challengesQuery, toggleReactionMutation, deleteChallengeMutation } =
+  const { getChallenges, toggleReactionMutation, deleteChallengeMutation } =
     useChallenges(queryFilters, user?.id)
 
-  const challenges = challengesQuery.data?.data ?? []
-  const meta = challengesQuery.data?.meta
+  const challenges = getChallenges.data?.data ?? []
+  const meta = getChallenges.data?.meta
   const selectedChallenge = selectedChallengeId
     ? (challenges.find((challenge) => challenge.id === selectedChallengeId) ??
       null)
     : null
 
   const handleCreateSuccess = () => {
-    challengesQuery.refetch()
+    getChallenges.refetch()
   }
 
   const handleReaction = async (id: string) => {
@@ -110,13 +110,13 @@ export default function ChallengesPage() {
         </section>
 
         {/* Challenge List */}
-        {challengesQuery.isLoading ? (
+        {getChallenges.isLoading ? (
           <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
               <SkeletonCard key={i} />
             ))}
           </section>
-        ) : challengesQuery.error ? (
+        ) : getChallenges.error ? (
           <Error section="retos" />
         ) : challenges.length === 0 ? (
           <IsEmpty text="No hay retos aún. ¡Sé el primero en crear uno!" />

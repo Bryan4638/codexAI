@@ -12,7 +12,7 @@ import {
 } from '@tanstack/react-query'
 
 export const useChallenges = (
-  filters?: Record<string, any>,
+  filters?: Record<string, number | string>,
   userId?: string
 ) => {
   const queryClient = useQueryClient()
@@ -23,7 +23,7 @@ export const useChallenges = (
     delete: deleteChallenge,
   } = challengeApi
 
-  const challengesQuery = useQuery({
+  const getChallenges = useQuery({
     queryKey: ['challenges', filters],
     queryFn: () => getAll(filters ?? {}),
     enabled: Boolean(filters),
@@ -92,7 +92,7 @@ export const useChallenges = (
   })
 
   return {
-    challengesQuery,
+    getChallenges,
     createChallengeMutation,
     toggleReactionMutation,
     deleteChallengeMutation,
