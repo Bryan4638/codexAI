@@ -6,7 +6,9 @@ import {
 } from '@/types/challenge'
 
 export const challengeApi = {
-  async getAll(params: Record<string, any> = {}): Promise<PaginatedChallenges> {
+  async getAll(
+    params: Record<string, number | string> = {}
+  ): Promise<PaginatedChallenges> {
     const res = await api.get('/challenges', { params })
     return res as unknown as PaginatedChallenges
   },
