@@ -118,11 +118,6 @@ body::after {
   flex-direction: column;
 }
 
-p {
-  color: var(--color-text-secondary);
-  line-height: 1.8;
-}
-
 h1,
 h2,
 h3,
