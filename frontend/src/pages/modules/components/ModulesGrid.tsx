@@ -2,12 +2,10 @@ import Error from '@/components/share/Error'
 import SkeletonCard from '@/components/share/skeletons/SkeletonCard'
 import { useModules } from '@/hooks/useModules'
 import ModuleCard from '@/pages/modules/components/ModuleCard'
-import { useCurrentModule } from '@/store/useCurrentModule'
 import { Module } from '@/types/module'
 import { useNavigate } from 'react-router-dom'
 
 export default function ModulesGrid() {
-  const { setModuleId } = useCurrentModule()
   const navigate = useNavigate()
   const { data, isLoading, error } = useModules().getModules
 

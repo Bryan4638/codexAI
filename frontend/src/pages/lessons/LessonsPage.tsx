@@ -5,15 +5,12 @@ import SkeletonCard from '@/components/share/skeletons/SkeletonCard'
 import { useLessons } from '@/hooks/useLessons'
 import { useModules } from '@/hooks/useModules'
 import LessonCard from '@/pages/lessons/components/LessonCard'
-import { useCurrentModule } from '@/store/useCurrentModule'
 import { slugify } from '@/utils/slugify'
 import { Link, useNavigate, useParams } from 'react-router'
 
 export default function LessonsPage() {
   const { modulePath } = useParams()
   const navigate = useNavigate()
-  const { moduleId } = useCurrentModule()
-  console.log('Modulo actual: ', moduleId)
   const {
     data: modules,
     isLoading: isLoadingModules,

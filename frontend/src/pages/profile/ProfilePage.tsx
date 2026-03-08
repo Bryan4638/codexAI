@@ -1,3 +1,4 @@
+import ProfilePageSkeleton from '@/components/share/skeletons/ProfileSkeleton'
 import EditProfileModal from '@/pages/profile/components/EditProfileModal'
 import { badgeApi } from '@/services/endpoints/badges'
 import { useAuthStore } from '@/store/useAuthStore'
@@ -62,11 +63,7 @@ function ProfilePage() {
   }
 
   if (loading) {
-    return (
-      <div className="pt-32 max-w-7xl mx-auto px-6 text-center">
-        <p>Cargando perfil...</p>
-      </div>
-    )
+    return <ProfilePageSkeleton />
   }
 
   return (
