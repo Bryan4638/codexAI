@@ -37,7 +37,7 @@ export default function ModuleCard({
         </h3>
       </header>
       <main className="mb-8 flex-1 flex flex-col">
-        <p className="text-sm text-text-secondary mb-2 text-pretty line-clamp-2 overflow-hidden text-ellipsis">
+        <p className="text-sm mb-2 text-pretty line-clamp-2 overflow-hidden text-ellipsis leading-relaxed">
           {module.description}
         </p>
         {user && (
