@@ -28,7 +28,7 @@ export const useChallenges = (userId?: string) => {
     setPage(1)
   }, [completed, difficulty, sort, limit])
 
-  const getChallenges = useQuery({
+  const challengesQuery = useQuery({
     queryKey: ['challenges', completed, difficulty, sort, page],
     queryFn: () => getAll({ difficulty, sort, completed, page, limit }),
     staleTime: 1000 * 60 * 5,
@@ -36,7 +36,7 @@ export const useChallenges = (userId?: string) => {
     placeholderData: page === 1 ? undefined : keepPreviousData,
   })
 
-  const meta = getChallenges.data?.meta
+  const meta = challengesQuery.data?.meta
 
   const nextPage = () => {
     if (!meta) return
@@ -111,7 +111,7 @@ export const useChallenges = (userId?: string) => {
   })
 
   return {
-    getChallenges,
+    challengesQuery,
     page,
     totalPages: meta?.lastPage ?? 1,
     nextPage,

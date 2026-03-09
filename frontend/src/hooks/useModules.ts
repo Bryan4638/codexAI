@@ -4,9 +4,9 @@ import { useQuery } from '@tanstack/react-query'
 export const useModules = () => {
   const { getAll } = moduleApi
 
-  const getModules = useQuery({
+  const modulesQuery = useQuery({
     queryKey: ['modules'],
     queryFn: () => getAll(),
   })
-  return { getModules }
+  return { modulesQuery }
 }

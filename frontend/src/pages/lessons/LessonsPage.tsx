@@ -15,13 +15,13 @@ export default function LessonsPage() {
     data: modules,
     isLoading: isLoadingModules,
     error: modulesError,
-  } = useModules().getModules
+  } = useModules().modulesQuery
   const module = modules?.find((item) => item.id === modulePath)
   const {
     data: lessons = [],
     isLoading: isLoadingLessons,
     error: lessonsError,
-  } = useLessons(module?.id).getLessons
+  } = useLessons(module?.id).lessonsQuery
   const moduleLessons = lessons
     .filter((lesson) => lesson.isActive)
     .sort((a, b) => a.order - b.order)

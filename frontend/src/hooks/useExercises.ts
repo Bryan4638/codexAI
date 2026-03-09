@@ -14,24 +14,24 @@ export const useExercises = ({
 }: UseExercisesParams) => {
   const { getAll, getById, validate } = exerciseApi
 
-  const getExercises = useQuery({
+  const exercisesQuery = useQuery({
     queryKey: ['exercises', lessonId, difficulty],
     queryFn: () => getAll({ lessonId, ...(difficulty ? { difficulty } : {}) }),
     enabled: Boolean(lessonId),
   })
 
-  const getExerciseById = useQuery({
+  const exerciseByIdQuery = useQuery({
     queryKey: ['exercise', exerciseId],
     queryFn: () => getById(exerciseId!),
     enabled: !!exerciseId,
   })
 
-  const validateExersice = useMutation({
+  const validateExersiceMutation = useMutation({
     mutationFn: (exerciseId: string, answer: any) =>
       validate(exerciseId, answer),
     onError: (error) => {
       console.error('Error validating exersice:', error)
     },
   })
-  return { getExercises, getExerciseById, validateExersice }
+  return { exercisesQuery, exerciseByIdQuery, validateExersiceMutation }
 }

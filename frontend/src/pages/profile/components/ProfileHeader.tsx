@@ -14,8 +14,8 @@ export default function ProfileHeader() {
   const navigate = useNavigate()
 
   const refreshProfile = () => {
-    queryClient.invalidateQueries({ queryKey: ['userBadges'] })
-    queryClient.invalidateQueries({ queryKey: ['userProgress'] })
+    queryClient.invalidateQueries({ queryKey: ['user-badges'] })
+    queryClient.invalidateQueries({ queryKey: ['user-progress'] })
   }
 
   const handleLogout = () => {

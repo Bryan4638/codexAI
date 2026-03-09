@@ -9,13 +9,13 @@ import { BadgeWithDescription } from '@/types/badge'
 import BadgeCard from './components/BadgeCard'
 
 export default function BadgesPage() {
-  const { getAllUserBadges, getBadges } = useBadges()
+  const { badgesQuery, userBadgesQuery } = useBadges()
   const {
     data: userBadges,
     isLoading: isUserLoading,
     error: userError,
-  } = getAllUserBadges
-  const { data: allBadges, isLoading, error } = getBadges
+  } = userBadgesQuery
+  const { data: allBadges, isLoading, error } = badgesQuery
   const { user } = useAuthStore()
 
   if (!user) return <LoginRequired />

@@ -28,7 +28,7 @@ export default function ChallengesPage() {
     useChallengesFiltersStore()
 
   const {
-    getChallenges,
+    challengesQuery,
     toggleReactionMutation,
     deleteChallengeMutation,
     canNext,
@@ -39,7 +39,7 @@ export default function ChallengesPage() {
     page,
   } = useChallenges(user?.id)
 
-  const { data, isPending, isError, isFetching, refetch } = getChallenges
+  const { data, isPending, isError, isFetching, refetch } = challengesQuery
 
   const challenges = data?.data ?? []
 

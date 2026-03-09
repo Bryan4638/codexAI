@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 export default function ModulesGrid() {
   const navigate = useNavigate()
-  const { data, isLoading, error } = useModules().getModules
+  const { data, isLoading, error } = useModules().modulesQuery
 
   if (isLoading)
     return (

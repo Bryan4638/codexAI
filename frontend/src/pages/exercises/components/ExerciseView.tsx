@@ -43,8 +43,8 @@ export default function ExerciseView({
     data: exercises = [],
     isLoading,
     error,
-  } = useExercises({ lessonId }).getExercises
-  const { data: userProgress } = useBadges().getUserProgress
+  } = useExercises({ lessonId }).exercisesQuery
+  const { data: userProgress } = useBadges().userProgressQuery
 
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState<number>(0)
   const [completedExercises, setCompletedExercises] = useState<number[]>([])
