@@ -1,5 +1,6 @@
-import { exerciseApi } from '@/services/endpoints/exercises'
+import { useExercises } from '@/hooks/useExercises'
 import { useAuthStore } from '@/store/useAuthStore'
+import { Badge } from '@/types/badge'
 import type { QuizExercise } from '@/types/exercise'
 import type { QuizFeedback } from '@/types/feedback'
 import {
@@ -7,6 +8,7 @@ import {
   IconCheck,
   IconHourglass,
   IconPlayerPlayFilled,
+  IconRestore,
   IconXboxX,
 } from '@tabler/icons-react'
 import { useState } from 'react'
@@ -15,15 +17,15 @@ import { ExerciseHeader } from './ExerciseHeader'
 interface QuizProps {
   exercise: QuizExercise
   onComplete: () => void
-  onNewBadges?: (badges: any[]) => void
+  onNewBadges?: (badges: Badge[]) => void
 }
 
 function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
   const [selected, setSelected] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState<boolean>(false)
   const [result, setResult] = useState<QuizFeedback | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
   const { user, updateUser } = useAuthStore()
+  const { mutateAsync, isPending } = useExercises().validateExersiceMutation
 
   const handleSelect = (optionId: string) => {
     if (submitted) return
@@ -33,9 +35,11 @@ function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
   const handleSubmit = async () => {
     if (!selected || !user) return
 
-    setLoading(true)
     try {
-      const response = await exerciseApi.validate(exercise.id, selected)
+      const response = await mutateAsync({
+        exerciseId: exercise.id,
+        answer: selected,
+      })
       setResult(response)
       setSubmitted(true)
 
@@ -51,11 +55,16 @@ function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
         }
         onComplete()
       }
-    } catch (error) {
-      console.error('Error validando:', error)
-    } finally {
-      setLoading(false)
+    } catch (error: any) {
+      setResult({ correct: false, message: error.message })
+      setSubmitted(true)
     }
+  }
+
+  const handleReset = () => {
+    setSelected(null)
+    setSubmitted(false)
+    setResult(null)
   }
 
   const getOptionClass = (optionId: string) => {
@@ -89,13 +98,13 @@ function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
           </div>
         ))}
       </div>
-      {!submitted && (
+      {!submitted ? (
         <button
           className="btn btn-primary mt-6"
           onClick={handleSubmit}
-          disabled={!selected || loading || !user}
+          disabled={!selected || isPending || !user}
         >
-          {loading ? (
+          {isPending ? (
             <span className="flex items-center gap-2">
               <IconHourglass /> VALIDANDO...
             </span>
@@ -104,6 +113,12 @@ function Quiz({ exercise, onComplete, onNewBadges }: QuizProps) {
               <IconPlayerPlayFilled /> VERIFICAR RESPUESTA
             </span>
           )}
+        </button>
+      ) : (
+        <button className="btn btn-secondary mt-6" onClick={handleReset}>
+          <span className="flex items-center gap-2">
+            <IconRestore /> Intentar de nuevo
+          </span>
         </button>
       )}
       {submitted && result && (

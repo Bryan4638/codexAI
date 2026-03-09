@@ -1,5 +1,6 @@
-import { exerciseApi } from '@/services/endpoints/exercises'
+import { useExercises } from '@/hooks/useExercises'
 import { useAuthStore } from '@/store/useAuthStore'
+import { Badge } from '@/types/badge'
 import type { FillBlankExercise } from '@/types/exercise'
 import type { FillBlankFeedback } from '@/types/feedback'
 import {
@@ -16,15 +17,15 @@ import { ExerciseHeader } from './ExerciseHeader'
 interface FillBlankProps {
   exercise: FillBlankExercise
   onComplete: () => void
-  onNewBadges?: (badges: any[]) => void
+  onNewBadges?: (badges: Badge[]) => void
 }
 
 function FillBlank({ exercise, onComplete, onNewBadges }: FillBlankProps) {
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [submitted, setSubmitted] = useState<boolean>(false)
   const [result, setResult] = useState<FillBlankFeedback | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
   const { user, updateUser } = useAuthStore()
+  const { mutateAsync, isPending } = useExercises().validateExersiceMutation
 
   const handleChange = (blankId: string, value: string) => {
     setAnswers((prev) => ({ ...prev, [blankId]: value }))
@@ -33,9 +34,11 @@ function FillBlank({ exercise, onComplete, onNewBadges }: FillBlankProps) {
   const handleSubmit = async () => {
     if (!user) return
 
-    setLoading(true)
     try {
-      const response = await exerciseApi.validate(exercise.id, answers)
+      const response = await mutateAsync({
+        exerciseId: exercise.id,
+        answer: answers,
+      })
       setResult(response)
       setSubmitted(true)
 
@@ -54,8 +57,6 @@ function FillBlank({ exercise, onComplete, onNewBadges }: FillBlankProps) {
     } catch (error: any) {
       setResult({ correct: false, message: error.message })
       setSubmitted(true)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -97,9 +98,9 @@ function FillBlank({ exercise, onComplete, onNewBadges }: FillBlankProps) {
           <button
             className="btn btn-primary"
             onClick={handleSubmit}
-            disabled={loading || !user}
+            disabled={isPending || !user}
           >
-            {loading ? (
+            {isPending ? (
               <span className="flex items-center gap-2">
                 <IconHourglass /> Validando...
               </span>
