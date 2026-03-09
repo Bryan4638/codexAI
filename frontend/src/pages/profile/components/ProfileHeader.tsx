@@ -1,3 +1,4 @@
+import { useAuth } from '@/hooks/useAuth'
 import EditProfileModal from '@/pages/profile/components/EditProfileModal'
 import { useAuthStore } from '@/store/useAuthStore'
 import { IconUserFilled } from '@tabler/icons-react'
@@ -8,7 +9,8 @@ import { useNavigate } from 'react-router-dom'
 export default function ProfileHeader() {
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false)
 
-  const { user, logout } = useAuthStore()
+  const { user } = useAuthStore()
+  const { logoutMutation } = useAuth()
   const { username, email, avatarUrl, createdAt } = user || {}
   const queryClient = useQueryClient()
   const navigate = useNavigate()
@@ -19,7 +21,7 @@ export default function ProfileHeader() {
   }
 
   const handleLogout = () => {
-    logout()
+    logoutMutation.mutate()
     navigate('/')
   }
 

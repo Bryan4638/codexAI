@@ -9,18 +9,18 @@ import ProfileModuleProgress from '@/pages/profile/components/ProfileModuleProgr
 import ProfileStats from '@/pages/profile/components/ProfileStats'
 
 function ProfilePage() {
-  const { getAllUserBadges, getUserProgress } = useBadges()
+  const { userBadgesQuery, userProgressQuery } = useBadges()
 
   const {
     data: badges,
     isPending: isPendingBadges,
     isError: isErrorBadges,
-  } = getAllUserBadges
+  } = userBadgesQuery
   const {
     data: progress,
     isPending: isPendingProgress,
     isError: isErrorProgress,
-  } = getUserProgress
+  } = userProgressQuery
 
   if (isPendingBadges || isPendingProgress) return <ProfilePageSkeleton />
   if (isErrorBadges || isErrorProgress) return <Error section="Perfil" />

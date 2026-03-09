@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/store/useAuthStore'
+import { useAuth } from '@/hooks/useAuth'
 import { ReactNode, useEffect } from 'react'
 import Swal from 'sweetalert2'
 
@@ -7,7 +7,7 @@ interface AuthInitializerProps {
 }
 
 export default function AuthInitializer({ children }: AuthInitializerProps) {
-  const { checkAuth } = useAuthStore()
+  const { meQuery } = useAuth()
 
   useEffect(() => {
     // Check for tokens in URL (OAuth redirect)
@@ -22,9 +22,6 @@ export default function AuthInitializer({ children }: AuthInitializerProps) {
 
       // Clean URL
       window.history.replaceState({}, document.title, window.location.pathname)
-
-      // Force auth check immediately
-      checkAuth()
 
       // Show success toast
       const Toast = Swal.mixin({
@@ -48,9 +45,9 @@ export default function AuthInitializer({ children }: AuthInitializerProps) {
         icon: 'success',
         title: '¡Sesión iniciada con éxito!',
       })
-    } else {
-      checkAuth()
     }
-  }, [checkAuth])
+    // No necesitamos llamar checkAuth()
+    // React Query automáticamente llamará /auth/me si hay token
+  }, [])
   return <>{children}</>
 }

@@ -9,16 +9,12 @@ import {
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
-interface HeaderProps {
-  onShowAuth: () => void
-}
-
-function Header({ onShowAuth }: HeaderProps) {
+function Header() {
   const { user } = useAuthStore()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { pathname } = useLocation()
+  const location = useLocation()
 
-  const isEditorMode = pathname.includes('/editor')
+  const isEditorMode = location.pathname.includes('/editor')
 
   const navLinks = [
     { to: '/', label: 'Inicio' },
@@ -78,7 +74,7 @@ function Header({ onShowAuth }: HeaderProps) {
                 after:w-0 after:h-0.5 after:bg-gradient-primary after:transition-all after:duration-300
                 hover:text-text-main hover:after:w-full
                 max-md:text-center max-md:p-4 max-md:rounded-xl max-md:bg-white/3
-                ${pathname === link.to ? 'text-neon-cyan after:w-full' : 'text-text-secondary'}
+                ${location.pathname === link.to ? 'text-neon-cyan after:w-full' : 'text-text-secondary'}
               `}
             >
               {link.label}
@@ -114,10 +110,14 @@ function Header({ onShowAuth }: HeaderProps) {
               </span>
             </Link>
           ) : (
-            <button className="btn btn-primary" onClick={onShowAuth}>
+            <Link
+              to="/auth"
+              state={{ from: location.pathname }}
+              className="btn btn-primary"
+            >
               <span className="hidden sm:block">Iniciar Sesión</span>
               <IconLogin />
-            </button>
+            </Link>
           )}
 
           <button
