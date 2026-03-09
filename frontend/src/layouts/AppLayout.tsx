@@ -1,17 +1,13 @@
-import AuthModal from '@/components/auth/AuthModal'
 import Header from '@/components/nav/Header'
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 
 function AppLayout() {
-  const [showAuthModal, setShowAuthModal] = useState<boolean>(false)
   const [newBadgeNotification, _setNewBadgeNotification] = useState<any>(null)
 
   return (
     <>
-      <Header onShowAuth={() => setShowAuthModal(true)} />
-
-      {/* Badge Notification */}
+      <Header />
       {newBadgeNotification && (
         <div className="fixed top-24 right-5 p-6 bg-gradient-card border-2 border-neon-green rounded-2xl z-1001 animate-slide-up max-w-sm">
           <div className="text-3xl text-center mb-2">
@@ -27,8 +23,6 @@ function AppLayout() {
       <main className="flex-1 w-full">
         <Outlet />
       </main>
-
-      {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
     </>
   )
 }

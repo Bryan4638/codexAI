@@ -1,12 +1,11 @@
 import Loading from '@/components/share/Loading'
-import { challengeApi } from '@/services/endpoints/challenges'
+import { useChallenges } from '@/hooks/useChallenges'
 import {
   ExecuteResponse,
   ExecuteWithTestsResponse,
   executionApi,
 } from '@/services/endpoints/execution'
 import { useAuthStore } from '@/store/useAuthStore'
-import { Challenge } from '@/types/challenge'
 import Editor from '@monaco-editor/react'
 import {
   IconArrowLeft,
@@ -22,10 +21,12 @@ import Swal from 'sweetalert2'
 export default function EditorPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { user, loading: authLoading } = useAuthStore()
-
-  const [challenge, setChallenge] = useState<Challenge | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { user } = useAuthStore()
+  const {
+    data: challenge,
+    isPending: isChallengeLoading,
+    isError: isChallengeError,
+  } = useChallenges(id).challengeQuery
 
   const [code, setCode] = useState('')
   const [output, setOutput] = useState<ExecuteResponse | null>(null)
@@ -34,8 +35,6 @@ export default function EditorPage() {
   const [isExecuting, setIsExecuting] = useState(false)
 
   useEffect(() => {
-    if (authLoading) return
-
     if (!user) {
       Swal.fire(
         'Atención',
@@ -46,39 +45,29 @@ export default function EditorPage() {
       return
     }
 
-    async function fetchChallenge() {
-      if (!id) return
-      try {
-        setLoading(true)
-        const challengeData = await challengeApi.getById(id)
-        if (challengeData) {
-          setChallenge(challengeData)
-          // Priorizar borrador guardado localmente sobre el código inicial
-          const savedDraft = localStorage.getItem(`draft_${id}`)
-          setCode(savedDraft || challengeData.initialCode || '')
-        }
-      } catch (error) {
-        console.error(error)
-        Swal.fire('Error', 'Reto no encontrado', 'error')
-        navigate('/challenges')
-      } finally {
-        setLoading(false)
-      }
+    if (isChallengeError) {
+      Swal.fire('Error', 'Reto no encontrado', 'error')
+      navigate('/challenges')
+      return
     }
 
-    fetchChallenge()
-  }, [id, navigate, user, authLoading])
+    if (challenge && id) {
+      // Priorizar borrador guardado localmente sobre el código inicial
+      const savedDraft = localStorage.getItem(`draft_${id}`)
+      setCode(savedDraft || challenge.initialCode || '')
+    }
+  }, [challenge, id, navigate, user, isChallengeError])
 
   // Guarda automáticamente el progreso (Debounce de 1s)
   useEffect(() => {
-    if (!id || !code.trim() || loading) return
+    if (!id || !code.trim() || isChallengeLoading) return
 
     const timer = setTimeout(() => {
       localStorage.setItem(`draft_${id}`, code)
     }, 1000)
 
     return () => clearTimeout(timer)
-  }, [code, id, loading])
+  }, [code, id, isChallengeLoading])
 
   const handleExecuteFree = async () => {
     if (!code.trim()) return
@@ -161,7 +150,7 @@ export default function EditorPage() {
     }
   }
 
-  if (loading || authLoading) return <Loading section="editor" />
+  if (isChallengeLoading) return <Loading section="editor" />
   if (!challenge) return null
 
   return (
@@ -218,7 +207,10 @@ export default function EditorPage() {
               options={{
                 minimap: { enabled: false },
                 fontSize: 14,
-                fontFamily: "'Fira Code', 'Monaco', 'Courier New', monospace",
+                fontLigatures: true,
+                fontWeight: 'bold',
+                fontFamily:
+                  "'JetBrains Mono', 'Fira Code', 'Monaco', 'Courier New', monospace",
                 lineHeight: 24,
                 padding: { top: 16 },
                 scrollBeyondLastLine: false,

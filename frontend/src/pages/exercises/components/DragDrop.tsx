@@ -1,5 +1,6 @@
 import { useExercises } from '@/hooks/useExercises'
 import { useAuthStore } from '@/store/useAuthStore'
+import { Badge } from '@/types/badge'
 import type { DragDropExercise } from '@/types/exercise'
 import type { DragDropFeedback } from '@/types/feedback'
 import {
@@ -24,7 +25,7 @@ interface DraggedItemState {
 interface DragDropProps {
   exercise: DragDropExercise
   onComplete: () => void
-  onNewBadges?: (badges: any[]) => void
+  onNewBadges?: (badges: Badge[]) => void
 }
 
 function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {

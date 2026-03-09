@@ -17,6 +17,7 @@ export const useChallenges = (userId?: string) => {
   const queryClient = useQueryClient()
   const {
     getAll,
+    getById,
     create,
     toggleReaction,
     delete: deleteChallenge,
@@ -65,6 +66,17 @@ export const useChallenges = (userId?: string) => {
       })
     })
   }
+
+  const challengeQuery = useQuery({
+    queryKey: ['challenges', userId],
+    queryFn: () => {
+      if (!userId) throw new Error('Challenge ID is required')
+      return getById(userId)
+    },
+    enabled: !!userId,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  })
 
   const createChallengeMutation = useMutation({
     mutationFn: (data: CreateChallengeFormData) => create(data),
@@ -118,6 +130,7 @@ export const useChallenges = (userId?: string) => {
     previousPage,
     canNext: page < (meta?.lastPage ?? 1),
     canPrevious: page > 1,
+    challengeQuery,
     createChallengeMutation,
     toggleReactionMutation,
     deleteChallengeMutation,
