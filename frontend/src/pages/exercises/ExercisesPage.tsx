@@ -13,14 +13,14 @@ export default function ExercisesPage() {
     data: modules,
     isLoading: isLoadingModules,
     error: modulesError,
-  } = useModules().getModules
+  } = useModules().modulesQuery
 
   const module = modules?.find((m) => m.id === modulePath)
   const {
     data: lessons = [],
     isLoading: isLoadingLessons,
     error: lessonsError,
-  } = useLessons(module?.id).getLessons
+  } = useLessons(module?.id).lessonsQuery
   const lesson = lessons.find((item) => slugify(item.title) === lessonPath)
 
   if (isLoadingModules || (module && isLoadingLessons)) {

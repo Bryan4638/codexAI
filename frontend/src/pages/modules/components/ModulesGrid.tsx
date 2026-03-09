@@ -28,16 +28,12 @@ export default function ModulesGrid() {
                 (module.completedExercises / module.totalExercises) * 100
               )
             : 0
-        const handleClick = () => {
-          setModuleId(module.id)
-          navigate(`/modules/${module.id}`)
-        }
         return (
           <ModuleCard
             key={module.id}
             module={module}
             progress={progress}
-            onClick={() => handleClick()}
+            onClick={() => navigate(`/modules/${module.id}`)}
           />
         )
       })}

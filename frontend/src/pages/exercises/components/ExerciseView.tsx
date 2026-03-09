@@ -14,7 +14,6 @@ import {
   IconAlertTriangle,
   IconArrowLeft,
   IconArrowRight,
-  IconCheck,
   IconCode,
   IconDragDrop,
   IconPencilCode,
@@ -245,9 +244,7 @@ export default function ExerciseView({
               }
             >
               {currentExerciseIndex === exercises.length - 1 ? (
-                <span className="flex items-center gap-1.5">
-                  FINALIZAR <IconCheck size={18} />
-                </span>
+                <span>FINALIZAR</span>
               ) : (
                 <span className="flex items-center gap-1.5">
                   SIGUIENTE <IconArrowRight size={18} />
