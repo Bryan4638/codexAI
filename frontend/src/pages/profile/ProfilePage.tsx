@@ -7,9 +7,13 @@ import ProfileHeader from '@/pages/profile/components/ProfileHeader'
 import ProfileLevelProgressBar from '@/pages/profile/components/ProfileLevelProgressBar'
 import ProfileModuleProgress from '@/pages/profile/components/ProfileModuleProgress'
 import ProfileStats from '@/pages/profile/components/ProfileStats'
+import { useAuthStore } from '@/store/useAuthStore'
+import { useNavigate } from 'react-router-dom'
 
 function ProfilePage() {
   const { userBadgesQuery, userProgressQuery } = useBadges()
+  const user = useAuthStore((s) => s.user)
+  const navigate = useNavigate()
 
   const {
     data: badges,
@@ -22,6 +26,7 @@ function ProfilePage() {
     isError: isErrorProgress,
   } = userProgressQuery
 
+  if (!user) navigate('/')
   if (isPendingBadges || isPendingProgress) return <ProfilePageSkeleton />
   if (isErrorBadges || isErrorProgress) return <Error section="Perfil" />
 
