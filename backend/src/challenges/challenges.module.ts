@@ -4,12 +4,18 @@ import { ChallengesController } from './challenges.controller';
 import { ChallengesService } from './challenges.service';
 import { Challenge } from './entities/challenge.entity';
 import { Reaction } from './entities/reaction.entity';
+import { LiveCodingSession } from './entities/live-coding-session.entity';
+import { ChallengeTest } from './entities/challenge-test.entity';
 import { CreateChallengeUseCase } from './use-cases/create-challenge.use-case';
 import { GetChallengesUseCase } from './use-cases/get-challenges.use-case';
 import { ToggleReactionUseCase } from './use-cases/toggle-reaction.use-case';
 import { DeleteChallengeUseCase } from './use-cases/delete-challenge.use-case';
-import { AuthModule } from '../auth/auth.module';
 import { GetChallengeUseCase } from './use-cases/get-challenge.use-case';
+import { StartLiveCodingUseCase } from './use-cases/start-live-coding.use-case';
+import { SubmitLiveCodingUseCase } from './use-cases/submit-live-coding.use-case';
+import { GetLiveCodingHistoryUseCase } from './use-cases/get-live-coding-history.use-case';
+import { AuthModule } from '../auth/auth.module';
+import { ExecutionModule } from '../execution/execution.module';
 
 const useCases = [
   CreateChallengeUseCase,
@@ -17,11 +23,19 @@ const useCases = [
   ToggleReactionUseCase,
   DeleteChallengeUseCase,
   GetChallengeUseCase,
+  StartLiveCodingUseCase,
+  SubmitLiveCodingUseCase,
+  GetLiveCodingHistoryUseCase,
 ];
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Challenge, Reaction]), AuthModule],
+  imports: [
+    TypeOrmModule.forFeature([Challenge, Reaction, LiveCodingSession, ChallengeTest]),
+    AuthModule,
+    ExecutionModule,
+  ],
   controllers: [ChallengesController],
   providers: [ChallengesService, ...useCases],
 })
-export class ChallengesModule {}
+export class ChallengesModule { }
+

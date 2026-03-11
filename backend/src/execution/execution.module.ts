@@ -17,5 +17,6 @@ import { UserChallengeProgress } from '../challenges/entities/user-challenge-pro
     ExecuteCodeUseCase,
     ExecuteWithTestsUseCase,
   ],
+  exports: [QueueManagerService],
 })
-export class ExecutionModule {}
+export class ExecutionModule { }

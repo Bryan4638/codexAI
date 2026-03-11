@@ -36,3 +36,65 @@ export interface CreateChallengeFormData {
   initialCode: string
   testCases: string
 }
+
+// ── Live Coding ──────────────────────────────────────
+
+export interface LiveCodingSessionResponse {
+  sessionId: string
+  startedAt: string
+  challenge: {
+    id: string
+    title: string
+    description: string
+    difficulty: 'easy' | 'medium' | 'hard'
+    initialCode: string
+    tests: {
+      id: string
+      description: string
+      input: string
+      expectedOutput: string
+    }[]
+  }
+}
+
+export interface LiveCodingSubmitRequest {
+  sessionId: string
+  code: string
+  language: string
+  timeTakenSeconds: number
+  tabSwitches: number
+  pasteCount: number
+}
+
+export interface LiveCodingResult {
+  score: number
+  penaltiesApplied: number
+  tabSwitches: number
+  pasteCount: number
+  executionTimeMs: number
+  allPassed: boolean
+  testResults: { id: string; passed: boolean; actual: string }[]
+  totalTests: number
+  passedTests: number
+  timeTakenSeconds: number
+  error?: string
+}
+
+export interface LiveCodingHistoryItem {
+  id: string
+  challenge: { id: string; title: string; difficulty: string }
+  score: number
+  timeTakenSeconds: number
+  executionTimeMs: number
+  allTestsPassed: boolean
+  tabSwitches: number
+  pasteCount: number
+  penaltiesApplied: number
+  completedAt: string
+}
+
+export interface LiveCodingHistoryResponse {
+  data: LiveCodingHistoryItem[]
+  meta: PaginationMeta
+}
+
