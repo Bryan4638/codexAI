@@ -4,19 +4,19 @@ import { useQuery } from '@tanstack/react-query'
 export const useBadges = () => {
   const { getAll, getUserBadges, getProgress } = badgeApi
 
-  const getBadges = useQuery({
+  const badgesQuery = useQuery({
     queryKey: ['badges'],
     queryFn: () => getAll(),
   })
 
-  const getAllUserBadges = useQuery({
-    queryKey: ['user-badge'],
+  const userBadgesQuery = useQuery({
+    queryKey: ['user-badges'],
     queryFn: () => getUserBadges(),
   })
 
-  const getUserProgress = useQuery({
+  const userProgressQuery = useQuery({
     queryKey: ['user-progress'],
     queryFn: () => getProgress(),
   })
-  return { getBadges, getAllUserBadges, getUserProgress }
+  return { badgesQuery, userBadgesQuery, userProgressQuery }
 }

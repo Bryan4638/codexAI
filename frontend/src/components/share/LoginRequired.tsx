@@ -1,9 +1,6 @@
-import AuthModal from '@/components/auth/AuthModal'
-import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function LoginRequired() {
-  const [showAuthModal, setShowAuthModal] = useState<boolean>(false)
-
   return (
     <>
       <section className="py-28 max-w-7xl mx-auto px-6 text-center">
@@ -12,14 +9,10 @@ export default function LoginRequired() {
           Inicia sesión para desbloquear medallas.
         </p>
 
-        <button
-          onClick={() => setShowAuthModal(true)}
-          className="btn btn-primary"
-        >
+        <Link to="/auth" className="btn btn-primary">
           Iniciar sesión
-        </button>
+        </Link>
       </section>
-      {showAuthModal && <AuthModal onClose={() => setShowAuthModal(false)} />}
     </>
   )
 }

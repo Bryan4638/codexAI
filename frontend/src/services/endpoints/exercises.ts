@@ -1,8 +1,12 @@
 import api from '@/services/api'
-import { ExerciseResponse, LessonExercise } from '@/types/exercise'
+import {
+  ExerciseFeedback,
+  ExerciseResponse,
+  LessonExercise,
+} from '@/types/exercise'
 
 interface GetExercisesParams {
-  lessonId: string
+  lessonId?: string
   difficulty?: string
 }
 
@@ -16,7 +20,10 @@ export const exerciseApi = {
     return api.get(`/exercises/${id}`)
   },
 
-  async validate(exerciseId: string, answer: any): Promise<any> {
+  async validate(
+    exerciseId: string,
+    answer: string | number[] | Record<string, string>
+  ): Promise<ExerciseFeedback> {
     return api.post('/exercises/validate', { exerciseId, answer })
   },
 }

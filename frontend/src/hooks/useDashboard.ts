@@ -2,11 +2,11 @@ import { dashboardApi } from '@/services/endpoints/dashboard'
 import { useQuery } from '@tanstack/react-query'
 
 export const useDashboard = () => {
-  const { getStats } = dashboardApi
+  const { getAll } = dashboardApi
 
   const statsQuery = useQuery({
     queryKey: ['stats'],
-    queryFn: () => getStats(),
+    queryFn: () => getAll(),
   })
 
   return { statsQuery }

@@ -1,34 +1,50 @@
 import Error from '@/components/share/Error'
-import Loading from '@/components/share/Loading'
+import ModuleHeaderSkeleton from '@/components/share/skeletons/ModuleHeaderSkeleton'
+import Skeleton from '@/components/share/skeletons/Skeleton'
+import SkeletonCard from '@/components/share/skeletons/SkeletonCard'
 import { useLessons } from '@/hooks/useLessons'
 import { useModules } from '@/hooks/useModules'
 import LessonCard from '@/pages/lessons/components/LessonCard'
-import { useCurrentModule } from '@/store/useCurrentModule'
 import { slugify } from '@/utils/slugify'
 import { Link, useNavigate, useParams } from 'react-router'
 
 export default function LessonsPage() {
   const { modulePath } = useParams()
   const navigate = useNavigate()
-  const { moduleId } = useCurrentModule()
-  console.log('Modulo actual: ', moduleId)
   const {
     data: modules,
     isLoading: isLoadingModules,
     error: modulesError,
-  } = useModules().getModules
+  } = useModules().modulesQuery
   const module = modules?.find((item) => item.id === modulePath)
   const {
     data: lessons = [],
     isLoading: isLoadingLessons,
     error: lessonsError,
-  } = useLessons(module?.id).getLessons
+  } = useLessons(module?.id).lessonsQuery
   const moduleLessons = lessons
     .filter((lesson) => lesson.isActive)
     .sort((a, b) => a.order - b.order)
 
-  if (isLoadingModules || (module && isLoadingLessons)) {
-    return <Loading section="lecciones" />
+  if (isLoadingModules || isLoadingLessons) {
+    return (
+      <section className="py-28 max-w-7xl mx-auto px-6">
+        <div className="mb-8">
+          <Skeleton className="h-4 w-40" />
+        </div>
+        <ModuleHeaderSkeleton />
+        <section className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-12">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <SkeletonCard
+              key={i}
+              showBadge={false}
+              showAvatar={false}
+              lines={2}
+            />
+          ))}
+        </section>
+      </section>
+    )
   }
 
   if (modulesError || lessonsError) return <Error section="lecciones" />

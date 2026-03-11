@@ -2,36 +2,40 @@ import { exerciseApi } from '@/services/endpoints/exercises'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 interface UseExercisesParams {
-  lessonId: string
+  lessonId?: string
   difficulty?: string
   exerciseId?: string
+}
+interface ValidateExerciseVariables {
+  exerciseId: string
+  answer: string | number[] | Record<string, string>
 }
 
 export const useExercises = ({
   lessonId,
   difficulty,
   exerciseId,
-}: UseExercisesParams) => {
+}: UseExercisesParams = {}) => {
   const { getAll, getById, validate } = exerciseApi
 
-  const getExercises = useQuery({
+  const exercisesQuery = useQuery({
     queryKey: ['exercises', lessonId, difficulty],
     queryFn: () => getAll({ lessonId, ...(difficulty ? { difficulty } : {}) }),
     enabled: Boolean(lessonId),
   })
 
-  const getExerciseById = useQuery({
+  const exerciseByIdQuery = useQuery({
     queryKey: ['exercise', exerciseId],
     queryFn: () => getById(exerciseId!),
     enabled: !!exerciseId,
   })
 
-  const validateExersice = useMutation({
-    mutationFn: (exerciseId: string, answer: any) =>
+  const validateExersiceMutation = useMutation({
+    mutationFn: ({ exerciseId, answer }: ValidateExerciseVariables) =>
       validate(exerciseId, answer),
     onError: (error) => {
-      console.error('Error validating exersice:', error)
+      console.error('Error validating exercise:', error)
     },
   })
-  return { getExercises, getExerciseById, validateExersice }
+  return { exercisesQuery, exerciseByIdQuery, validateExersiceMutation }
 }

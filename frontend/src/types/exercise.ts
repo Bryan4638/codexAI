@@ -1,3 +1,5 @@
+import { BadgeWithDescription } from './badge'
+
 interface BaseExercise {
   id: string
   prompt: string
@@ -63,6 +65,16 @@ export interface DraggedItem {
 
 export interface Blank {
   id: string
+}
+
+export interface ExerciseFeedback {
+  correct: boolean
+  message: string
+  explanation?: string
+  xpEarned?: number
+  newBadges?: BadgeWithDescription[]
+  levelUp?: boolean
+  newLevel?: number
 }
 
 export type ExerciseDifficulty = 'beginner' | 'intermediate' | 'advanced'

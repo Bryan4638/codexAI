@@ -1,4 +1,5 @@
 import { difficultyStyles } from '@/pages/challenges/data/difficultyStyles'
+import { useAuthStore } from '@/store/useAuthStore'
 import { Challenge } from '@/types/challenge'
 import { User } from '@/types/user'
 import {
@@ -23,6 +24,8 @@ export const ChallengeCard = ({
   onDelete,
   onReaction,
 }: ChallengeCardProps) => {
+  const { user } = useAuthStore()
+
   return (
     <article
       className={`bg-bg-secondary relative before:absolute before:top-0 before:left-0 before:right-0 before:h-px before:bg-linear-to-r before:from-transparent before:via-[rgba(0,240,255,0.5)] before:to-transparent before:content-[''] border rounded-2xl p-5 flex flex-col cursor-pointer transition-all duration-300 hover:border-neon-cyan/50 hover:-translate-y-1 hover:shadow-neon-cyan ${challenge.hasCompleted ? 'border-neon-green/40 shadow-[0_0_15px_rgba(57,255,20,0.05)]' : 'border-white/10'}`}
@@ -83,13 +86,15 @@ export const ChallengeCard = ({
         </div>
 
         <button
+          disabled={!user}
+          title={!user ? 'Inicia sesión para reaccionar' : ''}
           onClick={(e) => {
             e.stopPropagation()
-            onReaction(challenge.id)
+            if (user) onReaction(challenge.id)
           }}
           className={`cursor-pointedivr flex items-center gap-1.5 transition-all duration-200 hover:scale-110 px-2 py-1 rounded-lg hover:bg-white/5 ${
             challenge.hasReacted ? 'text-neon-pink' : 'text-text-muted'
-          }`}
+          } ${user ? 'cursor-pointer' : 'cursor-not-allowed'}`}
         >
           <IconHeart
             size={20}

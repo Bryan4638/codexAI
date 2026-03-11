@@ -1,4 +1,5 @@
 import { challengeApi } from '@/services/endpoints/challenges'
+import { useChallengesFiltersStore } from '@/store/useChallengesFiltersStore'
 import {
   Challenge,
   CreateChallengeFormData,
@@ -10,27 +11,46 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
 
-export const useChallenges = (
-  filters?: Record<string, any>,
-  userId?: string
-) => {
+export const useChallenges = (userId?: string) => {
   const queryClient = useQueryClient()
   const {
     getAll,
+    getById,
     create,
     toggleReaction,
     delete: deleteChallenge,
   } = challengeApi
+  const { completed, difficulty, sort, limit } = useChallengesFiltersStore()
+  const [page, setPage] = useState(1)
+
+  useEffect(() => {
+    setPage(1)
+  }, [completed, difficulty, sort, limit])
 
   const challengesQuery = useQuery({
-    queryKey: ['challenges', filters],
-    queryFn: () => getAll(filters ?? {}),
-    enabled: Boolean(filters),
+    queryKey: ['challenges', completed, difficulty, sort, page],
+    queryFn: () => getAll({ difficulty, sort, completed, page, limit }),
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
-    placeholderData: keepPreviousData,
+    placeholderData: page === 1 ? undefined : keepPreviousData,
   })
+
+  const meta = challengesQuery.data?.meta
+
+  const nextPage = () => {
+    if (!meta) return
+    if (page < meta?.lastPage) {
+      setPage((prev) => prev + 1)
+    }
+  }
+
+  const previousPage = () => {
+    if (page > 1) {
+      setPage((prev) => prev - 1)
+    }
+  }
 
   const updateChallengesCache = (
     updater: (items: Challenge[]) => Challenge[]
@@ -46,6 +66,17 @@ export const useChallenges = (
       })
     })
   }
+
+  const challengeQuery = useQuery({
+    queryKey: ['challenges', userId],
+    queryFn: () => {
+      if (!userId) throw new Error('Challenge ID is required')
+      return getById(userId)
+    },
+    enabled: !!userId,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  })
 
   const createChallengeMutation = useMutation({
     mutationFn: (data: CreateChallengeFormData) => create(data),
@@ -93,6 +124,13 @@ export const useChallenges = (
 
   return {
     challengesQuery,
+    page,
+    totalPages: meta?.lastPage ?? 1,
+    nextPage,
+    previousPage,
+    canNext: page < (meta?.lastPage ?? 1),
+    canPrevious: page > 1,
+    challengeQuery,
     createChallengeMutation,
     toggleReactionMutation,
     deleteChallengeMutation,

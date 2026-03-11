@@ -2,49 +2,55 @@ import Footer from '@/components/nav/Footer'
 import CyberSelect from '@/components/share/CyberSelect'
 import Error from '@/components/share/Error'
 import IsEmpty from '@/components/share/IsEmpty'
-import Loading from '@/components/share/Loading'
 import PageHeader from '@/components/share/PageHeader'
+import SkeletonCard from '@/components/share/skeletons/SkeletonCard'
 import { useChallenges } from '@/hooks/useChallenges'
+import { ChallengeCard } from '@/pages/challenges/components/ChallengeCard'
 import ChallengeDetailModal from '@/pages/challenges/components/ChallengeDetailModal'
 import CreateChallengeModal from '@/pages/challenges/components/CreateChallengeModal'
-import { useAuthStore } from '@/store/useAuthStore'
-import { IconPlus } from '@tabler/icons-react'
-import { useMemo, useState } from 'react'
-import { ChallengeCard } from './components/ChallengeCard'
 import {
   difficultyOptions,
   sortOptions,
   statusOptions,
-} from './data/filterOptions'
+} from '@/pages/challenges/data/filterOptions'
+import { useAuthStore } from '@/store/useAuthStore'
+import { useChallengesFiltersStore } from '@/store/useChallengesFiltersStore'
+import { IconPlus } from '@tabler/icons-react'
+import { useState } from 'react'
 
 export default function ChallengesPage() {
-  const { user } = useAuthStore()
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false)
   const [selectedChallengeId, setSelectedChallengeId] = useState<string | null>(
     null
   )
+  const { user } = useAuthStore()
+  const { completed, difficulty, sort, setFilters } =
+    useChallengesFiltersStore()
 
-  // Filters state
-  const [filters, setFilters] = useState({
-    difficulty: 'all',
-    sort: 'newest',
-    completed: 'all',
-    page: 1,
-  })
+  const {
+    challengesQuery,
+    toggleReactionMutation,
+    deleteChallengeMutation,
+    canNext,
+    canPrevious,
+    nextPage,
+    previousPage,
+    totalPages,
+    page,
+  } = useChallenges(user?.id)
 
-  const queryFilters = useMemo(() => filters, [filters])
-  const { challengesQuery, toggleReactionMutation, deleteChallengeMutation } =
-    useChallenges(queryFilters, user?.id)
+  const { data, isPending, isError, isFetching, refetch } = challengesQuery
 
-  const challenges = challengesQuery.data?.data ?? []
-  const meta = challengesQuery.data?.meta
+  const challenges = data?.data ?? []
+
   const selectedChallenge = selectedChallengeId
     ? (challenges.find((challenge) => challenge.id === selectedChallengeId) ??
       null)
     : null
 
   const handleCreateSuccess = () => {
-    challengesQuery.refetch()
+    refetch()
+    setShowCreateModal(false)
   }
 
   const handleReaction = async (id: string) => {
@@ -60,8 +66,21 @@ export default function ChallengesPage() {
       return
     try {
       await deleteChallengeMutation.mutateAsync(id)
+      refetch()
     } catch (error) {
       console.error('Error eliminando:', error)
+    }
+  }
+
+  const goToNextPage = () => {
+    if (canNext && !isFetching) {
+      nextPage()
+    }
+  }
+
+  const goToPrevPage = () => {
+    if (canPrevious && !isFetching) {
+      previousPage()
     }
   }
 
@@ -77,25 +96,27 @@ export default function ChallengesPage() {
           <div className="flex gap-4 items-center flex-wrap">
             <CyberSelect
               options={difficultyOptions}
-              value={filters.difficulty}
+              value={difficulty}
               onChange={(val) =>
-                setFilters((prev) => ({ ...prev, difficulty: val, page: 1 }))
+                setFilters({
+                  difficulty: val as 'all' | 'easy' | 'medium' | 'hard',
+                })
               }
             />
-
             <CyberSelect
               options={statusOptions}
-              value={filters.completed}
+              value={completed}
               onChange={(val) =>
-                setFilters((prev) => ({ ...prev, completed: val, page: 1 }))
+                setFilters({
+                  completed: val as 'all' | 'completed' | 'pending',
+                })
               }
             />
-
             <CyberSelect
               options={sortOptions}
-              value={filters.sort}
+              value={sort}
               onChange={(val) =>
-                setFilters((prev) => ({ ...prev, sort: val, page: 1 }))
+                setFilters({ sort: val as 'newest' | 'popularity' })
               }
             />
           </div>
@@ -111,9 +132,13 @@ export default function ChallengesPage() {
         </section>
 
         {/* Challenge List */}
-        {challengesQuery.isLoading ? (
-          <Loading section="retos" />
-        ) : challengesQuery.error ? (
+        {isPending ? (
+          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </section>
+        ) : isError ? (
           <Error section="retos" />
         ) : challenges.length === 0 ? (
           <IsEmpty text="No hay retos aún. ¡Sé el primero en crear uno!" />
@@ -135,32 +160,28 @@ export default function ChallengesPage() {
             </main>
 
             {/* Pagination Controls */}
-            {meta && meta.lastPage > 1 && (
+            {totalPages > 1 && (
               <div className="w-full mt-12 mb-6">
                 <div className="flex justify-between items-center bg-bg-card p-4 rounded-2xl border border-white/10 shadow-card">
                   <button
                     className="btn btn-secondary shadow-none px-6"
-                    disabled={filters.page === 1}
-                    onClick={() =>
-                      setFilters((prev) => ({ ...prev, page: prev.page - 1 }))
-                    }
+                    disabled={!canPrevious || isFetching}
+                    onClick={goToPrevPage}
                   >
                     Anterior
                   </button>
                   <button
                     className="btn btn-secondary shadow-none px-6"
-                    disabled={filters.page >= meta.lastPage}
-                    onClick={() =>
-                      setFilters((prev) => ({ ...prev, page: prev.page + 1 }))
-                    }
+                    disabled={!canNext || isFetching}
+                    onClick={goToNextPage}
                   >
                     Siguiente
                   </button>
                 </div>
                 <div className="text-text-secondary flex justify-end gap-1.5 p-4">
                   Página{' '}
-                  <span className="text-neon-cyan font-bold">{meta.page}</span>{' '}
-                  de {meta.lastPage}
+                  <span className="text-neon-cyan font-bold">{page}</span> de{' '}
+                  {totalPages}
                 </div>
               </div>
             )}

@@ -1,7 +1,7 @@
 import Footer from '@/components/nav/Footer'
 import Error from '@/components/share/Error'
-import Loading from '@/components/share/Loading'
 import PageHeader from '@/components/share/PageHeader'
+import LeaderboardSkeleton from '@/components/share/skeletons/LeaderboardSkeleton'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
 import { useState } from 'react'
 import LeaderboardPodium from './components/LeaderboardPodium'
@@ -21,7 +21,7 @@ export default function LeaderboardPage() {
   const top3 = leaderboard.slice(0, 3)
   const rest = leaderboard.slice(3)
 
-  if (leaderboardQuery.isLoading) return <Loading section="ranking" />
+  if (leaderboardQuery.isPending) return <LeaderboardSkeleton />
   if (leaderboardQuery.error) return <Error section="ranking" />
   return (
     <>

@@ -1,5 +1,6 @@
-import { exerciseApi } from '@/services/endpoints/exercises'
+import { useExercises } from '@/hooks/useExercises'
 import { useAuthStore } from '@/store/useAuthStore'
+import { Badge } from '@/types/badge'
 import type { CodeEditorExercise } from '@/types/exercise'
 import type { CodeEditorFeedback } from '@/types/feedback'
 import {
@@ -14,7 +15,7 @@ import { FeedbackMessage } from './FeedbackMessage'
 interface CodeEditorProps {
   exercise: CodeEditorExercise
   onComplete: () => void
-  onNewBadges?: (badges: any[]) => void
+  onNewBadges?: (badges: Badge[]) => void
 }
 
 function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
@@ -22,8 +23,9 @@ function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
     exercise.data?.placeholder || '// Escribe tu código aquí\n'
   )
   const [feedback, setFeedback] = useState<CodeEditorFeedback | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
+
   const { user, updateUser } = useAuthStore()
+  const { mutateAsync, isPending } = useExercises().validateExersiceMutation
 
   const handleSubmit = async () => {
     if (!user) {
@@ -34,9 +36,11 @@ function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
       return
     }
 
-    setLoading(true)
     try {
-      const result = await exerciseApi.validate(exercise.id, code)
+      const result = await mutateAsync({
+        exerciseId: exercise.id,
+        answer: code,
+      })
 
       if (result.correct) {
         setFeedback({
@@ -55,8 +59,8 @@ function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
           })
         }
 
-        if (result.newBadges && result.newBadges.length > 0) {
-          if (onNewBadges) onNewBadges(result.newBadges)
+        if (result.newBadges?.length) {
+          onNewBadges?.(result.newBadges)
         }
 
         onComplete()
@@ -72,8 +76,6 @@ function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
         type: 'error',
         message: error.message || 'Error occurred',
       })
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -105,9 +107,9 @@ function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
         <button
           className="btn btn-primary"
           onClick={handleSubmit}
-          disabled={loading}
+          disabled={isPending || !user}
         >
-          {loading ? (
+          {isPending ? (
             <span className="flex items-center gap-2">
               <IconHourglass size={18} /> Validando...
             </span>
@@ -118,7 +120,7 @@ function CodeEditor({ exercise, onComplete, onNewBadges }: CodeEditorProps) {
           )}
         </button>
         <button
-          className="btn btn-secondary gap-2"
+          className={`btn btn-secondary gap-2 ${!user ? 'disabled' : ''}`}
           onClick={() => setCode(exercise.data?.placeholder || '')}
         >
           <IconRestore size={18} />

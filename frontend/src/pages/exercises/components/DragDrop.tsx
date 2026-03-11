@@ -1,5 +1,6 @@
-import { exerciseApi } from '@/services/endpoints/exercises'
+import { useExercises } from '@/hooks/useExercises'
 import { useAuthStore } from '@/store/useAuthStore'
+import { Badge } from '@/types/badge'
 import type { DragDropExercise } from '@/types/exercise'
 import type { DragDropFeedback } from '@/types/feedback'
 import {
@@ -24,7 +25,7 @@ interface DraggedItemState {
 interface DragDropProps {
   exercise: DragDropExercise
   onComplete: () => void
-  onNewBadges?: (badges: any[]) => void
+  onNewBadges?: (badges: Badge[]) => void
 }
 
 function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
@@ -34,8 +35,8 @@ function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
   const [targetItems, setTargetItems] = useState<DragDropItem[]>([])
   const [draggedItem, setDraggedItem] = useState<DraggedItemState | null>(null)
   const [feedback, setFeedback] = useState<DragDropFeedback | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
   const { user, updateUser } = useAuthStore()
+  const { mutateAsync, isPending } = useExercises().validateExersiceMutation
 
   const handleDragStart = (item: DragDropItem, fromTarget = false) => {
     setDraggedItem({ item, fromTarget })
@@ -61,10 +62,12 @@ function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
       return
     }
 
-    setLoading(true)
     try {
       const answer = targetItems.map((i) => i.id)
-      const result = await exerciseApi.validate(exercise.id, answer)
+      const result = await mutateAsync({
+        exerciseId: exercise.id,
+        answer,
+      })
 
       if (result.correct) {
         setFeedback({
@@ -91,8 +94,6 @@ function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
       }
     } catch (error: any) {
       setFeedback({ type: 'error', message: error.message })
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -166,10 +167,11 @@ function DragDrop({ exercise, onComplete, onNewBadges }: DragDropProps) {
           onClick={handleVerify}
           disabled={
             targetItems.length !== (exercise.data?.items?.length || 0) ||
-            loading
+            isPending ||
+            !user
           }
         >
-          {loading ? (
+          {isPending ? (
             <span className="flex items-center gap-2">
               <IconHourglass size={18} /> VALIDANDO...
             </span>
