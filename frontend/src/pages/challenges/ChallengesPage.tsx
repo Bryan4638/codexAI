@@ -15,8 +15,9 @@ import {
 } from '@/pages/challenges/data/filterOptions'
 import { useAuthStore } from '@/store/useAuthStore'
 import { useChallengesFiltersStore } from '@/store/useChallengesFiltersStore'
-import { IconPlus } from '@tabler/icons-react'
+import { IconBolt, IconPlus } from '@tabler/icons-react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function ChallengesPage() {
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false)
@@ -24,6 +25,7 @@ export default function ChallengesPage() {
     null
   )
   const { user } = useAuthStore()
+  const navigate = useNavigate()
   const { completed, difficulty, sort, setFilters } =
     useChallengesFiltersStore()
 
@@ -122,12 +124,20 @@ export default function ChallengesPage() {
           </div>
 
           {user && (
-            <button
-              className="btn btn-primary"
-              onClick={() => setShowCreateModal(true)}
-            >
-              <IconPlus size={20} /> Crear Reto
-            </button>
+            <div className="flex gap-3">
+              <button
+                className="btn btn-primary flex items-center gap-2 bg-gradient-to-r from-neon-cyan/80 to-neon-pink/80 text-black border-none font-bold"
+                onClick={() => navigate('/challenges/live-coding')}
+              >
+                <IconBolt size={20} /> Live Coding
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={() => setShowCreateModal(true)}
+              >
+                <IconPlus size={20} /> Crear Reto
+              </button>
+            </div>
           )}
         </section>
 

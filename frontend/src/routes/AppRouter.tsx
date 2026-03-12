@@ -2,6 +2,7 @@ import AppLayout from '@/layouts/AppLayout'
 import { AuthPage } from '@/pages/auth/AuthPage'
 import BadgesPage from '@/pages/badges/BadgesPage'
 import ChallengesPage from '@/pages/challenges/ChallengesPage'
+import LiveCodingPage from '@/pages/challenges/LiveCodingPage'
 import EditorPage from '@/pages/editor/EditorPage'
 import ExercisesPage from '@/pages/exercises/ExercisesPage'
 import Home from '@/pages/home/Home'
@@ -21,6 +22,7 @@ export default function AppRouter() {
         <Route path="/badges" element={<BadgesPage />} />
         <Route path="/ranking" element={<LeaderboardPage />} />
         <Route path="/challenges" element={<ChallengesPage />} />
+        <Route path="/challenges/live-coding" element={<LiveCodingPage />} />
         <Route path="/challenges/:id/editor" element={<EditorPage />} />
         <Route path="/profile" element={<ProfilePage />} />
 

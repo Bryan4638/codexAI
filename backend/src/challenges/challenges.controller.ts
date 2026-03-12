@@ -20,13 +20,15 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../auth/entities/user.entity';
 import { CreateChallengeDto } from './dto/create-challenge.dto';
 import { GetChallengesDto } from './dto/get-challenges.dto';
+import { StartLiveCodingDto } from './dto/start-live-coding.dto';
+import { SubmitLiveCodingDto } from './dto/submit-live-coding.dto';
 import { ChallengesService } from './challenges.service';
 import { OptionalJwtAuthGuard } from 'src/auth/guards/optional-jwt-auth.guard';
 
 @ApiTags('Challenges')
 @Controller('challenges')
 export class ChallengesController {
-  constructor(private readonly challengesService: ChallengesService) {}
+  constructor(private readonly challengesService: ChallengesService) { }
 
   @Get()
   @UseGuards(OptionalJwtAuthGuard)
@@ -38,6 +40,58 @@ export class ChallengesController {
   getChallenges(@Query() query: GetChallengesDto, @CurrentUser() user?: User) {
     return this.challengesService.getChallenges(query, user?.id);
   }
+
+  // ── Live Coding (must be before :id routes) ─────────
+
+  @Post('live-coding/start')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('jwt')
+  @ApiOperation({ summary: 'Iniciar sesión de Live Coding' })
+  @ApiResponse({
+    status: 201,
+    description: 'Sesión de live coding iniciada, reto asignado aleatoriamente',
+  })
+  startLiveCoding(
+    @CurrentUser() user: User,
+    @Body() dto: StartLiveCodingDto,
+  ) {
+    return this.challengesService.startLiveCoding(user.id, dto);
+  }
+
+  @Post('live-coding/submit')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('jwt')
+  @ApiOperation({ summary: 'Enviar solución de Live Coding' })
+  @ApiResponse({
+    status: 201,
+    description: 'Solución evaluada y puntuación calculada',
+  })
+  @ApiResponse({ status: 404, description: 'Sesión no encontrada' })
+  @ApiResponse({ status: 400, description: 'Sesión ya completada' })
+  submitLiveCoding(
+    @CurrentUser() user: User,
+    @Body() dto: SubmitLiveCodingDto,
+  ) {
+    return this.challengesService.submitLiveCoding(user.id, dto);
+  }
+
+  @Get('live-coding/history')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('jwt')
+  @ApiOperation({ summary: 'Obtener historial de Live Coding del usuario' })
+  @ApiResponse({
+    status: 200,
+    description: 'Historial obtenido exitosamente',
+  })
+  getLiveCodingHistory(
+    @CurrentUser() user: User,
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
+  ) {
+    return this.challengesService.getLiveCodingHistory(user.id, page, limit);
+  }
+
+  // ── Param-based routes ──────────────────────────────
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
@@ -83,4 +137,5 @@ export class ChallengesController {
   deleteChallenge(@CurrentUser() user: User, @Param('id') id: string) {
     return this.challengesService.deleteChallenge(user.id, id);
   }
+
 }
