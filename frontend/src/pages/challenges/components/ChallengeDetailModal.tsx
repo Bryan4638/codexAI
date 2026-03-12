@@ -3,6 +3,7 @@ import { difficultyStyles } from '@/pages/challenges/data/difficultyStyles'
 import { useAuthStore } from '@/store/useAuthStore'
 import { Challenge } from '@/types/challenge'
 import {
+  IconAlertTriangle,
   IconCircleCheckFilled,
   IconHeart,
   IconTrash,
@@ -10,6 +11,7 @@ import {
   IconX,
 } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
+import { sileo } from 'sileo'
 
 interface ChallengeDetailModalProps {
   challenge: Challenge
@@ -23,7 +25,6 @@ function ChallengeDetailModal({
   const { user } = useAuthStore()
   const navigate = useNavigate()
   const { toggleReactionMutation, deleteChallengeMutation } = useChallenges(
-    undefined,
     user?.id
   )
 
@@ -170,22 +171,14 @@ function ChallengeDetailModal({
             <button
               onClick={() => {
                 if (!user) {
-                  import('sweetalert2').then(({ default: Swal }) => {
-                    Swal.fire({
-                      toast: true,
-                      position: 'bottom-end',
-                      icon: 'warning',
-                      title: 'Debes iniciar sesión para resolver retos',
-                      showConfirmButton: false,
-                      timer: 3000,
-                      background: '#101018',
-                      color: '#ff6b35',
-                      iconColor: '#ff6b35',
-                      customClass: {
-                        popup:
-                          'border border-[#ff6b35]/30 rounded-xl shadow-[0_0_15px_rgba(255,107,53,0.15)] font-display text-sm backdrop-blur-md !z-[9999]',
-                      },
-                    })
+                  sileo.warning({
+                    title: 'Debes Iniciar Sesión',
+                    description: (
+                      <span className="flex items-center justify-center">
+                        Primero debes iniciar sesión para resolver retos
+                      </span>
+                    ),
+                    icon: <IconAlertTriangle />,
                   })
                   return
                 }
