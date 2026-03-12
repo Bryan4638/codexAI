@@ -1,12 +1,16 @@
 import Footer from '@/components/nav/Footer'
-import Error from '@/components/share/Error'
 import PageHeader from '@/components/share/PageHeader'
 import LeaderboardSkeleton from '@/components/share/skeletons/LeaderboardSkeleton'
 import { useLeaderboard } from '@/hooks/useLeaderboard'
-import { useState } from 'react'
-import LeaderboardPodium from './components/LeaderboardPodium'
-import LeaderboardTable from './components/LeaderboardTable'
-import ProfileModal from './components/ProfileModal'
+import LeaderboardPodium from '@/pages/leaderboard/components/LeaderboardPodium'
+import LeaderboardTable from '@/pages/leaderboard/components/LeaderboardTable'
+import { IconLoader2 } from '@tabler/icons-react'
+import { lazy, Suspense, useState } from 'react'
+
+const Error = lazy(() => import('@/components/share/Error'))
+const ProfileModal = lazy(
+  () => import('@/pages/leaderboard/components/ProfileModal')
+)
 
 export default function LeaderboardPage() {
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
@@ -33,11 +37,19 @@ export default function LeaderboardPage() {
         <LeaderboardPodium top3={top3} onUserClick={setSelectedUser} />
         <LeaderboardTable users={rest} onUserClick={setSelectedUser} />
         {selectedUser && (
-          <ProfileModal
-            isLoading={userProfileQuery.isLoading}
-            profile={userProfile}
-            onClose={() => setSelectedUser(null)}
-          />
+          <Suspense
+            fallback={
+              <div className="flex justify-center items-center">
+                <IconLoader2 className="animate-spin" />
+              </div>
+            }
+          >
+            <ProfileModal
+              isLoading={userProfileQuery.isLoading}
+              profile={userProfile}
+              onClose={() => setSelectedUser(null)}
+            />
+          </Suspense>
         )}
       </section>
       <Footer />

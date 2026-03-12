@@ -1,14 +1,18 @@
-import Error from '@/components/share/Error'
 import ProfilePageSkeleton from '@/components/share/skeletons/ProfileSkeleton'
 import { useBadges } from '@/hooks/useBadges'
-import ProfileActivityHistory from '@/pages/profile/components/ProfileActivityHistory'
 import ProfileBadgesSection from '@/pages/profile/components/ProfileBadgesSection'
 import ProfileHeader from '@/pages/profile/components/ProfileHeader'
 import ProfileLevelProgressBar from '@/pages/profile/components/ProfileLevelProgressBar'
 import ProfileModuleProgress from '@/pages/profile/components/ProfileModuleProgress'
 import ProfileStats from '@/pages/profile/components/ProfileStats'
 import { useAuthStore } from '@/store/useAuthStore'
+import { lazy } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+const Error = lazy(() => import('@/components/share/Error'))
+const ProfileActivityHistory = lazy(
+  () => import('@/pages/profile/components/ProfileActivityHistory')
+)
 
 function ProfilePage() {
   const { userBadgesQuery, userProgressQuery } = useBadges()

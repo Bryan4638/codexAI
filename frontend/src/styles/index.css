@@ -58,7 +58,7 @@
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Animations */
-  --animate-slide-up: slideUp 1s ease;
+  --animate-slide-up: slideUp 0.5s ease;
   --animate-blink: blink 1s infinite;
   --animate-float: float 6s ease-in-out infinite;
   --animate-pulse-neon: pulse 2s ease-in-out infinite;
