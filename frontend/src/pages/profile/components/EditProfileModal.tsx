@@ -1,6 +1,6 @@
 import { leaderboardApi } from '@/services/endpoints/leaderboard'
 import { useAuthStore } from '@/store/useAuthStore'
-import { ProfileFormData } from '@/types/profile'
+import type { ProfileFormData } from '@/types/profile'
 import {
   IconBrandGithub,
   IconBrandLinkedin,

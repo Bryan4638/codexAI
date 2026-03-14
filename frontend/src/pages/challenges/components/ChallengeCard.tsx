@@ -1,7 +1,7 @@
 import { difficultyStyles } from '@/pages/challenges/data/difficultyStyles'
 import { useAuthStore } from '@/store/useAuthStore'
-import { Challenge } from '@/types/challenge'
-import { User } from '@/types/user'
+import type { Challenge } from '@/types/challenge'
+import type { User } from '@/types/user'
 import {
   IconCircleCheckFilled,
   IconHeart,

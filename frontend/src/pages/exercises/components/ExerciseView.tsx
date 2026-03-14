@@ -3,9 +3,9 @@ import ModuleHeaderSkeleton from '@/components/share/skeletons/ModuleHeaderSkele
 import { useBadges } from '@/hooks/useBadges'
 import { useExercises } from '@/hooks/useExercises'
 import { useAuthStore } from '@/store/useAuthStore'
-import { Badge } from '@/types/badge'
-import { LessonExercise } from '@/types/exercise'
-import { Module } from '@/types/module'
+import type { Badge } from '@/types/badge'
+import type { LessonExercise } from '@/types/exercise'
+import type { Module } from '@/types/module'
 import {
   IconAlertTriangle,
   IconArrowLeft,

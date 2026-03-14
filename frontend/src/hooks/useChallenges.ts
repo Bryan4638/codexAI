@@ -1,6 +1,6 @@
 import { challengeApi } from '@/services/endpoints/challenges'
 import { useChallengesFiltersStore } from '@/store/useChallengesFiltersStore'
-import {
+import type {
   Challenge,
   CreateChallengeFormData,
   PaginatedChallenges,

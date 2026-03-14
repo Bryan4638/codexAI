@@ -1,4 +1,4 @@
-import { UserProfileData } from '@/types/profile'
+import type { UserProfileData } from '@/types/profile'
 import { IconLockFilled, IconMedal, IconUserFilled } from '@tabler/icons-react'
 
 interface Props {

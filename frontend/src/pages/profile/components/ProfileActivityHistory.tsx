@@ -1,4 +1,4 @@
-import { UserProgress } from '@/types/badge'
+import type { UserProgress } from '@/types/badge'
 import { IconHistory } from '@tabler/icons-react'
 
 interface ProfileActivityHistoryProps {

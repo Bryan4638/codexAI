@@ -1,44 +1,22 @@
-import api from '../api'
-
-export interface ExecuteRequest {
-  language: string
-  code: string
-}
-
-export interface ExecuteWithTestsRequest extends ExecuteRequest {
-  challengeId: string
-}
-
-export interface TestCaseResult {
-  id: string
-  passed: boolean
-  actual: string
-}
-
-export interface ExecuteWithTestsResponse {
-  allPassed: boolean
-  testResults: TestCaseResult[]
-  executionTimeMs: number
-  error?: string
-}
-
-export interface ExecuteResponse {
-  success: boolean
-  output: string
-  error: string
-  exitCode: number
-}
+import api from '@/services/api'
+import type {
+  ExecuteRequest,
+  ExecuteResponse,
+  ExecuteWithTestsRequest,
+  ExecuteWithTestsResponse,
+} from '@/types/execution'
 
 export const executionApi = {
   async execute(data: ExecuteRequest): Promise<ExecuteResponse> {
-    const res = await api.post('/execute', data)
-    return res as unknown as ExecuteResponse
+    return (await api.post('/execute', data)) as ExecuteResponse
   },
 
   async executeWithTests(
     data: ExecuteWithTestsRequest
   ): Promise<ExecuteWithTestsResponse> {
-    const res = await api.post('/execute/with-tests', data)
-    return res as unknown as ExecuteWithTestsResponse
+    return (await api.post(
+      '/execute/with-tests',
+      data
+    )) as ExecuteWithTestsResponse
   },
 }

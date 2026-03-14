@@ -1,4 +1,4 @@
-import { Lesson } from '@/types/lesson'
+import type { Lesson } from '@/types/lesson'
 
 interface LessonCardProps {
   lesson: Lesson

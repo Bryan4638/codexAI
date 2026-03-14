@@ -1,7 +1,7 @@
 import { useChallenges } from '@/hooks/useChallenges'
 import { difficultyStyles } from '@/pages/challenges/data/difficultyStyles'
 import { useAuthStore } from '@/store/useAuthStore'
-import { Challenge } from '@/types/challenge'
+import type { Challenge } from '@/types/challenge'
 import {
   IconAlertTriangle,
   IconCircleCheckFilled,

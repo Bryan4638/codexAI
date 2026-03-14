@@ -4,9 +4,9 @@ import LoginRequired from '@/components/share/LoginRequired'
 import PageHeader from '@/components/share/PageHeader'
 import BadgeCardSkeleton from '@/components/share/skeletons/BadgeCardSkeleton'
 import { useBadges } from '@/hooks/useBadges'
+import BadgeCard from '@/pages/badges/components/BadgeCard'
 import { useAuthStore } from '@/store/useAuthStore'
-import { BadgeWithDescription } from '@/types/badge'
-import BadgeCard from './components/BadgeCard'
+import type { BadgeWithDescription } from '@/types/badge'
 
 export default function BadgesPage() {
   const { badgesQuery, userBadgesQuery } = useBadges()
