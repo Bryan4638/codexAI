@@ -7,6 +7,7 @@ import type {
   LiveCodingSessionResponse,
   LiveCodingSubmitRequest,
   PaginatedChallenges,
+  ToggleReactionResponse,
 } from '@/types/challenge'
 
 export const challengeApi = {
@@ -24,11 +25,8 @@ export const challengeApi = {
     return (await api.post('/challenges', challenge)) as Challenge
   },
 
-  // TODO: Verificar que devuelve la reaccion
-  async toggleReaction(id: string): Promise<any> {
-    const res = api.post(`/challenges/${id}/react`)
-    console.log(res)
-    return res
+  async toggleReaction(id: string): Promise<ToggleReactionResponse> {
+    return (await api.post(`/challenges/${id}/react`)) as ToggleReactionResponse
   },
 
   // TODO: Verificar que devuelve DELETE

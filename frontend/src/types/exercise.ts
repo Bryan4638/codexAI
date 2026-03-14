@@ -1,4 +1,4 @@
-import { BadgeWithDescription } from './badge'
+import type { BadgeWithDescription } from '@/types/badge'
 
 interface BaseExercise {
   id: string
@@ -47,6 +47,11 @@ export interface FillBlankExercise extends BaseExercise {
     hint?: string
     explanation?: string
   }
+}
+
+export interface GetExercisesParams {
+  lessonId?: string
+  difficulty?: string
 }
 
 export interface ExerciseResponse {

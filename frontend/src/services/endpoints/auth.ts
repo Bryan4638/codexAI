@@ -3,7 +3,9 @@ import type { AuthResponse, User } from '@/types/user'
 
 export const authApi = {
   async requestEmailCode(email: string): Promise<{ message: string }> {
-    return api.post('/auth/email/request', { email })
+    return (await api.post('/auth/email/request', { email })) as {
+      message: string
+    }
   },
 
   async verifyEmailCode(email: string, code: string): Promise<AuthResponse> {

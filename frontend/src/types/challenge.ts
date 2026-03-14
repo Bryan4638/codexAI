@@ -37,6 +37,11 @@ export interface CreateChallengeFormData {
   testCases: string
 }
 
+export interface ToggleReactionResponse {
+  message: string
+  liked: boolean
+}
+
 // ── Live Coding ──────────────────────────────────────
 
 export interface LiveCodingSessionResponse {

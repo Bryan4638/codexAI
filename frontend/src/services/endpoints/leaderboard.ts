@@ -17,6 +17,9 @@ export const leaderboardApi = {
   },
 
   async updateProfile(profileData: ProfileFormData): Promise<UserProfileData> {
-    return api.put('/leaderboard/profile', profileData)
+    return (await api.put(
+      '/leaderboard/profile',
+      profileData
+    )) as UserProfileData
   },
 }
