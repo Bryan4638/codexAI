@@ -1,11 +1,11 @@
 import Loading from '@/components/share/Loading'
 import { useChallenges } from '@/hooks/useChallenges'
-import {
+import { executionApi } from '@/services/endpoints/execution'
+import { useAuthStore } from '@/store/useAuthStore'
+import type {
   ExecuteResponse,
   ExecuteWithTestsResponse,
-  executionApi,
-} from '@/services/endpoints/execution'
-import { useAuthStore } from '@/store/useAuthStore'
+} from '@/types/execution'
 import Editor from '@monaco-editor/react'
 import {
   IconArrowLeft,

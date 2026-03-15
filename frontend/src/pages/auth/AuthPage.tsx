@@ -1,3 +1,4 @@
+import chambeadorDragonLogin from '@/assets/chambeador_dragon_login.webp'
 import { useAuth } from '@/hooks/useAuth'
 import { useAuthStore } from '@/store/useAuthStore'
 import { IconExclamationCircle, IconLoader2 } from '@tabler/icons-react'
@@ -172,7 +173,7 @@ export function AuthPage() {
         {/* RIGHT - IMAGE */}
         <aside className="hidden lg:flex items-center justify-center bg-linear-to-br from-neon-cyan/10 via-transparent to-neon-purple/10 relative">
           <img
-            src="/images/auth-illustration.png"
+            src={chambeadorDragonLogin}
             alt="Auth illustration"
             className="max-w-md opacity-90"
           />

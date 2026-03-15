@@ -6,7 +6,7 @@ import BadgeCardSkeleton from '@/components/share/skeletons/BadgeCardSkeleton'
 import { useBadges } from '@/hooks/useBadges'
 import BadgeCard from '@/pages/badges/components/BadgeCard'
 import { useAuthStore } from '@/store/useAuthStore'
-import type { BadgeWithDescription } from '@/types/badge'
+import type { Badge, BadgeWithDescription } from '@/types/badge'
 
 export default function BadgesPage() {
   const { badgesQuery, userBadgesQuery } = useBadges()
@@ -48,7 +48,7 @@ export default function BadgesPage() {
 
   const isUnlocked = (badgeId: string) => {
     return (userBadges?.badges ?? []).some(
-      (b: any) => b?.id === badgeId || b?.badgeId === badgeId
+      (b: Badge) => b?.id === badgeId || b?.id === badgeId
     )
   }
 
