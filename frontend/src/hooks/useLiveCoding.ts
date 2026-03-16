@@ -4,7 +4,7 @@ import type {
   LiveCodingSessionResponse,
 } from '@/types/challenge'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import Swal from 'sweetalert2'
+import { sileo } from 'sileo'
 
 const TAB_PENALTY = 15
 const PASTE_PENALTY = 25
@@ -47,20 +47,8 @@ export function useLiveCoding() {
       if (document.hidden && isActiveRef.current) {
         setTabSwitches((prev) => {
           const newVal = prev + 1
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'warning',
-            title: `⚠️ Cambio de pestaña detectado (-${TAB_PENALTY} pts)`,
-            showConfirmButton: false,
-            timer: 3000,
-            background: '#101018',
-            color: '#ff6b35',
-            iconColor: '#ff6b35',
-            customClass: {
-              popup:
-                'border border-orange-500/30 rounded-xl shadow-[0_0_15px_rgba(255,107,53,0.2)] font-display text-sm backdrop-blur-md',
-            },
+          sileo.warning({
+            title: `Cambio de pestaña detectado (-${TAB_PENALTY} pts)`,
           })
           return newVal
         })
@@ -78,20 +66,8 @@ export function useLiveCoding() {
 
     setPasteCount((prev) => {
       const newVal = prev + 1
-      Swal.fire({
-        toast: true,
-        position: 'top-end',
-        icon: 'warning',
-        title: `⚠️ Pegado de código detectado (-${PASTE_PENALTY} pts)`,
-        showConfirmButton: false,
-        timer: 3000,
-        background: '#101018',
-        color: '#ff2d92',
-        iconColor: '#ff2d92',
-        customClass: {
-          popup:
-            'border border-pink-500/30 rounded-xl shadow-[0_0_15px_rgba(255,45,146,0.2)] font-display text-sm backdrop-blur-md',
-        },
+      sileo.warning({
+        title: `Pegado de código detectado (-${PASTE_PENALTY} pts)`,
       })
       return newVal
     })
@@ -117,12 +93,8 @@ export function useLiveCoding() {
       setSession(res)
       setCode(res.challenge.initialCode || '')
     } catch (error: any) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: error?.message || 'No se pudo iniciar la sesión de Live Coding',
-        background: '#101018',
-        color: '#fff',
+      sileo.error({
+        title: error?.message || 'Error',
       })
     } finally {
       setIsStarting(false)
@@ -153,12 +125,8 @@ export function useLiveCoding() {
 
       setResult(res)
     } catch (error: any) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error al enviar',
-        text: error?.message || 'No se pudo enviar la solución',
-        background: '#101018',
-        color: '#fff',
+      sileo.error({
+        title: error?.message || 'Error',
       })
     } finally {
       setIsSubmitting(false)

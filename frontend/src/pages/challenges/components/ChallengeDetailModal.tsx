@@ -3,7 +3,6 @@ import { difficultyStyles } from '@/pages/challenges/data/difficultyStyles'
 import { useAuthStore } from '@/store/useAuthStore'
 import type { Challenge } from '@/types/challenge'
 import {
-  IconAlertTriangle,
   IconCircleCheckFilled,
   IconHeart,
   IconTrash,
@@ -178,7 +177,6 @@ function ChallengeDetailModal({
                         Primero debes iniciar sesión para resolver retos
                       </span>
                     ),
-                    icon: <IconAlertTriangle />,
                   })
                   return
                 }

@@ -9,9 +9,7 @@ import type {
 import Editor from '@monaco-editor/react'
 import {
   IconArrowLeft,
-  IconMoodHappy,
   IconPlayerPlayFilled,
-  IconSkull,
   IconTestPipe,
 } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
@@ -94,10 +92,9 @@ export default function EditorPage() {
 
         sileo.success({
           title: '¡Todos los tests pasaron!',
-          icon: <IconMoodHappy />,
         })
       } else {
-        sileo.error({ title: 'Algunos tests fallaron', icon: <IconSkull /> })
+        sileo.error({ title: 'Algunos tests fallaron' })
       }
     } catch (error: any) {
       setOutput({
@@ -114,7 +111,7 @@ export default function EditorPage() {
   if (isChallengeLoading) return <Loading section="editor" />
   if (!challenge) return null
   if (isChallengeError) {
-    sileo.error({ title: 'Reto no encontrado', icon: <IconSkull /> })
+    sileo.error({ title: 'Reto no encontrado' })
     navigate('/challenges')
     return
   }

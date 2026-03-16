@@ -2,7 +2,6 @@ import { useLiveCoding } from '@/hooks/useLiveCoding'
 import { useAuthStore } from '@/store/useAuthStore'
 import Editor from '@monaco-editor/react'
 import {
-  IconAlertTriangle,
   IconArrowLeft,
   IconBolt,
   IconClipboard,
@@ -59,7 +58,6 @@ export default function LiveCodingPage() {
           Primero debes iniciar sesión para resolver retos
         </span>
       ),
-      icon: <IconAlertTriangle />,
     })
     navigate('/challenges')
   }
@@ -70,10 +68,10 @@ export default function LiveCodingPage() {
       <div className="min-h-screen bg-bg-primary text-white flex items-center justify-center pt-16">
         <div className="max-w-lg w-full mx-4">
           <div className="bg-bg-card border border-white/10 rounded-2xl p-8 shadow-card text-center">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-neon-cyan/20 to-neon-pink/20 border border-white/10 flex items-center justify-center">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-linear-to-br from-neon-cyan/20 to-neon-pink/20 border border-white/10 flex items-center justify-center">
               <IconBolt size={40} className="text-neon-cyan" />
             </div>
-            <h1 className="text-3xl font-display font-bold mb-3 bg-gradient-to-r from-neon-cyan to-neon-pink bg-clip-text text-transparent">
+            <h1 className="text-3xl font-display font-bold mb-3 bg-linear-to-r from-neon-cyan to-neon-pink bg-clip-text text-transparent">
               Live Coding
             </h1>
             <p className="text-text-secondary mb-8 leading-relaxed">
@@ -161,7 +159,7 @@ export default function LiveCodingPage() {
                 className={
                   'text-5xl font-display font-black ' +
                   (result.score > 0
-                    ? 'bg-gradient-to-r from-neon-cyan to-neon-green bg-clip-text text-transparent'
+                    ? 'bg-linear-to-r from-neon-cyan to-neon-green bg-clip-text text-transparent'
                     : 'text-text-muted')
                 }
               >
@@ -276,7 +274,7 @@ export default function LiveCodingPage() {
       {/* Header Bar */}
       <header className="px-4 py-3 border-b border-white/10 bg-bg-card flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-4">
-          <h1 className="text-lg font-display text-neon-cyan truncate max-w-[300px]">
+          <h1 className="text-lg font-display text-neon-cyan truncate max-w-75">
             {challenge.title}
           </h1>
           <span
@@ -310,7 +308,7 @@ export default function LiveCodingPage() {
           <button
             onClick={submitSolution}
             disabled={isSubmitting || !code.trim()}
-            className="btn btn-primary flex items-center gap-2 bg-gradient-to-r from-neon-green/80 to-neon-cyan/80 text-black border-none font-bold"
+            className="btn btn-primary flex items-center gap-2 bg-linear-to-r from-neon-green/80 to-neon-cyan/80 text-black border-none font-bold"
           >
             <IconSend size={18} />
             {isSubmitting ? 'Evaluando...' : 'Enviar Solución'}
@@ -320,7 +318,7 @@ export default function LiveCodingPage() {
 
       <main className="flex-1 grid grid-cols-1 lg:grid-cols-3 bg-bg-primary relative">
         {/* Separator */}
-        <div className="hidden lg:block absolute left-2/3 top-0 bottom-0 w-[2px] bg-gradient-primary z-10 -ml-px" />
+        <div className="hidden lg:block absolute left-2/3 top-0 bottom-0 w-0.5 bg-linear-primary z-10 -ml-px" />
 
         {/* Left Panel: Editor */}
         <section className="lg:col-span-2 flex flex-col order-2 lg:order-1 relative z-0">

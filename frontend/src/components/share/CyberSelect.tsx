@@ -1,5 +1,5 @@
 import { IconChevronDown, TablerIcon } from '@tabler/icons-react'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export interface SelectOption {
   id: string
@@ -15,12 +15,12 @@ interface CyberSelectProps {
   className?: string
 }
 
-const CyberSelect: React.FC<CyberSelectProps> = ({
+export default function CyberSelect({
   options,
   value,
   onChange,
   className = '',
-}) => {
+}: CyberSelectProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -42,7 +42,7 @@ const CyberSelect: React.FC<CyberSelectProps> = ({
 
   return (
     <div className={`relative w-full sm:w-auto ${className}`} ref={dropdownRef}>
-      {/* Botón Principal (Trigger) */}
+      {/* trigger */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -115,5 +115,3 @@ const CyberSelect: React.FC<CyberSelectProps> = ({
     </div>
   )
 }
-
-export default CyberSelect

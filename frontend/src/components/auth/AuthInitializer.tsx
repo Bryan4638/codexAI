@@ -1,4 +1,3 @@
-import { IconCircleCheck } from '@tabler/icons-react'
 import { ReactNode, useEffect } from 'react'
 import { sileo } from 'sileo'
 
@@ -24,7 +23,6 @@ export default function AuthInitializer({ children }: AuthInitializerProps) {
       // Show success toast
       sileo.success({
         title: '¡Bienvenido!',
-        icon: <IconCircleCheck />,
       })
     }
   }, [])
