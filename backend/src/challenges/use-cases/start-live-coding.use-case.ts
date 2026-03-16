@@ -22,7 +22,7 @@ export class StartLiveCodingUseCase {
 
         if (dto.difficulty) {
             queryBuilder.where('challenge.difficulty = :difficulty', {
-                difficulty: dto.difficulty,
+                difficulty: "Fácil",
             });
         }
 

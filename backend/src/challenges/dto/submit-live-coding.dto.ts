@@ -48,10 +48,10 @@ export class SubmitLiveCodingDto {
     tabSwitches: number;
 
     @ApiProperty({
-        description: 'Número de veces que pegó código',
+        description: 'Número de veces que copió/pegó código',
         example: 1,
     })
     @IsInt()
     @Min(0)
-    pasteCount: number;
+    copyPasteCount: number;
 }

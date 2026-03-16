@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Swal from 'sweetalert2'
 
 const TAB_PENALTY = 15
-const PASTE_PENALTY = 25
+const COPY_PASTE_PENALTY = 25
 
 export function useLiveCoding() {
     const [session, setSession] = useState<LiveCodingSessionResponse | null>(null)
@@ -16,7 +16,7 @@ export function useLiveCoding() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [elapsedSeconds, setElapsedSeconds] = useState(0)
     const [tabSwitches, setTabSwitches] = useState(0)
-    const [pasteCount, setPasteCount] = useState(0)
+    const [copyPasteCount, setCopyPasteCount] = useState(0)
     const [code, setCode] = useState('')
 
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -49,7 +49,7 @@ export function useLiveCoding() {
                     const newVal = prev + 1
                     Swal.fire({
                         toast: true,
-                        position: 'top-end',
+                        position: 'bottom-end',
                         icon: 'warning',
                         title: `⚠️ Cambio de pestaña detectado (-${TAB_PENALTY} pts)`,
                         showConfirmButton: false,
@@ -72,17 +72,17 @@ export function useLiveCoding() {
             document.removeEventListener('visibilitychange', handleVisibility)
     }, [session, result])
 
-    // ── Paste Detection ───────────────────────────────
-    const handlePaste = useCallback(() => {
+    // ── Copy/Paste Detection ──────────────────────────
+    const handleCopyPaste = useCallback(() => {
         if (!session || result) return
 
-        setPasteCount((prev) => {
+        setCopyPasteCount((prev) => {
             const newVal = prev + 1
             Swal.fire({
                 toast: true,
                 position: 'top-end',
                 icon: 'warning',
-                title: `⚠️ Pegado de código detectado (-${PASTE_PENALTY} pts)`,
+                title: `⚠️ Copiado/Pegado de código detectado (-${COPY_PASTE_PENALTY} pts)`,
                 showConfirmButton: false,
                 timer: 3000,
                 background: '#101018',
@@ -100,9 +100,13 @@ export function useLiveCoding() {
     useEffect(() => {
         if (!session || result) return
 
-        document.addEventListener('paste', handlePaste)
-        return () => document.removeEventListener('paste', handlePaste)
-    }, [session, result, handlePaste])
+        document.addEventListener('paste', handleCopyPaste)
+        document.addEventListener('copy', handleCopyPaste)
+        return () => {
+            document.removeEventListener('paste', handleCopyPaste)
+            document.removeEventListener('copy', handleCopyPaste)
+        }
+    }, [session, result, handleCopyPaste])
 
     // ── Actions ───────────────────────────────────────
     const startSession = async (difficulty?: string) => {
@@ -110,7 +114,7 @@ export function useLiveCoding() {
         setResult(null)
         setElapsedSeconds(0)
         setTabSwitches(0)
-        setPasteCount(0)
+        setCopyPasteCount(0)
 
         try {
             const res = await challengeApi.startLiveCoding(difficulty)
@@ -142,7 +146,7 @@ export function useLiveCoding() {
                 language: 'javascript',
                 timeTakenSeconds: elapsedSeconds,
                 tabSwitches,
-                pasteCount,
+                copyPasteCount,
             })
 
             // Stop timer
@@ -176,14 +180,14 @@ export function useLiveCoding() {
         setResult(null)
         setElapsedSeconds(0)
         setTabSwitches(0)
-        setPasteCount(0)
+        setCopyPasteCount(0)
         setCode('')
     }
 
     // Format mm:ss
     const formattedTime = `${String(Math.floor(elapsedSeconds / 60)).padStart(2, '0')}:${String(elapsedSeconds % 60).padStart(2, '0')}`
 
-    const currentPenalties = tabSwitches * TAB_PENALTY + pasteCount * PASTE_PENALTY
+    const currentPenalties = tabSwitches * TAB_PENALTY + copyPasteCount * COPY_PASTE_PENALTY
 
     return {
         // State
@@ -194,7 +198,7 @@ export function useLiveCoding() {
         elapsedSeconds,
         formattedTime,
         tabSwitches,
-        pasteCount,
+        copyPasteCount,
         currentPenalties,
         code,
         setCode,

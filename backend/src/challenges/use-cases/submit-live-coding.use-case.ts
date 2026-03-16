@@ -19,7 +19,7 @@ const DIFFICULTY_BASE_SCORE: Record<string, number> = {
 
 const MAX_TIME_SECONDS = 1800; // 30 minutes
 const TAB_SWITCH_PENALTY = 15;
-const PASTE_PENALTY = 25;
+const COPY_PASTE_PENALTY = 25;
 const TIME_BONUS_MAX = 50;
 
 @Injectable()
@@ -35,7 +35,7 @@ export class SubmitLiveCodingUseCase {
     ) { }
 
     async execute(userId: string, dto: SubmitLiveCodingDto) {
-        const { sessionId, code, language, timeTakenSeconds, tabSwitches, pasteCount } = dto;
+        const { sessionId, code, language, timeTakenSeconds, tabSwitches, copyPasteCount } = dto;
 
         // Validate session
         const session = await this.sessionRepo.findOne({
@@ -111,7 +111,7 @@ export class SubmitLiveCodingUseCase {
             Math.max(0, 1 - timeTakenSeconds / MAX_TIME_SECONDS) * TIME_BONUS_MAX;
         const testMultiplier = totalTests > 0 ? passedTests / totalTests : 0;
         const penalty =
-            tabSwitches * TAB_SWITCH_PENALTY + pasteCount * PASTE_PENALTY;
+            tabSwitches * TAB_SWITCH_PENALTY + copyPasteCount * COPY_PASTE_PENALTY;
 
         const score = Math.max(
             0,
@@ -124,7 +124,7 @@ export class SubmitLiveCodingUseCase {
         session.executionTimeMs = executionTimeMs;
         session.score = score;
         session.tabSwitches = tabSwitches;
-        session.pasteCount = pasteCount;
+        session.copyPasteCount = copyPasteCount;
         session.penaltiesApplied = penalty;
         session.allTestsPassed = allPassed;
         session.completedAt = new Date();
@@ -143,7 +143,7 @@ export class SubmitLiveCodingUseCase {
             score,
             penaltiesApplied: penalty,
             tabSwitches,
-            pasteCount,
+            copyPasteCount,
             executionTimeMs,
             allPassed,
             testResults: publicResults,

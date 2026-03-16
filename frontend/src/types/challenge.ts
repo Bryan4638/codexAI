@@ -63,14 +63,14 @@ export interface LiveCodingSubmitRequest {
   language: string
   timeTakenSeconds: number
   tabSwitches: number
-  pasteCount: number
+  copyPasteCount: number
 }
 
 export interface LiveCodingResult {
   score: number
   penaltiesApplied: number
   tabSwitches: number
-  pasteCount: number
+  copyPasteCount: number
   executionTimeMs: number
   allPassed: boolean
   testResults: { id: string; passed: boolean; actual: string }[]
@@ -88,7 +88,7 @@ export interface LiveCodingHistoryItem {
   executionTimeMs: number
   allTestsPassed: boolean
   tabSwitches: number
-  pasteCount: number
+  copyPasteCount: number
   penaltiesApplied: number
   completedAt: string
 }

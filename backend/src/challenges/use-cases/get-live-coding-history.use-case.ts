@@ -32,7 +32,7 @@ export class GetLiveCodingHistoryUseCase {
                 executionTimeMs: s.executionTimeMs,
                 allTestsPassed: s.allTestsPassed,
                 tabSwitches: s.tabSwitches,
-                pasteCount: s.pasteCount,
+                copyPasteCount: s.copyPasteCount,
                 penaltiesApplied: s.penaltiesApplied,
                 completedAt: s.completedAt,
             })),

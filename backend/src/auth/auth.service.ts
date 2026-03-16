@@ -31,7 +31,7 @@ export class AuthService {
     @InjectRepository(EmailCode)
     private readonly emailRepo: Repository<EmailCode>,
     private readonly jwt: JwtService,
-  ) {}
+  ) { }
 
   /** Validación OAuth Google/GitHub */
   async validateOAuthUser(profile: {
@@ -89,6 +89,9 @@ export class AuthService {
       codeHash,
       expiresAt: addMinutesNative(new Date(), 5),
     });
+
+    console.log("Codigo de verificacion de correo ---->", code)
+    return { message: "Code sent (check logs for dev)" }
 
     const resend = new Resend(env.RESEND_API_KEY);
     const { data, error } = await resend.emails.send({

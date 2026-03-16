@@ -19,9 +19,11 @@ export class ExecutionController {
   constructor(
     private readonly executeCodeUseCase: ExecuteCodeUseCase,
     private readonly executeWithTestsUseCase: ExecuteWithTestsUseCase,
-  ) {}
+  ) { }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('jwt')
   @ApiOperation({
     summary: 'Ejecutar código libremente',
     description:

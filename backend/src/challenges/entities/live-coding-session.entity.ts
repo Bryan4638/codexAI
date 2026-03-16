@@ -49,8 +49,8 @@ export class LiveCodingSession {
     @Column({ name: 'tab_switches', type: 'int', default: 0 })
     tabSwitches: number;
 
-    @Column({ name: 'paste_count', type: 'int', default: 0 })
-    pasteCount: number;
+    @Column({ name: 'copy_paste_count', type: 'int', default: 0 })
+    copyPasteCount: number;
 
     @Column({ name: 'penalties_applied', type: 'int', default: 0 })
     penaltiesApplied: number;
