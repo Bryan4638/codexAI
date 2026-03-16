@@ -47,6 +47,10 @@ export interface ToggleReactionResponse {
 export interface LiveCodingSessionResponse {
   sessionId: string
   startedAt: string
+  elapsedSeconds: number
+  code: string
+  tabSwitches: number
+  copyPasteCount: number
   challenge: {
     id: string
     title: string
@@ -62,11 +66,17 @@ export interface LiveCodingSessionResponse {
   }
 }
 
+export interface LiveCodingSyncRequest {
+  sessionId: string
+  code?: string
+  tabSwitches?: number
+  copyPasteCount?: number
+}
+
 export interface LiveCodingSubmitRequest {
   sessionId: string
   code: string
   language: string
-  timeTakenSeconds: number
   tabSwitches: number
   copyPasteCount: number
 }

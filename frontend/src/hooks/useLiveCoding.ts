@@ -14,6 +14,7 @@ export function useLiveCoding() {
   const [result, setResult] = useState<LiveCodingResult | null>(null)
   const [isStarting, setIsStarting] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isCanceling, setIsCanceling] = useState(false)
   const [elapsedSeconds, setElapsedSeconds] = useState(0)
   const [tabSwitches, setTabSwitches] = useState(0)
   const [copyPasteCount, setCopyPasteCount] = useState(0)
@@ -108,6 +109,24 @@ export function useLiveCoding() {
     }
   }, [session, result, handleCopyPaste])
 
+  // ── Auto Sync ─────────────────────────────────────
+  useEffect(() => {
+    if (!session || result || isSubmitting || isCanceling) return
+
+    const syncTimeout = setTimeout(() => {
+      challengeApi
+        .syncLiveCoding({
+          sessionId: session.sessionId,
+          code,
+          tabSwitches,
+          copyPasteCount,
+        })
+        .catch((err) => console.error('Error syncing live coding:', err))
+    }, 2000)
+
+    return () => clearTimeout(syncTimeout)
+  }, [code, tabSwitches, copyPasteCount, session, result, isSubmitting, isCanceling])
+
   // ── Actions ───────────────────────────────────────
   const startSession = async (difficulty?: string) => {
     setIsStarting(true)
@@ -119,7 +138,10 @@ export function useLiveCoding() {
     try {
       const res = await challengeApi.startLiveCoding(difficulty)
       setSession(res)
-      setCode(res.challenge.initialCode || '')
+      setElapsedSeconds(res.elapsedSeconds || 0)
+      setTabSwitches(res.tabSwitches || 0)
+      setCopyPasteCount(res.copyPasteCount || 0)
+      setCode(res.code || res.challenge.initialCode || '')
     } catch (error: any) {
       Swal.fire({
         icon: 'error',
@@ -133,6 +155,36 @@ export function useLiveCoding() {
     }
   }
 
+  const cancelSession = async () => {
+    if (!session || isCanceling || isSubmitting) return
+
+    setIsCanceling(true)
+    try {
+      await challengeApi.cancelLiveCoding()
+      resetSession()
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Sesión cancelada',
+        showConfirmButton: false,
+        timer: 3000,
+        background: '#101018',
+        color: '#fff',
+      })
+    } catch (error: any) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al cancelar',
+        text: error?.message || 'No se pudo cancelar la sesión',
+        background: '#101018',
+        color: '#fff',
+      })
+    } finally {
+      setIsCanceling(false)
+    }
+  }
+
   const submitSolution = async () => {
     if (!session || isSubmitting) return
 
@@ -143,7 +195,6 @@ export function useLiveCoding() {
         sessionId: session.sessionId,
         code,
         language: 'javascript',
-        timeTakenSeconds: elapsedSeconds,
         tabSwitches,
         copyPasteCount,
       })
@@ -183,8 +234,9 @@ export function useLiveCoding() {
     setCode('')
   }
 
-  // Format mm:ss
-  const formattedTime = `${String(Math.floor(elapsedSeconds / 60)).padStart(2, '0')}:${String(elapsedSeconds % 60).padStart(2, '0')}`
+  // Format mm:ss safely
+  const validElapsed = Math.max(0, elapsedSeconds)
+  const formattedTime = `${String(Math.floor(validElapsed / 60)).padStart(2, '0')}:${String(validElapsed % 60).padStart(2, '0')}`
 
   const currentPenalties = tabSwitches * TAB_PENALTY + copyPasteCount * COPY_PASTE_PENALTY
 
@@ -194,6 +246,7 @@ export function useLiveCoding() {
     result,
     isStarting,
     isSubmitting,
+    isCanceling,
     elapsedSeconds,
     formattedTime,
     tabSwitches,
@@ -205,6 +258,7 @@ export function useLiveCoding() {
     // Actions
     startSession,
     submitSolution,
+    cancelSession,
     resetSession,
   }
 }

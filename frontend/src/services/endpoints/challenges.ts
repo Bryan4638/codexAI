@@ -6,6 +6,7 @@ import type {
   LiveCodingResult,
   LiveCodingSessionResponse,
   LiveCodingSubmitRequest,
+  LiveCodingSyncRequest,
   PaginatedChallenges,
   ToggleReactionResponse,
 } from '@/types/challenge'
@@ -64,5 +65,13 @@ export const challengeApi = {
     return (await api.get('/challenges/live-coding/history', {
       params: { page, limit },
     })) as LiveCodingHistoryResponse
+  },
+
+  async syncLiveCoding(data: LiveCodingSyncRequest): Promise<void> {
+    return await api.patch('/challenges/live-coding/sync', data)
+  },
+
+  async cancelLiveCoding(): Promise<void> {
+    return await api.delete('/challenges/live-coding/cancel')
   },
 }

@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Delete,
+  Patch,
   Body,
   Param,
   Query,
@@ -22,6 +23,7 @@ import { CreateChallengeDto } from './dto/create-challenge.dto';
 import { GetChallengesDto } from './dto/get-challenges.dto';
 import { StartLiveCodingDto } from './dto/start-live-coding.dto';
 import { SubmitLiveCodingDto } from './dto/submit-live-coding.dto';
+import { SyncLiveCodingDto } from './dto/sync-live-coding.dto';
 import { ChallengesService } from './challenges.service';
 import { OptionalJwtAuthGuard } from 'src/auth/guards/optional-jwt-auth.guard';
 
@@ -89,6 +91,31 @@ export class ChallengesController {
     @Query('limit') limit?: number,
   ) {
     return this.challengesService.getLiveCodingHistory(user.id, page, limit);
+  }
+
+  @Patch('live-coding/sync')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('jwt')
+  @ApiOperation({ summary: 'Sincronizar progreso de la sesión activa de Live Coding' })
+  @ApiResponse({
+    status: 200,
+    description: 'Progreso sincronizado exitosamente',
+  })
+  syncLiveCoding(@CurrentUser() user: User, @Body() dto: SyncLiveCodingDto) {
+    return this.challengesService.syncLiveCoding(user.id, dto);
+  }
+
+  @Delete('live-coding/cancel')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('jwt')
+  @ApiOperation({ summary: 'Cancelar sesión activa de Live Coding' })
+  @ApiResponse({
+    status: 200,
+    description: 'Sesión cancelada y eliminada exitosamente',
+  })
+  @ApiResponse({ status: 404, description: 'No hay sesión activa' })
+  cancelLiveCoding(@CurrentUser() user: User) {
+    return this.challengesService.cancelLiveCoding(user.id);
   }
 
   // ── Param-based routes ──────────────────────────────

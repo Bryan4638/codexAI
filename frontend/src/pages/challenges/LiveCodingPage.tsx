@@ -25,21 +25,21 @@ export default function LiveCodingPage() {
     setCode,
     startSession,
     submitSolution,
+    cancelSession,
     resetSession,
+    isCanceling,
   } = useLiveCoding()
 
-  if (!user) {
-    sileo.warning({
-      title: 'Debes Iniciar Sesión',
-      description: (
-        <span className="flex items-center justify-center">
-          Primero debes iniciar sesión para resolver retos
-        </span>
-      ),
-      icon: <IconAlertTriangle />,
-    })
-    navigate('/challenges')
-  }
+  useEffect(() => {
+    if (!user) {
+      Swal.fire(
+        'Atención',
+        'Debes iniciar sesión para acceder al Live Coding',
+        'warning'
+      )
+      navigate('/challenges')
+    }
+  }, [user, navigate])
 
   // ── Start Screen ──────────────────────────────────
   if (!session) {
@@ -77,6 +77,8 @@ export default function LiveCodingPage() {
       setCode={setCode}
       tabSwitches={tabSwitches}
       copyPasteCount={copyPasteCount}
+      cancelSession={cancelSession}
+      isCanceling={isCanceling}
     />
   )
 }

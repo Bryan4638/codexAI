@@ -9,8 +9,11 @@ import { GetChallengeUseCase } from './use-cases/get-challenge.use-case';
 import { StartLiveCodingUseCase } from './use-cases/start-live-coding.use-case';
 import { SubmitLiveCodingUseCase } from './use-cases/submit-live-coding.use-case';
 import { GetLiveCodingHistoryUseCase } from './use-cases/get-live-coding-history.use-case';
+import { CancelLiveCodingUseCase } from './use-cases/cancel-live-coding.use-case';
+import { SyncLiveCodingUseCase } from './use-cases/sync-live-coding.use-case';
 import { StartLiveCodingDto } from './dto/start-live-coding.dto';
 import { SubmitLiveCodingDto } from './dto/submit-live-coding.dto';
+import { SyncLiveCodingDto } from './dto/sync-live-coding.dto';
 
 @Injectable()
 export class ChallengesService {
@@ -23,6 +26,8 @@ export class ChallengesService {
     private readonly startLiveCodingUseCase: StartLiveCodingUseCase,
     private readonly submitLiveCodingUseCase: SubmitLiveCodingUseCase,
     private readonly getLiveCodingHistoryUseCase: GetLiveCodingHistoryUseCase,
+    private readonly cancelLiveCodingUseCase: CancelLiveCodingUseCase,
+    private readonly syncLiveCodingUseCase: SyncLiveCodingUseCase,
   ) { }
 
   async getChallenges(filters: GetChallengesDto, userId?: string) {
@@ -58,6 +63,14 @@ export class ChallengesService {
 
   async getLiveCodingHistory(userId: string, page?: number, limit?: number) {
     return this.getLiveCodingHistoryUseCase.execute(userId, page, limit);
+  }
+
+  async cancelLiveCoding(userId: string) {
+    return this.cancelLiveCodingUseCase.execute(userId);
+  }
+
+  async syncLiveCoding(userId: string, dto: SyncLiveCodingDto) {
+    return this.syncLiveCodingUseCase.execute(userId, dto);
   }
 }
 

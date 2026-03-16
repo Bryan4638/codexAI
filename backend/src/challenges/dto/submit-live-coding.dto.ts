@@ -32,14 +32,6 @@ export class SubmitLiveCodingDto {
     language: 'javascript' | 'python' | 'java' | 'csharp';
 
     @ApiProperty({
-        description: 'Tiempo en segundos que tardó el usuario',
-        example: 120,
-    })
-    @IsInt()
-    @Min(0)
-    timeTakenSeconds: number;
-
-    @ApiProperty({
         description: 'Número de veces que cambió de pestaña',
         example: 2,
     })

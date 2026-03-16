@@ -14,6 +14,8 @@ import { GetChallengeUseCase } from './use-cases/get-challenge.use-case';
 import { StartLiveCodingUseCase } from './use-cases/start-live-coding.use-case';
 import { SubmitLiveCodingUseCase } from './use-cases/submit-live-coding.use-case';
 import { GetLiveCodingHistoryUseCase } from './use-cases/get-live-coding-history.use-case';
+import { CancelLiveCodingUseCase } from './use-cases/cancel-live-coding.use-case';
+import { SyncLiveCodingUseCase } from './use-cases/sync-live-coding.use-case';
 import { AuthModule } from '../auth/auth.module';
 import { ExecutionModule } from '../execution/execution.module';
 
@@ -26,6 +28,8 @@ const useCases = [
   StartLiveCodingUseCase,
   SubmitLiveCodingUseCase,
   GetLiveCodingHistoryUseCase,
+  CancelLiveCodingUseCase,
+  SyncLiveCodingUseCase,
 ];
 
 @Module({

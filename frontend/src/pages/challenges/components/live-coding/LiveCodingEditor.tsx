@@ -16,6 +16,8 @@ interface LiveCodingEditorProps {
     setCode: (code: string) => void
     tabSwitches: number
     copyPasteCount: number
+    cancelSession: () => Promise<void>
+    isCanceling: boolean
 }
 
 export function LiveCodingEditor({
@@ -29,6 +31,8 @@ export function LiveCodingEditor({
     setCode,
     tabSwitches,
     copyPasteCount,
+    cancelSession,
+    isCanceling,
 }: LiveCodingEditorProps) {
     const challenge = session.challenge
     const isTimeCritical = elapsedSeconds >= 1500 // 25 min
@@ -67,10 +71,19 @@ export function LiveCodingEditor({
                         </div>
                     )}
 
+                    {/* Cancel Button */}
+                    <button
+                        onClick={cancelSession}
+                        disabled={isSubmitting || isCanceling}
+                        className="btn flex items-center gap-2 bg-rose-500/20 text-rose-400 border border-rose-500/30 hover:bg-rose-500/30 font-bold transition-colors"
+                    >
+                        {isCanceling ? 'Cancelando...' : 'Cancelar'}
+                    </button>
+
                     {/* Submit Button */}
                     <button
                         onClick={submitSolution}
-                        disabled={isSubmitting || !code.trim()}
+                        disabled={isSubmitting || isCanceling || !code.trim()}
                         className="btn btn-primary flex items-center gap-2 bg-gradient-to-r from-neon-green/80 to-neon-cyan/80 text-black border-none font-bold"
                     >
                         <IconSend size={18} />

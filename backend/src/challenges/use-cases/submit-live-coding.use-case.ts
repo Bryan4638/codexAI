@@ -35,7 +35,7 @@ export class SubmitLiveCodingUseCase {
     ) { }
 
     async execute(userId: string, dto: SubmitLiveCodingDto) {
-        const { sessionId, code, language, timeTakenSeconds, tabSwitches, copyPasteCount } = dto;
+        const { sessionId, code, language, tabSwitches, copyPasteCount } = dto;
 
         // Validate session
         const session = await this.sessionRepo.findOne({
@@ -72,6 +72,17 @@ export class SubmitLiveCodingUseCase {
             expectedOutput: t.expectedOutput,
         }));
 
+        // Compute real elapsed time from server avoiding TZ mismatch
+        const [{ elapsed }] = await this.sessionRepo.query(
+            'SELECT EXTRACT(EPOCH FROM (NOW() - started_at)) as elapsed FROM live_coding_sessions WHERE id = $1',
+            [session.id]
+        );
+        const timeTakenSeconds = Math.max(0, Math.floor(elapsed));
+
+        // Use maximum penalty between DB and what they sent to avoid reversing penalties
+        const finalTabSwitches = Math.max(session.tabSwitches, tabSwitches || 0);
+        const finalCopyPasteCount = Math.max(session.copyPasteCount, copyPasteCount || 0);
+
         const job = await this.queueManager.addJob({
             language,
             code,
@@ -107,11 +118,11 @@ export class SubmitLiveCodingUseCase {
 
         const baseDifficulty =
             DIFFICULTY_BASE_SCORE[challenge.difficulty] || 100;
-        const timeBonus =
-            Math.max(0, 1 - timeTakenSeconds / MAX_TIME_SECONDS) * TIME_BONUS_MAX;
+        const timeBonusFactor = Math.max(0, 1 - timeTakenSeconds / MAX_TIME_SECONDS);
+        const timeBonus = baseDifficulty * 0.5 * timeBonusFactor;
         const testMultiplier = totalTests > 0 ? passedTests / totalTests : 0;
         const penalty =
-            tabSwitches * TAB_SWITCH_PENALTY + copyPasteCount * COPY_PASTE_PENALTY;
+            finalTabSwitches * TAB_SWITCH_PENALTY + finalCopyPasteCount * COPY_PASTE_PENALTY;
 
         const score = Math.max(
             0,
@@ -123,8 +134,8 @@ export class SubmitLiveCodingUseCase {
         session.timeTakenSeconds = timeTakenSeconds;
         session.executionTimeMs = executionTimeMs;
         session.score = score;
-        session.tabSwitches = tabSwitches;
-        session.copyPasteCount = copyPasteCount;
+        session.tabSwitches = finalTabSwitches;
+        session.copyPasteCount = finalCopyPasteCount;
         session.penaltiesApplied = penalty;
         session.allTestsPassed = allPassed;
         session.completedAt = new Date();
@@ -142,8 +153,8 @@ export class SubmitLiveCodingUseCase {
         return {
             score,
             penaltiesApplied: penalty,
-            tabSwitches,
-            copyPasteCount,
+            tabSwitches: finalTabSwitches,
+            copyPasteCount: finalCopyPasteCount,
             executionTimeMs,
             allPassed,
             testResults: publicResults,
