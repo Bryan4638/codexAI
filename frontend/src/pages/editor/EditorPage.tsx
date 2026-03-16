@@ -1,27 +1,29 @@
 import Loading from '@/components/share/Loading'
 import { useChallenges } from '@/hooks/useChallenges'
-import {
+import { executionApi } from '@/services/endpoints/execution'
+import { useAuthStore } from '@/store/useAuthStore'
+import type {
   ExecuteResponse,
   ExecuteWithTestsResponse,
-  executionApi,
-} from '@/services/endpoints/execution'
-import { useAuthStore } from '@/store/useAuthStore'
+} from '@/types/execution'
 import Editor from '@monaco-editor/react'
 import {
   IconArrowLeft,
+  IconMoodHappy,
   IconPlayerPlayFilled,
+  IconSkull,
   IconTestPipe,
 } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { useNavigate, useParams } from 'react-router-dom'
 import remarkGfm from 'remark-gfm'
-import Swal from 'sweetalert2'
+import { sileo } from 'sileo'
 
 export default function EditorPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { user } = useAuthStore()
+  const user = useAuthStore((s) => s.user)
   const {
     data: challenge,
     isPending: isChallengeLoading,
@@ -35,30 +37,14 @@ export default function EditorPage() {
   const [isExecuting, setIsExecuting] = useState(false)
 
   useEffect(() => {
-    if (!user) {
-      Swal.fire(
-        'Atención',
-        'Debes iniciar sesión para acceder al editor',
-        'warning'
-      )
-      navigate('/challenges')
-      return
-    }
-
-    if (isChallengeError) {
-      Swal.fire('Error', 'Reto no encontrado', 'error')
-      navigate('/challenges')
-      return
-    }
-
     if (challenge && id) {
-      // Priorizar borrador guardado localmente sobre el código inicial
+      // Prioritize saved draft over initial code
       const savedDraft = localStorage.getItem(`draft_${id}`)
       setCode(savedDraft || challenge.initialCode || '')
     }
-  }, [challenge, id, navigate, user, isChallengeError])
+  }, [challenge, id])
 
-  // Guarda automáticamente el progreso (Debounce de 1s)
+  // Save automatically the progress (Debounce of 1s)
   useEffect(() => {
     if (!id || !code.trim() || isChallengeLoading) return
 
@@ -75,7 +61,7 @@ export default function EditorPage() {
     setTestResults(null)
     try {
       const res = await executionApi.execute({
-        language: 'javascript', // Por ahora hardcoded asumiendo JS
+        language: 'javascript', // Assume JavaScript for now
         code,
       })
       setOutput(res)
@@ -103,40 +89,15 @@ export default function EditorPage() {
       })
       setTestResults(res)
       if (res.allPassed) {
-        // Limpiar el localStorage al completar el reto con éxito
+        // Clear localStorage when challenge is completed successfully
         localStorage.removeItem(`draft_${id}`)
 
-        Swal.fire({
-          toast: true,
-          position: 'bottom-end',
-          icon: 'success',
+        sileo.success({
           title: '¡Todos los tests pasaron!',
-          showConfirmButton: false,
-          timer: 3000,
-          background: '#101018',
-          color: '#00ff88',
-          iconColor: '#00ff88',
-          customClass: {
-            popup:
-              'border border-[#00ff88]/30 rounded-xl shadow-[0_0_15px_rgba(0,255,136,0.15)] font-display text-sm backdrop-blur-md',
-          },
+          icon: <IconMoodHappy />,
         })
       } else {
-        Swal.fire({
-          toast: true,
-          position: 'bottom-end',
-          icon: 'error',
-          title: 'Algunos tests fallaron',
-          showConfirmButton: false,
-          timer: 3000,
-          background: '#101018',
-          color: '#ff2d92',
-          iconColor: '#ff2d92',
-          customClass: {
-            popup:
-              'border border-[#ff2d92]/30 rounded-xl shadow-[0_0_15px_rgba(255,45,146,0.15)] font-display text-sm backdrop-blur-md',
-          },
-        })
+        sileo.error({ title: 'Algunos tests fallaron', icon: <IconSkull /> })
       }
     } catch (error: any) {
       setOutput({
@@ -149,9 +110,14 @@ export default function EditorPage() {
       setIsExecuting(false)
     }
   }
-
+  if (!user) navigate('/challenges')
   if (isChallengeLoading) return <Loading section="editor" />
   if (!challenge) return null
+  if (isChallengeError) {
+    sileo.error({ title: 'Reto no encontrado', icon: <IconSkull /> })
+    navigate('/challenges')
+    return
+  }
 
   return (
     <div className="min-h-screen bg-bg-primary text-white flex flex-col pt-16">
@@ -188,10 +154,10 @@ export default function EditorPage() {
       </header>
 
       <main className="flex-1 grid grid-cols-1 lg:grid-cols-3 bg-bg-primary relative">
-        {/* Separador visual (visible en pantallas grandes) */}
-        <div className="hidden lg:block absolute left-2/3 top-0 bottom-0 w-[2px] bg-gradient-primary z-10 -ml-px" />
+        {/* Visual separator (visible on large screens) */}
+        <div className="hidden lg:block absolute left-2/3 top-0 bottom-0 w-0.5 bg-gradient-primary z-10 -ml-px" />
 
-        {/* Panel Izquierdo: Editor y Consola (Más grande) */}
+        {/* Left Panel: Editor and Console */}
         <section className="lg:col-span-2 flex flex-col order-2 sm:order-1 relative z-0">
           {/* Editor Area */}
           <div className="flex-1 min-h-[50vh] flex flex-col relative border-b border-white/10">
@@ -276,7 +242,7 @@ export default function EditorPage() {
           </div>
         </section>
 
-        {/* Panel Derecho: Detalles del Reto (Más pequeño y con fondo diferenciado) */}
+        {/* Right Panel: Challenge Details */}
         <section className="lg:col-span-1 bg-[#101018] order-1 sm:order-2 p-6 overflow-y-auto max-h-[calc(100vh-80px)] flex flex-col gap-6 z-0 shadow-inner">
           <div>
             <h2 className="text-sm font-bold text-text-muted uppercase tracking-wider mb-4 border-b border-white/10 pb-2">

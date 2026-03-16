@@ -1,5 +1,5 @@
 import api from '@/services/api'
-import { Module } from '@/types/module'
+import type { Module } from '@/types/module'
 
 export const moduleApi = {
   async getAll(): Promise<Module[]> {

@@ -244,17 +244,16 @@ function UserProfile({ onClose }: UserProfileProps) {
 
         {/* Medallas */}
         <div style={{ marginBottom: 'var(--spacing-xl)' }}>
-            <h3
-              style={{
-                marginBottom: 'var(--spacing-md)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 'var(--spacing-sm)',
-              }}
-            >
-              <IconTrophy size={20} /> Medallas ({badges.unlocked}/
-              {badges.total})
-            </h3>
+          <h3
+            style={{
+              marginBottom: 'var(--spacing-md)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--spacing-sm)',
+            }}
+          >
+            <IconTrophy size={20} /> Medallas ({badges.unlocked}/{badges.total})
+          </h3>
           <div
             style={{
               display: 'flex',

@@ -1,4 +1,4 @@
-import { UserProgress } from '@/types/badge'
+import type { UserProgress } from '@/types/badge'
 import { IconChartBar } from '@tabler/icons-react'
 
 interface ProfileModuleProgressProps {

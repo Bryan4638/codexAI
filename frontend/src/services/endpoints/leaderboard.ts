@@ -1,9 +1,9 @@
 import api from '@/services/api'
-import {
+import type {
   LeaderboardProfileResponse,
   LeaderboardResponse,
 } from '@/types/leaderboard'
-import { ProfileFormData, UserProfileData } from '@/types/profile'
+import type { ProfileFormData, UserProfileData } from '@/types/profile'
 
 export const leaderboardApi = {
   async getLeaderboard(): Promise<LeaderboardResponse> {
@@ -17,6 +17,9 @@ export const leaderboardApi = {
   },
 
   async updateProfile(profileData: ProfileFormData): Promise<UserProfileData> {
-    return api.put('/leaderboard/profile', profileData)
+    return (await api.put(
+      '/leaderboard/profile',
+      profileData
+    )) as UserProfileData
   },
 }

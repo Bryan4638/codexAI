@@ -1,6 +1,6 @@
 import { useExercises } from '@/hooks/useExercises'
 import { useAuthStore } from '@/store/useAuthStore'
-import { Badge } from '@/types/badge'
+import type { Badge } from '@/types/badge'
 import type { DragDropExercise } from '@/types/exercise'
 import type { DragDropFeedback } from '@/types/feedback'
 import {

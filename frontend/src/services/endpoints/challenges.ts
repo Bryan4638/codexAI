@@ -1,5 +1,5 @@
 import api from '@/services/api'
-import {
+import type {
   Challenge,
   CreateChallengeFormData,
   LiveCodingHistoryResponse,
@@ -7,31 +7,33 @@ import {
   LiveCodingSessionResponse,
   LiveCodingSubmitRequest,
   PaginatedChallenges,
+  ToggleReactionResponse,
 } from '@/types/challenge'
 
 export const challengeApi = {
   async getAll(
     params: Record<string, number | string> = {}
   ): Promise<PaginatedChallenges> {
-    const res = await api.get('/challenges', { params })
-    return res as unknown as PaginatedChallenges
+    return (await api.get('/challenges', { params })) as PaginatedChallenges
   },
 
   async getById(id: string): Promise<Challenge> {
-    const res = await api.get(`/challenges/${id}`)
-    return res as unknown as Challenge
+    return (await api.get(`/challenges/${id}`)) as Challenge
   },
 
   async create(challenge: CreateChallengeFormData): Promise<Challenge> {
     return (await api.post('/challenges', challenge)) as Challenge
   },
 
-  async toggleReaction(id: string): Promise<any> {
-    return api.post(`/challenges/${id}/react`)
+  async toggleReaction(id: string): Promise<ToggleReactionResponse> {
+    return (await api.post(`/challenges/${id}/react`)) as ToggleReactionResponse
   },
 
+  // TODO: Verificar que devuelve DELETE
   async delete(id: string): Promise<any> {
-    return api.delete(`/challenges/${id}`)
+    const res = api.delete(`/challenges/${id}`)
+    console.log(res)
+    return res
   },
 
   // ── Live Coding ──────────────────────────────────────
@@ -40,25 +42,27 @@ export const challengeApi = {
     difficulty?: string
   ): Promise<LiveCodingSessionResponse> {
     const body = difficulty ? { difficulty } : {}
-    const res = await api.post('/challenges/live-coding/start', body)
-    return res as unknown as LiveCodingSessionResponse
+    return (await api.post(
+      '/challenges/live-coding/start',
+      body
+    )) as LiveCodingSessionResponse
   },
 
   async submitLiveCoding(
     data: LiveCodingSubmitRequest
   ): Promise<LiveCodingResult> {
-    const res = await api.post('/challenges/live-coding/submit', data)
-    return res as unknown as LiveCodingResult
+    return (await api.post(
+      '/challenges/live-coding/submit',
+      data
+    )) as LiveCodingResult
   },
 
   async getLiveCodingHistory(
     page = 1,
     limit = 10
   ): Promise<LiveCodingHistoryResponse> {
-    const res = await api.get('/challenges/live-coding/history', {
+    return (await api.get('/challenges/live-coding/history', {
       params: { page, limit },
-    })
-    return res as unknown as LiveCodingHistoryResponse
+    })) as LiveCodingHistoryResponse
   },
 }
-

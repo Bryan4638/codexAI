@@ -1,4 +1,4 @@
-import chambeadorDragon from '@/assets/chambeador-dragon-header.webp'
+import chambeadorDragon from '@/assets/chambeador_dragon_logo.webp'
 import { useAuthStore } from '@/store/useAuthStore'
 import {
   IconLogin,

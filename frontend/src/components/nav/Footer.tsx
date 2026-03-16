@@ -1,3 +1,4 @@
+import chambeadorDragon from '@/assets/chambeador_dragon_logo.webp'
 import { IconCode, IconHeart, IconMail, IconWorld } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
@@ -10,10 +11,12 @@ export default function Footer() {
           {/* Branding */}
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-11 h-11 rounded-xl bg-gradient-primary flex items-center justify-center shadow-neon-purple">
-                <span className="font-display text-black font-bold text-sm">
-                  LC
-                </span>
+              <div className="w-14 h-14 flex items-center justify-center">
+                <img
+                  src={chambeadorDragon}
+                  alt="Imagen de un dragón bien chambeador"
+                  className="object-cover"
+                />
               </div>
               <h2 className="font-display text-xl text-text-main tracking-wider">
                 <span className="text-neon-cyan">chamba—code</span>

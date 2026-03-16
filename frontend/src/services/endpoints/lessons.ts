@@ -1,5 +1,5 @@
 import api from '@/services/api'
-import { Lesson } from '@/types/lesson'
+import type { Lesson } from '@/types/lesson'
 
 export const lessonApi = {
   async getAll(params: Record<string, string> = {}): Promise<Lesson[]> {

@@ -1,10 +1,13 @@
 import { useAuth } from '@/hooks/useAuth'
-import EditProfileModal from '@/pages/profile/components/EditProfileModal'
 import { useAuthStore } from '@/store/useAuthStore'
 import { IconUserFilled } from '@tabler/icons-react'
 import { useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { lazy, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+const EditProfileModal = lazy(
+  () => import('@/pages/profile/components/EditProfileModal')
+)
 
 export default function ProfileHeader() {
   const [showEditProfile, setShowEditProfile] = useState<boolean>(false)

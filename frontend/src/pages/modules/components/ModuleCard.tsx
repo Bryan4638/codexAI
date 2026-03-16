@@ -1,5 +1,5 @@
 import { useAuthStore } from '@/store/useAuthStore'
-import { Module } from '@/types/module'
+import type { Module } from '@/types/module'
 import { IconBook2 } from '@tabler/icons-react'
 
 interface ModuleCardProps {

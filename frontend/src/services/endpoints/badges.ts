@@ -1,5 +1,5 @@
 import api from '@/services/api'
-import { BadgeResponse, UserBadgeData, UserProgress } from '@/types/badge'
+import type { BadgeResponse, UserBadgeData, UserProgress } from '@/types/badge'
 
 export const badgeApi = {
   async getAll(): Promise<BadgeResponse> {

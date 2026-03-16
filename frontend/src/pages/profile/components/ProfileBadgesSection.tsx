@@ -1,4 +1,4 @@
-import { UserBadgeData } from '@/types/badge'
+import type { UserBadgeData } from '@/types/badge'
 import { IconTrophy } from '@tabler/icons-react'
 
 interface ProfileBadgesSectionProps {

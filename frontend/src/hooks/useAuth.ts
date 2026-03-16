@@ -28,7 +28,6 @@ export const useAuth = () => {
       verifyEmailCode(email, code),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me'] })
-      console.log(from)
       navigate(from)
     },
   })

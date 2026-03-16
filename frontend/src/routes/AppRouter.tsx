@@ -2,15 +2,17 @@ import AppLayout from '@/layouts/AppLayout'
 import { AuthPage } from '@/pages/auth/AuthPage'
 import BadgesPage from '@/pages/badges/BadgesPage'
 import ChallengesPage from '@/pages/challenges/ChallengesPage'
-import LiveCodingPage from '@/pages/challenges/LiveCodingPage'
-import EditorPage from '@/pages/editor/EditorPage'
-import ExercisesPage from '@/pages/exercises/ExercisesPage'
 import Home from '@/pages/home/Home'
 import LeaderboardPage from '@/pages/leaderboard/LeaderboardPage'
-import LessonsPage from '@/pages/lessons/LessonsPage'
 import ModulesPage from '@/pages/modules/ModulesPage'
-import ProfilePage from '@/pages/profile/ProfilePage'
+import { lazy } from 'react'
 import { Route, Routes } from 'react-router-dom'
+
+const EditorPage = lazy(() => import('@/pages/editor/EditorPage'))
+const LiveCodingPage = lazy(() => import('@/pages/challenges/LiveCodingPage'))
+const ProfilePage = lazy(() => import('@/pages/profile/ProfilePage'))
+const LessonsPage = lazy(() => import('@/pages/lessons/LessonsPage'))
+const ExercisesPage = lazy(() => import('@/pages/exercises/ExercisesPage'))
 
 export default function AppRouter() {
   return (

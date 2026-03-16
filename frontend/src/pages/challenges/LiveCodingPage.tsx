@@ -8,74 +8,76 @@ import { LiveCodingResultScreen } from './components/live-coding/LiveCodingResul
 import { LiveCodingStartScreen } from './components/live-coding/LiveCodingStartScreen'
 
 export default function LiveCodingPage() {
-    const navigate = useNavigate()
-    const { user } = useAuthStore()
+  const navigate = useNavigate()
+  const { user } = useAuthStore()
 
-    const {
-        session,
-        result,
-        isStarting,
-        isSubmitting,
-        formattedTime,
-        elapsedSeconds,
-        tabSwitches,
-        copyPasteCount,
-        currentPenalties,
-        code,
-        setCode,
-        startSession,
-        submitSolution,
-        resetSession,
-    } = useLiveCoding()
+  const {
+    session,
+    result,
+    isStarting,
+    isSubmitting,
+    formattedTime,
+    elapsedSeconds,
+    tabSwitches,
+    copyPasteCount,
+    currentPenalties,
+    code,
+    setCode,
+    startSession,
+    submitSolution,
+    resetSession,
+  } = useLiveCoding()
 
-    useEffect(() => {
-        if (!user) {
-            Swal.fire(
-                'Atención',
-                'Debes iniciar sesión para acceder al Live Coding',
-                'warning'
-            )
-            navigate('/challenges')
-        }
-    }, [user, navigate])
+  if (!user) {
+    sileo.warning({
+      title: 'Debes Iniciar Sesión',
+      description: (
+        <span className="flex items-center justify-center">
+          Primero debes iniciar sesión para resolver retos
+        </span>
+      ),
+      icon: <IconAlertTriangle />,
+    })
+    navigate('/challenges')
+  }
 
-    // ── Start Screen ──────────────────────────────────
-    if (!session) {
-        return (
-            <LiveCodingStartScreen
-                startSession={startSession}
-                isStarting={isStarting}
-            />
-        )
-    }
-
-    // ── Result Screen ─────────────────────────────────
-    if (result) {
-        return (
-            <LiveCodingResultScreen
-                result={result}
-                session={session}
-                formattedTime={formattedTime}
-                resetSession={resetSession}
-                startSession={startSession}
-            />
-        )
-    }
-
-    // ── Live Coding Editor ────────────────────────────
+  // ── Start Screen ──────────────────────────────────
+  if (!session) {
     return (
-        <LiveCodingEditor
-            session={session}
-            formattedTime={formattedTime}
-            elapsedSeconds={elapsedSeconds}
-            currentPenalties={currentPenalties}
-            submitSolution={submitSolution}
-            isSubmitting={isSubmitting}
-            code={code}
-            setCode={setCode}
-            tabSwitches={tabSwitches}
-            copyPasteCount={copyPasteCount}
-        />
+      <LiveCodingStartScreen
+        startSession={startSession}
+        isStarting={isStarting}
+      />
     )
+  }
+
+  // ── Result Screen ─────────────────────────────────
+  if (result) {
+    return (
+      <LiveCodingResultScreen
+        result={result}
+        session={session}
+        formattedTime={formattedTime}
+        resetSession={resetSession}
+        startSession={startSession}
+      />
+    )
+  }
+
+  // ── Live Coding Editor ────────────────────────────
+  return (
+    <LiveCodingEditor
+      session={session}
+      formattedTime={formattedTime}
+      elapsedSeconds={elapsedSeconds}
+      currentPenalties={currentPenalties}
+      submitSolution={submitSolution}
+      isSubmitting={isSubmitting}
+      code={code}
+      setCode={setCode}
+      tabSwitches={tabSwitches}
+      copyPasteCount={copyPasteCount}
+    />
+  )
 }
 

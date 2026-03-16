@@ -1,4 +1,4 @@
-import { BadgeWithDescription } from '@/types/badge'
+import type { BadgeWithDescription } from '@/types/badge'
 
 interface BadgeCardProps {
   badge: BadgeWithDescription

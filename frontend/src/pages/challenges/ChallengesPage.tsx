@@ -1,13 +1,9 @@
 import Footer from '@/components/nav/Footer'
 import CyberSelect from '@/components/share/CyberSelect'
-import Error from '@/components/share/Error'
-import IsEmpty from '@/components/share/IsEmpty'
 import PageHeader from '@/components/share/PageHeader'
 import SkeletonCard from '@/components/share/skeletons/SkeletonCard'
 import { useChallenges } from '@/hooks/useChallenges'
 import { ChallengeCard } from '@/pages/challenges/components/ChallengeCard'
-import ChallengeDetailModal from '@/pages/challenges/components/ChallengeDetailModal'
-import CreateChallengeModal from '@/pages/challenges/components/CreateChallengeModal'
 import {
   difficultyOptions,
   sortOptions,
@@ -16,8 +12,17 @@ import {
 import { useAuthStore } from '@/store/useAuthStore'
 import { useChallengesFiltersStore } from '@/store/useChallengesFiltersStore'
 import { IconBolt, IconPlus } from '@tabler/icons-react'
-import { useState } from 'react'
+import { lazy, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+const Error = lazy(() => import('@/components/share/Error'))
+const IsEmpty = lazy(() => import('@/components/share/IsEmpty'))
+const ChallengeDetailModal = lazy(
+  () => import('@/pages/challenges/components/ChallengeDetailModal')
+)
+const CreateChallengeModal = lazy(
+  () => import('@/pages/challenges/components/CreateChallengeModal')
+)
 
 export default function ChallengesPage() {
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false)

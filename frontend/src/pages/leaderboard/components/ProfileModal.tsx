@@ -1,5 +1,5 @@
-import { Badge } from '@/types/badge'
-import { UserProfileData } from '@/types/profile'
+import type { Badge } from '@/types/badge'
+import type { UserProfileData } from '@/types/profile'
 import {
   IconBrandGithub,
   IconBrandLinkedin,

@@ -1,14 +1,12 @@
-import { useAuth } from '@/hooks/useAuth'
+import { IconCircleCheck } from '@tabler/icons-react'
 import { ReactNode, useEffect } from 'react'
-import Swal from 'sweetalert2'
+import { sileo } from 'sileo'
 
 interface AuthInitializerProps {
   children: ReactNode
 }
 
 export default function AuthInitializer({ children }: AuthInitializerProps) {
-  const { meQuery } = useAuth()
-
   useEffect(() => {
     // Check for tokens in URL (OAuth redirect)
     const params = new URLSearchParams(window.location.search)
@@ -24,30 +22,11 @@ export default function AuthInitializer({ children }: AuthInitializerProps) {
       window.history.replaceState({}, document.title, window.location.pathname)
 
       // Show success toast
-      const Toast = Swal.mixin({
-        toast: true,
-        position: 'bottom-right',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        background: '#12121a',
-        color: '#e0fbff',
-        customClass: {
-          popup: 'border border-neon-green/80',
-        },
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        },
-      })
-
-      Toast.fire({
-        icon: 'success',
-        title: '¡Sesión iniciada con éxito!',
+      sileo.success({
+        title: '¡Bienvenido!',
+        icon: <IconCircleCheck />,
       })
     }
-    // No necesitamos llamar checkAuth()
-    // React Query automáticamente llamará /auth/me si hay token
   }, [])
   return <>{children}</>
 }

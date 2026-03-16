@@ -1,9 +1,9 @@
+import chambeadorDragonLogin from '@/assets/chambeador_dragon_login.webp'
 import { useAuth } from '@/hooks/useAuth'
 import { useAuthStore } from '@/store/useAuthStore'
 import { IconExclamationCircle, IconLoader2 } from '@tabler/icons-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
 import OAuthButtons from './components/OAuthButtons'
 
 export function AuthPage() {
@@ -39,26 +39,6 @@ export function AuthPage() {
       {
         onError: (err: any) => {
           setError(err?.message || 'Código inválido')
-        },
-        onSuccess: () => {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'bottom-right',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            background: '#0a0a0f',
-            color: '#fff',
-            customClass: {
-              popup:
-                'border border-neon-green/30 shadow-[0_0_20px_rgba(0,255,100,0.1)]',
-            },
-          })
-
-          Toast.fire({
-            icon: 'success',
-            title: '¡Bienvenido de vuelta! 🚀',
-          })
         },
       }
     )
@@ -193,7 +173,7 @@ export function AuthPage() {
         {/* RIGHT - IMAGE */}
         <aside className="hidden lg:flex items-center justify-center bg-linear-to-br from-neon-cyan/10 via-transparent to-neon-purple/10 relative">
           <img
-            src="/images/auth-illustration.png"
+            src={chambeadorDragonLogin}
             alt="Auth illustration"
             className="max-w-md opacity-90"
           />

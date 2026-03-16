@@ -1,4 +1,5 @@
-import axios, { AxiosError } from 'axios'
+import { useAuthStore } from '@/store/useAuthStore'
+import axios, { type AxiosError } from 'axios'
 
 const URL = import.meta.env.VITE_API_URL
 const api = axios.create({
@@ -40,6 +41,7 @@ api.interceptors.response.use(
 
     // Handle 401 Unauthorized for expired tokens
     if (error.response?.status === 401 && !originalRequest._retry) {
+      useAuthStore.getState().resetAuth()
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject })

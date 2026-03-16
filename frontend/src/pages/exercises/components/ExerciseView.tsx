@@ -2,14 +2,10 @@ import ExerciseSkeleton from '@/components/share/skeletons/ExerciseSkeleton'
 import ModuleHeaderSkeleton from '@/components/share/skeletons/ModuleHeaderSkeleton'
 import { useBadges } from '@/hooks/useBadges'
 import { useExercises } from '@/hooks/useExercises'
-import CodeEditor from '@/pages/exercises/components/CodeEditor'
-import DragDrop from '@/pages/exercises/components/DragDrop'
-import FillBlank from '@/pages/exercises/components/FillBlank'
-import Quiz from '@/pages/exercises/components/Quiz'
 import { useAuthStore } from '@/store/useAuthStore'
-import { Badge } from '@/types/badge'
-import { LessonExercise } from '@/types/exercise'
-import { Module } from '@/types/module'
+import type { Badge } from '@/types/badge'
+import type { LessonExercise } from '@/types/exercise'
+import type { Module } from '@/types/module'
 import {
   IconAlertTriangle,
   IconArrowLeft,
@@ -19,7 +15,12 @@ import {
   IconPencilCode,
   IconQuestionMark,
 } from '@tabler/icons-react'
-import { useEffect, useState } from 'react'
+import { lazy, useEffect, useState } from 'react'
+
+const CodeEditor = lazy(() => import('@/pages/exercises/components/CodeEditor'))
+const DragDrop = lazy(() => import('@/pages/exercises/components/DragDrop'))
+const FillBlank = lazy(() => import('@/pages/exercises/components/FillBlank'))
+const Quiz = lazy(() => import('@/pages/exercises/components/Quiz'))
 
 interface ExerciseViewProps {
   module: Module

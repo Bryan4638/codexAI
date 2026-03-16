@@ -1,5 +1,5 @@
 import { useChallenges } from '@/hooks/useChallenges'
-import { CreateChallengeFormData } from '@/types/challenge'
+import type { CreateChallengeFormData } from '@/types/challenge'
 import { ChangeEvent, FormEvent, useState } from 'react'
 
 interface CreateChallengeModalProps {

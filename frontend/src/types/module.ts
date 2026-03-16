@@ -1,4 +1,4 @@
-import { Lesson } from '@/types/lesson'
+import type { Lesson } from '@/types/lesson'
 
 export interface Module {
   id: string
