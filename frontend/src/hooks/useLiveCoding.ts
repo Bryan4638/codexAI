@@ -81,7 +81,7 @@ export function useLiveCoding() {
       const newVal = prev + 1
       Swal.fire({
         toast: true,
-        position: 'top-end',
+        position: 'bottom-end',
         icon: 'warning',
         title: `⚠️ Copiado/Pegado de código detectado (-${COPY_PASTE_PENALTY} pts)`,
         showConfirmButton: false,
@@ -164,7 +164,7 @@ export function useLiveCoding() {
       resetSession()
       Swal.fire({
         toast: true,
-        position: 'top-end',
+        position: 'bottom-end',
         icon: 'success',
         title: 'Sesión cancelada',
         showConfirmButton: false,
