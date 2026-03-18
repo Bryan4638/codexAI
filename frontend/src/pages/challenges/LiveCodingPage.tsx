@@ -2,7 +2,7 @@ import { useLiveCoding } from '@/hooks/useLiveCoding'
 import { useAuthStore } from '@/store/useAuthStore'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
+import { sileo } from 'sileo'
 import { LiveCodingEditor } from './components/live-coding/LiveCodingEditor'
 import { LiveCodingResultScreen } from './components/live-coding/LiveCodingResultScreen'
 import { LiveCodingStartScreen } from './components/live-coding/LiveCodingStartScreen'
@@ -28,15 +28,15 @@ export default function LiveCodingPage() {
     cancelSession,
     resetSession,
     isCanceling,
+    handleCopyPaste,
   } = useLiveCoding()
 
   useEffect(() => {
     if (!user) {
-      Swal.fire(
-        'Atención',
-        'Debes iniciar sesión para acceder al Live Coding',
-        'warning'
-      )
+      sileo.warning({
+        title: 'Atención',
+        description: 'Debes iniciar sesión para acceder al Live Coding',
+      })
       navigate('/challenges')
     }
   }, [user, navigate])
@@ -79,6 +79,7 @@ export default function LiveCodingPage() {
       copyPasteCount={copyPasteCount}
       cancelSession={cancelSession}
       isCanceling={isCanceling}
+      onCopyPaste={handleCopyPaste}
     />
   )
 }

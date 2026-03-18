@@ -4,7 +4,7 @@ import type {
   LiveCodingSessionResponse,
 } from '@/types/challenge'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import Swal from 'sweetalert2'
+import { sileo } from 'sileo'
 
 const TAB_PENALTY = 15
 const COPY_PASTE_PENALTY = 25
@@ -48,20 +48,9 @@ export function useLiveCoding() {
       if (document.hidden && isActiveRef.current) {
         setTabSwitches((prev) => {
           const newVal = prev + 1
-          Swal.fire({
-            toast: true,
-            position: 'bottom-end',
-            icon: 'warning',
+          sileo.warning({
             title: `⚠️ Cambio de pestaña detectado (-${TAB_PENALTY} pts)`,
-            showConfirmButton: false,
-            timer: 3000,
-            background: '#101018',
-            color: '#ff6b35',
-            iconColor: '#ff6b35',
-            customClass: {
-              popup:
-                'border border-orange-500/30 rounded-xl shadow-[0_0_15px_rgba(255,107,53,0.2)] font-display text-sm backdrop-blur-md',
-            },
+            duration: 3000,
           })
           return newVal
         })
@@ -79,20 +68,9 @@ export function useLiveCoding() {
 
     setCopyPasteCount((prev) => {
       const newVal = prev + 1
-      Swal.fire({
-        toast: true,
-        position: 'bottom-end',
-        icon: 'warning',
+      sileo.warning({
         title: `⚠️ Copiado/Pegado de código detectado (-${COPY_PASTE_PENALTY} pts)`,
-        showConfirmButton: false,
-        timer: 3000,
-        background: '#101018',
-        color: '#ff2d92',
-        iconColor: '#ff2d92',
-        customClass: {
-          popup:
-            'border border-pink-500/30 rounded-xl shadow-[0_0_15px_rgba(255,45,146,0.2)] font-display text-sm backdrop-blur-md',
-        },
+        duration: 3000,
       })
       return newVal
     })
@@ -143,12 +121,9 @@ export function useLiveCoding() {
       setCopyPasteCount(res.copyPasteCount || 0)
       setCode(res.code || res.challenge.initialCode || '')
     } catch (error: any) {
-      Swal.fire({
-        icon: 'error',
+      sileo.error({
         title: 'Error',
-        text: error?.message || 'No se pudo iniciar la sesión de Live Coding',
-        background: '#101018',
-        color: '#fff',
+        description: error?.message || 'No se pudo iniciar la sesión de Live Coding',
       })
     } finally {
       setIsStarting(false)
@@ -162,23 +137,14 @@ export function useLiveCoding() {
     try {
       await challengeApi.cancelLiveCoding()
       resetSession()
-      Swal.fire({
-        toast: true,
-        position: 'bottom-end',
-        icon: 'success',
+      sileo.success({
         title: 'Sesión cancelada',
-        showConfirmButton: false,
-        timer: 3000,
-        background: '#101018',
-        color: '#fff',
+        duration: 3000,
       })
     } catch (error: any) {
-      Swal.fire({
-        icon: 'error',
+      sileo.error({
         title: 'Error al cancelar',
-        text: error?.message || 'No se pudo cancelar la sesión',
-        background: '#101018',
-        color: '#fff',
+        description: error?.message || 'No se pudo cancelar la sesión',
       })
     } finally {
       setIsCanceling(false)
@@ -208,12 +174,9 @@ export function useLiveCoding() {
 
       setResult(res)
     } catch (error: any) {
-      Swal.fire({
-        icon: 'error',
+      sileo.error({
         title: 'Error al enviar',
-        text: error?.message || 'No se pudo enviar la solución',
-        background: '#101018',
-        color: '#fff',
+        description: error?.message || 'No se pudo enviar la solución',
       })
     } finally {
       setIsSubmitting(false)
@@ -260,5 +223,6 @@ export function useLiveCoding() {
     submitSolution,
     cancelSession,
     resetSession,
+    handleCopyPaste,
   }
 }

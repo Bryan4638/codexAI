@@ -1,6 +1,8 @@
 import { LiveCodingSessionResponse } from '@/types/challenge'
 import Editor from '@monaco-editor/react'
 import { IconClock, IconSend, IconStar } from '@tabler/icons-react'
+import type { editor } from 'monaco-editor'
+import { useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { DIFFICULTY_COLORS, DIFFICULTY_LABELS } from './LiveCodingStartScreen'
@@ -18,6 +20,7 @@ interface LiveCodingEditorProps {
     copyPasteCount: number
     cancelSession: () => Promise<void>
     isCanceling: boolean
+    onCopyPaste: () => void
 }
 
 export function LiveCodingEditor({
@@ -33,7 +36,23 @@ export function LiveCodingEditor({
     copyPasteCount,
     cancelSession,
     isCanceling,
+    onCopyPaste,
 }: LiveCodingEditorProps) {
+    const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
+
+    const handleEditorMount = (editorInstance: editor.IStandaloneCodeEditor) => {
+        editorRef.current = editorInstance
+
+        editorInstance.onKeyDown((e) => {
+            // Detect Ctrl+C, Ctrl+V, Ctrl+X (copy, paste, cut)
+            const KeyC = 33  // Monaco KeyCode.KeyC
+            const KeyV = 52  // Monaco KeyCode.KeyV
+            const KeyX = 54  // Monaco KeyCode.KeyX
+            if ((e.ctrlKey || e.metaKey) && [KeyC, KeyV, KeyX].includes(e.keyCode)) {
+                onCopyPaste()
+            }
+        })
+    }
     const challenge = session.challenge
     const isTimeCritical = elapsedSeconds >= 1500 // 25 min
 
@@ -119,6 +138,7 @@ export function LiveCodingEditor({
                             defaultLanguage="javascript"
                             value={code}
                             onChange={(value) => setCode(value || '')}
+                            onMount={handleEditorMount}
                             theme="vs-dark"
                             options={{
                                 minimap: { enabled: false },
