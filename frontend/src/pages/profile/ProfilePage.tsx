@@ -6,6 +6,8 @@ import ProfileLevelProgressBar from '@/pages/profile/components/ProfileLevelProg
 import ProfileModuleProgress from '@/pages/profile/components/ProfileModuleProgress'
 import ProfileStats from '@/pages/profile/components/ProfileStats'
 import { useAuthStore } from '@/store/useAuthStore'
+import StreakCounter from '@/components/streaks/StreakCounter'
+import ActivityHeatmap from '@/components/analytics/ActivityHeatmap'
 import { lazy } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -36,14 +38,20 @@ function ProfilePage() {
 
   return (
     <section className="pt-32 pb-16 max-w-3xl mx-auto px-6">
+
       <ProfileHeader />
+      <StreakCounter variant="full" className="mt-6 mb-8 " />
+
       <ProfileStats progress={progress} />
       <ProfileLevelProgressBar progress={progress} />
+
+      <ActivityHeatmap className="mt-6 mb-8" />
 
       <section className="grid grid-cols-2 gap-8 max-md:grid-cols-1">
         <ProfileBadgesSection badges={badges} />
         <ProfileModuleProgress progress={progress} />
       </section>
+
       {progress.history && progress.history.length > 0 && (
         <ProfileActivityHistory progress={progress} />
       )}

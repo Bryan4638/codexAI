@@ -1,12 +1,12 @@
 import { leaderboardApi } from '@/services/endpoints/leaderboard'
 import { useQuery } from '@tanstack/react-query'
 
-export const useLeaderboard = (id: string) => {
+export const useLeaderboard = (id: string, period: string = 'all-time') => {
   const { getLeaderboard, getUserProfile } = leaderboardApi
 
   const leaderboardQuery = useQuery({
-    queryKey: ['leaderboard'],
-    queryFn: () => getLeaderboard(),
+    queryKey: ['leaderboard', period],
+    queryFn: () => getLeaderboard(period),
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   })

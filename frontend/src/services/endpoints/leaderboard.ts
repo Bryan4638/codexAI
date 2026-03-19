@@ -6,8 +6,8 @@ import type {
 import type { ProfileFormData, UserProfileData } from '@/types/profile'
 
 export const leaderboardApi = {
-  async getLeaderboard(): Promise<LeaderboardResponse> {
-    return (await api.get('/leaderboard')) as LeaderboardResponse
+  async getLeaderboard(period: string = 'all-time'): Promise<LeaderboardResponse> {
+    return (await api.get(`/leaderboard?period=${period}`)) as LeaderboardResponse
   },
 
   async getUserProfile(userId: string): Promise<LeaderboardProfileResponse> {

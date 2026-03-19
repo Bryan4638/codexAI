@@ -47,6 +47,10 @@ export interface ToggleReactionResponse {
 export interface LiveCodingSessionResponse {
   sessionId: string
   startedAt: string
+  elapsedSeconds: number
+  code: string
+  tabSwitches: number
+  copyPasteCount: number
   challenge: {
     id: string
     title: string
@@ -62,20 +66,26 @@ export interface LiveCodingSessionResponse {
   }
 }
 
+export interface LiveCodingSyncRequest {
+  sessionId: string
+  code?: string
+  tabSwitches?: number
+  copyPasteCount?: number
+}
+
 export interface LiveCodingSubmitRequest {
   sessionId: string
   code: string
   language: string
-  timeTakenSeconds: number
   tabSwitches: number
-  pasteCount: number
+  copyPasteCount: number
 }
 
 export interface LiveCodingResult {
   score: number
   penaltiesApplied: number
   tabSwitches: number
-  pasteCount: number
+  copyPasteCount: number
   executionTimeMs: number
   allPassed: boolean
   testResults: { id: string; passed: boolean; actual: string }[]
@@ -93,7 +103,7 @@ export interface LiveCodingHistoryItem {
   executionTimeMs: number
   allTestsPassed: boolean
   tabSwitches: number
-  pasteCount: number
+  copyPasteCount: number
   penaltiesApplied: number
   completedAt: string
 }

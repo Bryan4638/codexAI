@@ -4,7 +4,7 @@ import { ExecuteCodeDto } from '../dto/execute-code.dto';
 
 @Injectable()
 export class ExecuteCodeUseCase {
-  constructor(private readonly queueManager: QueueManagerService) {}
+  constructor(private readonly queueManager: QueueManagerService) { }
 
   async execute(dto: ExecuteCodeDto) {
     const { language, code, userId } = dto;

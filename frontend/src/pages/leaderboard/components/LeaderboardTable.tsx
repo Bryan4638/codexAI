@@ -16,6 +16,7 @@ export default function LeaderboardTable({ users, onUserClick }: Props) {
           <tr className="bg-neon-cyan/10 border-b border-neon-cyan/20">
             <th className="p-4 text-center w-16">#</th>
             <th className="p-4 text-left">Usuario</th>
+            <th className="p-4 text-center">Liga</th>
             <th className="p-4 text-center">Nivel</th>
             <th className="p-4 text-center">Medallas</th>
             <th className="p-4 text-center">XP</th>
@@ -54,6 +55,27 @@ export default function LeaderboardTable({ users, onUserClick }: Props) {
                 </div>
               </td>
 
+              <td className="p-4">
+                <div className="flex justify-center">
+                  <span
+                    className={`text-xs px-2 py-1 rounded-full font-semibold capitalize
+                    ${
+                      user.league === 'legend'
+                        ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-black shadow-[0_0_10px_rgba(250,204,21,0.5)]'
+                        : user.league === 'diamond'
+                        ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/50'
+                        : user.league === 'gold'
+                        ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
+                        : user.league === 'silver'
+                        ? 'bg-gray-400/20 text-gray-300 border border-gray-400/50'
+                        : 'bg-orange-800/20 text-orange-300 border border-orange-800/50'
+                    }`}
+                  >
+                    {user.league || 'bronze'}
+                  </span>
+                </div>
+              </td>
+
               <td className="p-4 text-center text-neon-purple">{user.level}</td>
 
               <td className="p-4 text-center flex items-center justify-center gap-2">
@@ -61,7 +83,7 @@ export default function LeaderboardTable({ users, onUserClick }: Props) {
               </td>
 
               <td className="p-4 text-center text-neon-cyan font-mono">
-                {user.xp}
+                {user.periodXp !== undefined ? user.periodXp : user.xp}
               </td>
             </tr>
           ))}

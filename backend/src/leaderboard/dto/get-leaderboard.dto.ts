@@ -17,4 +17,12 @@ export class GetLeaderboardDto {
   @Min(1)
   @Max(100)
   limit?: number = 20;
+
+  @ApiPropertyOptional({
+    description: 'Leaderboard period',
+    enum: ['weekly', 'monthly', 'all-time'],
+    default: 'all-time',
+  })
+  @IsOptional()
+  period?: 'weekly' | 'monthly' | 'all-time' = 'all-time';
 }

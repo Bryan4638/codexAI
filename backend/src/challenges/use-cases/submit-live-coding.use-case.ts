@@ -10,6 +10,9 @@ import { ChallengeTest } from '../entities/challenge-test.entity';
 import { Challenge } from '../entities/challenge.entity';
 import { SubmitLiveCodingDto } from '../dto/submit-live-coding.dto';
 import { QueueManagerService } from '../../execution/services/queue-manager.service';
+import { UpdateStreakUseCase } from '../../streaks/use-cases/update-streak.use-case';
+import { RecordActivityUseCase } from '../../analytics/use-cases/record-activity.use-case';
+import { RecordWeeklyXpUseCase } from '../../leaderboard/use-cases/record-weekly-xp.use-case';
 
 const DIFFICULTY_BASE_SCORE: Record<string, number> = {
     easy: 100,
@@ -19,7 +22,7 @@ const DIFFICULTY_BASE_SCORE: Record<string, number> = {
 
 const MAX_TIME_SECONDS = 1800; // 30 minutes
 const TAB_SWITCH_PENALTY = 15;
-const PASTE_PENALTY = 25;
+const COPY_PASTE_PENALTY = 25;
 const TIME_BONUS_MAX = 50;
 
 @Injectable()
@@ -32,10 +35,13 @@ export class SubmitLiveCodingUseCase {
         @InjectRepository(Challenge)
         private readonly challengeRepo: Repository<Challenge>,
         private readonly queueManager: QueueManagerService,
+        private readonly updateStreakUseCase: UpdateStreakUseCase,
+        private readonly recordActivityUseCase: RecordActivityUseCase,
+        private readonly recordWeeklyXpUseCase: RecordWeeklyXpUseCase,
     ) { }
 
     async execute(userId: string, dto: SubmitLiveCodingDto) {
-        const { sessionId, code, language, timeTakenSeconds, tabSwitches, pasteCount } = dto;
+        const { sessionId, code, language, tabSwitches, copyPasteCount } = dto;
 
         // Validate session
         const session = await this.sessionRepo.findOne({
@@ -72,6 +78,17 @@ export class SubmitLiveCodingUseCase {
             expectedOutput: t.expectedOutput,
         }));
 
+        // Compute real elapsed time from server avoiding TZ mismatch
+        const [{ elapsed }] = await this.sessionRepo.query(
+            'SELECT EXTRACT(EPOCH FROM (NOW() - started_at)) as elapsed FROM live_coding_sessions WHERE id = $1',
+            [session.id]
+        );
+        const timeTakenSeconds = Math.max(0, Math.floor(elapsed));
+
+        // Use maximum penalty between DB and what they sent to avoid reversing penalties
+        const finalTabSwitches = Math.max(session.tabSwitches, tabSwitches || 0);
+        const finalCopyPasteCount = Math.max(session.copyPasteCount, copyPasteCount || 0);
+
         const job = await this.queueManager.addJob({
             language,
             code,
@@ -107,11 +124,11 @@ export class SubmitLiveCodingUseCase {
 
         const baseDifficulty =
             DIFFICULTY_BASE_SCORE[challenge.difficulty] || 100;
-        const timeBonus =
-            Math.max(0, 1 - timeTakenSeconds / MAX_TIME_SECONDS) * TIME_BONUS_MAX;
+        const timeBonusFactor = Math.max(0, 1 - timeTakenSeconds / MAX_TIME_SECONDS);
+        const timeBonus = baseDifficulty * 0.5 * timeBonusFactor;
         const testMultiplier = totalTests > 0 ? passedTests / totalTests : 0;
         const penalty =
-            tabSwitches * TAB_SWITCH_PENALTY + pasteCount * PASTE_PENALTY;
+            finalTabSwitches * TAB_SWITCH_PENALTY + finalCopyPasteCount * COPY_PASTE_PENALTY;
 
         const score = Math.max(
             0,
@@ -123,13 +140,31 @@ export class SubmitLiveCodingUseCase {
         session.timeTakenSeconds = timeTakenSeconds;
         session.executionTimeMs = executionTimeMs;
         session.score = score;
-        session.tabSwitches = tabSwitches;
-        session.pasteCount = pasteCount;
+        session.tabSwitches = finalTabSwitches;
+        session.copyPasteCount = finalCopyPasteCount;
         session.penaltiesApplied = penalty;
         session.allTestsPassed = allPassed;
         session.completedAt = new Date();
 
         await this.sessionRepo.save(session);
+
+        // Update streak on successful completion
+        if (allPassed) {
+            await this.updateStreakUseCase.execute(userId);
+        }
+
+        // Record daily activity
+        await this.recordActivityUseCase.execute({
+            userId,
+            challengesCompleted: allPassed ? 1 : 0,
+            xpEarned: score,
+            timeSpentMinutes: Math.ceil(timeTakenSeconds / 60),
+        });
+
+        // Record weekly XP for leaderboards
+        if (score > 0) {
+            await this.recordWeeklyXpUseCase.execute(userId, score);
+        }
 
         // Filter to only show public test results
         const publicResults = (executionResult?.testResults || []).filter(
@@ -142,8 +177,8 @@ export class SubmitLiveCodingUseCase {
         return {
             score,
             penaltiesApplied: penalty,
-            tabSwitches,
-            pasteCount,
+            tabSwitches: finalTabSwitches,
+            copyPasteCount: finalCopyPasteCount,
             executionTimeMs,
             allPassed,
             testResults: publicResults,

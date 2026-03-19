@@ -11,6 +11,8 @@ export interface UserProfileData {
   bio?: string
   rank: number
   isPublic: boolean
+  league: string
+  periodXp?: number
   contact?: {
     github?: string
     linkedin?: string

@@ -7,6 +7,9 @@ import { Exercise } from '../entities/exercise.entity';
 import { ValidateExerciseDto } from '../dto/validate-exercise.dto';
 import { CheckAndUnlockBadgesUseCase } from './check-and-unlock-badges.use-case';
 import { Badge, ExerciseData } from '../../common/types';
+import { UpdateStreakUseCase } from '../../streaks/use-cases/update-streak.use-case';
+import { RecordActivityUseCase } from '../../analytics/use-cases/record-activity.use-case';
+import { RecordWeeklyXpUseCase } from '../../leaderboard/use-cases/record-weekly-xp.use-case';
 
 export interface ValidateExerciseResult {
   correct: boolean;
@@ -103,6 +106,9 @@ export class ValidateExerciseUseCase {
     @InjectRepository(Exercise)
     private readonly exerciseRepository: Repository<Exercise>,
     private readonly checkAndUnlockBadgesUseCase: CheckAndUnlockBadgesUseCase,
+    private readonly updateStreakUseCase: UpdateStreakUseCase,
+    private readonly recordActivityUseCase: RecordActivityUseCase,
+    private readonly recordWeeklyXpUseCase: RecordWeeklyXpUseCase,
   ) {}
 
   async execute(
@@ -173,6 +179,21 @@ export class ValidateExerciseUseCase {
         { userId, exerciseId },
         { attempts: () => 'attempts + 1' },
       );
+    }
+
+    // Update streak
+    await this.updateStreakUseCase.execute(userId);
+
+    // Record daily activity
+    await this.recordActivityUseCase.execute({
+      userId,
+      exercisesCompleted: 1,
+      xpEarned: xpEarned,
+    });
+
+    // Record weekly XP for leaderboards
+    if (xpEarned > 0) {
+      await this.recordWeeklyXpUseCase.execute(userId, xpEarned);
     }
 
     // Verificar nuevas medallas

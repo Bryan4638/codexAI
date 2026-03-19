@@ -59,6 +59,9 @@ export class User {
   @Column({ name: 'avatar_url', nullable: true })
   avatarUrl: string;
 
+  @Column({ default: 'bronze' })
+  league: string;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

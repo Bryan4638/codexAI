@@ -14,7 +14,7 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const location = useLocation()
 
-  const isEditorMode = location.pathname.includes('/editor')
+  const isEditorMode = location.pathname.includes('/editor') || location.pathname.includes('/live-coding')
 
   const navLinks = [
     { to: '/', label: 'Inicio' },
@@ -27,9 +27,8 @@ function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-1000 bg-bg-primary/80 backdrop-blur-[20px] border-b border-white/8 py-2">
       <div
-        className={`flex items-center mx-auto transition-all duration-500 ease-in-out ${
-          isEditorMode ? 'max-w-full px-8' : 'max-w-7xl px-6'
-        }`}
+        className={`flex items-center mx-auto transition-all duration-500 ease-in-out ${isEditorMode ? 'max-w-full px-8' : 'max-w-7xl px-6'
+          }`}
       >
         <Link
           to="/"
@@ -47,9 +46,8 @@ function Header() {
 
         {/* Spacer izquierdo animable */}
         <div
-          className={`transition-all duration-500 ease-in-out ${
-            isEditorMode ? 'w-8 shrink-0 grow-0' : 'flex-1'
-          }`}
+          className={`transition-all duration-500 ease-in-out ${isEditorMode ? 'w-8 shrink-0 grow-0' : 'flex-1'
+            }`}
         />
 
         {/* Desktop Nav */}

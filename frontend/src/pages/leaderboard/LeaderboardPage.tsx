@@ -14,9 +14,11 @@ const ProfileModal = lazy(
 
 export default function LeaderboardPage() {
   const [selectedUser, setSelectedUser] = useState<string | null>(null)
+  const [period, setPeriod] = useState<'weekly' | 'monthly' | 'all-time'>('all-time')
 
   const { leaderboardQuery, userProfileQuery } = useLeaderboard(
-    selectedUser ?? ''
+    selectedUser ?? '',
+    period
   )
 
   const leaderboard = leaderboardQuery.data?.leaderboard ?? []
@@ -34,6 +36,30 @@ export default function LeaderboardPage() {
           title="Tabla de Posiciones"
           subtitle="Los mejores estudiantes de chamba—code"
         />
+
+        {/* Period Tabs */}
+        <div className="flex justify-center mb-10">
+          <div className="inline-flex rounded-lg bg-white/5 p-1 backdrop-blur-md border border-white/10">
+            {[
+              { id: 'weekly', label: 'Esta Semana' },
+              { id: 'monthly', label: 'Este Mes' },
+              { id: 'all-time', label: 'Global' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setPeriod(tab.id as any)}
+                className={`px-6 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                  period === tab.id
+                    ? 'bg-emerald-500/20 text-emerald-400 shadow-sm'
+                    : 'text-white/60 hover:text-white/90 hover:bg-white/5'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <LeaderboardPodium top3={top3} onUserClick={setSelectedUser} />
         <LeaderboardTable users={rest} onUserClick={setSelectedUser} />
         {selectedUser && (
