@@ -8,7 +8,10 @@ export interface Badge {
       | 'exercises_completed'
       | 'level_reached'
       | 'module_completed'
-      | 'streak';
+      | 'streak'
+      | 'challenges_completed'
+      | 'live_coding_no_copy'
+      | 'fast_completion';
     value: number;
     moduleId?: number;
   };

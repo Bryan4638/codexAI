@@ -18,6 +18,9 @@ import { CancelLiveCodingUseCase } from './use-cases/cancel-live-coding.use-case
 import { SyncLiveCodingUseCase } from './use-cases/sync-live-coding.use-case';
 import { AuthModule } from '../auth/auth.module';
 import { ExecutionModule } from '../execution/execution.module';
+import { StreaksModule } from '../streaks/streaks.module';
+import { AnalyticsModule } from '../analytics/analytics.module';
+import { LeaderboardModule } from '../leaderboard/leaderboard.module';
 
 const useCases = [
   CreateChallengeUseCase,
@@ -37,6 +40,9 @@ const useCases = [
     TypeOrmModule.forFeature([Challenge, Reaction, LiveCodingSession, ChallengeTest]),
     AuthModule,
     ExecutionModule,
+    StreaksModule,
+    AnalyticsModule,
+    LeaderboardModule,
   ],
   controllers: [ChallengesController],
   providers: [ChallengesService, ...useCases],

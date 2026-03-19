@@ -10,6 +10,9 @@ import { ChallengeTest } from '../entities/challenge-test.entity';
 import { Challenge } from '../entities/challenge.entity';
 import { SubmitLiveCodingDto } from '../dto/submit-live-coding.dto';
 import { QueueManagerService } from '../../execution/services/queue-manager.service';
+import { UpdateStreakUseCase } from '../../streaks/use-cases/update-streak.use-case';
+import { RecordActivityUseCase } from '../../analytics/use-cases/record-activity.use-case';
+import { RecordWeeklyXpUseCase } from '../../leaderboard/use-cases/record-weekly-xp.use-case';
 
 const DIFFICULTY_BASE_SCORE: Record<string, number> = {
     easy: 100,
@@ -32,6 +35,9 @@ export class SubmitLiveCodingUseCase {
         @InjectRepository(Challenge)
         private readonly challengeRepo: Repository<Challenge>,
         private readonly queueManager: QueueManagerService,
+        private readonly updateStreakUseCase: UpdateStreakUseCase,
+        private readonly recordActivityUseCase: RecordActivityUseCase,
+        private readonly recordWeeklyXpUseCase: RecordWeeklyXpUseCase,
     ) { }
 
     async execute(userId: string, dto: SubmitLiveCodingDto) {
@@ -141,6 +147,24 @@ export class SubmitLiveCodingUseCase {
         session.completedAt = new Date();
 
         await this.sessionRepo.save(session);
+
+        // Update streak on successful completion
+        if (allPassed) {
+            await this.updateStreakUseCase.execute(userId);
+        }
+
+        // Record daily activity
+        await this.recordActivityUseCase.execute({
+            userId,
+            challengesCompleted: allPassed ? 1 : 0,
+            xpEarned: score,
+            timeSpentMinutes: Math.ceil(timeTakenSeconds / 60),
+        });
+
+        // Record weekly XP for leaderboards
+        if (score > 0) {
+            await this.recordWeeklyXpUseCase.execute(userId, score);
+        }
 
         // Filter to only show public test results
         const publicResults = (executionResult?.testResults || []).filter(

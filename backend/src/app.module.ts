@@ -10,6 +10,8 @@ import { ChallengesModule } from './challenges/challenges.module';
 import { ExecutionModule } from './execution/execution.module';
 import { HealthModule } from './health/health.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { StreaksModule } from './streaks/streaks.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 import { env } from './config/env';
 
@@ -27,6 +29,9 @@ import { Exercise } from './exercises/entities/exercise.entity';
 import { ChallengeTest } from './challenges/entities/challenge-test.entity';
 import { UserChallengeProgress } from './challenges/entities/user-challenge-progress.entity';
 import { LiveCodingSession } from './challenges/entities/live-coding-session.entity';
+import { UserStreak } from './streaks/entities/user-streak.entity';
+import { DailyActivity } from './analytics/entities/daily-activity.entity';
+import { WeeklyXp } from './leaderboard/entities/weekly-xp.entity';
 
 @NestModule({
   imports: [
@@ -56,6 +61,9 @@ import { LiveCodingSession } from './challenges/entities/live-coding-session.ent
         ChallengeTest,
         UserChallengeProgress,
         LiveCodingSession,
+        UserStreak,
+        DailyActivity,
+        WeeklyXp,
       ],
       synchronize: false, // Use migrations instead
       //logging: env.NODE_ENV !== 'production',
@@ -74,6 +82,8 @@ import { LiveCodingSession } from './challenges/entities/live-coding-session.ent
     ExecutionModule,
     HealthModule,
     DashboardModule,
+    StreaksModule,
+    AnalyticsModule,
   ],
 })
 export class AppModule { }

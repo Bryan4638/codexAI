@@ -5,6 +5,9 @@ import { User } from '../../auth/entities/user.entity';
 import { UserProgress } from '../../auth/entities/user-progress.entity';
 import { UserBadge } from '../../auth/entities/user-badge.entity';
 import { Exercise } from '../entities/exercise.entity';
+import { UserStreak } from '../../streaks/entities/user-streak.entity';
+import { LiveCodingSession } from '../../challenges/entities/live-coding-session.entity';
+import { UserChallengeProgress } from '../../challenges/entities/user-challenge-progress.entity';
 import { badges } from '../../badges/data/badges.data';
 import { Badge } from '../../common/types';
 
@@ -19,6 +22,12 @@ export class CheckAndUnlockBadgesUseCase {
     private readonly userBadgeRepository: Repository<UserBadge>,
     @InjectRepository(Exercise)
     private readonly exerciseRepository: Repository<Exercise>,
+    @InjectRepository(UserStreak)
+    private readonly streakRepository: Repository<UserStreak>,
+    @InjectRepository(LiveCodingSession)
+    private readonly liveCodingSessionRepository: Repository<LiveCodingSession>,
+    @InjectRepository(UserChallengeProgress)
+    private readonly challengeProgressRepository: Repository<UserChallengeProgress>,
   ) {}
 
   async execute(userId: string): Promise<Badge[]> {
@@ -32,62 +41,111 @@ export class CheckAndUnlockBadgesUseCase {
 
     if (!user) return [];
 
-    const completedCount = await this.userProgressRepository.count({
+    // Obtener badges ya desbloqueadas para evitar queries innecesarias
+    const existingBadges = await this.userBadgeRepository.find({
       where: { userId },
+      select: ['badgeId'],
     });
+    const unlockedIds = new Set(existingBadges.map((ub) => ub.badgeId));
 
-    // Obtener ejercicios completados por módulo (usando moduleNumber)
-    const completedExercises = await this.userProgressRepository.find({
-      where: { userId },
-      select: ['exerciseId'],
-    });
+    // Filtrar solo badges que aún no tiene
+    const pendingBadges = badges.filter((b) => !unlockedIds.has(b.id));
+    if (pendingBadges.length === 0) return [];
 
-    // Contar completados por número de módulo
-    const completedByModule: Record<number, number> = {};
+    // Recopilar los tipos necesarios para este batch
+    const neededTypes = new Set(pendingBadges.map((b) => b.requirement.type));
 
-    // Necesitamos obtener el módulo de cada ejercicio completado
-    // Para optimizar, podríamos hacer un join en la query anterior, pero userProgress no tiene relación directa con Exercise en TypeORM definida en entity (solo exerciseId string).
-    // Así que buscaremos los ejercicios.
+    // ── Cargar estadísticas bajo demanda ──
 
-    if (completedExercises.length > 0) {
-      const exerciseIds = completedExercises.map((ue) => ue.exerciseId);
+    let completedExercisesCount = 0;
+    let completedByModule: Record<number, number> = {};
 
-      // Buscar detalles de exercises para saber su moduleNumber
-      // Usamos chunks si hay muchos, pero por ahora asumimos razonable.
-      const exercisesDetails = await this.exerciseRepository
-        .createQueryBuilder('exercise')
-        .leftJoinAndSelect('exercise.lesson', 'lesson')
-        .leftJoinAndSelect('lesson.module', 'module')
-        .where('exercise.id IN (:...ids)', { ids: exerciseIds })
-        .getMany();
+    if (
+      neededTypes.has('exercises_completed') ||
+      neededTypes.has('module_completed')
+    ) {
+      const completedExercises = await this.userProgressRepository.find({
+        where: { userId },
+        select: ['exerciseId'],
+      });
+      completedExercisesCount = completedExercises.length;
 
-      exercisesDetails.forEach((ex) => {
-        const modNum = ex.lesson.module.moduleNumber;
-        completedByModule[modNum] = (completedByModule[modNum] || 0) + 1;
+      if (neededTypes.has('module_completed') && completedExercises.length > 0) {
+        const exerciseIds = completedExercises.map((ue) => ue.exerciseId);
+        const exercisesDetails = await this.exerciseRepository
+          .createQueryBuilder('exercise')
+          .leftJoinAndSelect('exercise.lesson', 'lesson')
+          .leftJoinAndSelect('lesson.module', 'module')
+          .where('exercise.id IN (:...ids)', { ids: exerciseIds })
+          .getMany();
+
+        exercisesDetails.forEach((ex) => {
+          const modNum = ex.lesson.module.moduleNumber;
+          completedByModule[modNum] = (completedByModule[modNum] || 0) + 1;
+        });
+      }
+    }
+
+    let streakData: { currentStreak: number; longestStreak: number } | null =
+      null;
+    if (neededTypes.has('streak')) {
+      const streak = await this.streakRepository.findOne({
+        where: { userId },
+      });
+      streakData = streak
+        ? {
+            currentStreak: streak.currentStreak,
+            longestStreak: streak.longestStreak,
+          }
+        : { currentStreak: 0, longestStreak: 0 };
+    }
+
+    let challengesCompletedCount = 0;
+    if (neededTypes.has('challenges_completed')) {
+      challengesCompletedCount = await this.challengeProgressRepository.count({
+        where: { user: { id: userId } },
       });
     }
 
-    // Verificar cada medalla
-    for (const badge of badges) {
-      // Verificar si ya tiene la medalla
-      const hasBadge = await this.userBadgeRepository.findOne({
-        where: { userId, badgeId: badge.id },
+    let cleanLiveCodingCount = 0;
+    if (neededTypes.has('live_coding_no_copy')) {
+      cleanLiveCodingCount = await this.liveCodingSessionRepository.count({
+        where: {
+          userId,
+          allTestsPassed: true,
+          copyPasteCount: 0,
+        },
       });
+    }
 
-      if (hasBadge) continue;
+    let fastCompletionCount = 0;
+    if (neededTypes.has('fast_completion')) {
+      // Sessions completed in under 5 minutes (300 seconds) with all tests passed
+      fastCompletionCount = await this.liveCodingSessionRepository
+        .createQueryBuilder('session')
+        .where('session.userId = :userId', { userId })
+        .andWhere('session.allTestsPassed = true')
+        .andWhere('session.completedAt IS NOT NULL')
+        .andWhere('session.timeTakenSeconds < 300')
+        .getCount();
+    }
 
+    // ── Evaluar cada badge pendiente ──
+
+    for (const badge of pendingBadges) {
       let shouldUnlock = false;
 
       switch (badge.requirement.type) {
         case 'exercises_completed':
-          shouldUnlock = completedCount >= badge.requirement.value;
+          shouldUnlock = completedExercisesCount >= badge.requirement.value;
           break;
+
         case 'level_reached':
           shouldUnlock = user.level >= badge.requirement.value;
           break;
+
         case 'module_completed': {
-          const moduleId = badge.requirement.moduleId!; // This is moduleNumber
-          // Count total exercises in this module
+          const moduleId = badge.requirement.moduleId!;
           const moduleExercisesCount = await this.exerciseRepository
             .createQueryBuilder('exercise')
             .leftJoin('exercise.lesson', 'lesson')
@@ -100,6 +158,26 @@ export class CheckAndUnlockBadgesUseCase {
             moduleExercisesCount > 0;
           break;
         }
+
+        case 'streak':
+          shouldUnlock =
+            (streakData?.longestStreak ?? 0) >= badge.requirement.value;
+          break;
+
+        case 'challenges_completed':
+          shouldUnlock =
+            challengesCompletedCount >= badge.requirement.value;
+          break;
+
+        case 'live_coding_no_copy':
+          shouldUnlock =
+            cleanLiveCodingCount >= badge.requirement.value;
+          break;
+
+        case 'fast_completion':
+          shouldUnlock =
+            fastCompletionCount >= badge.requirement.value;
+          break;
       }
 
       if (shouldUnlock) {
