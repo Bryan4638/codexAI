@@ -1,8 +1,10 @@
 import Header from '@/components/nav/Header'
+import { useMe } from '@/hooks/custom-hooks/useMe'
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 
 function AppLayout() {
+  useMe()
   const [newBadgeNotification, _setNewBadgeNotification] = useState<any>(null)
 
   return (

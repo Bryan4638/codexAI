@@ -42,6 +42,7 @@ api.interceptors.response.use(
     // Handle 401 Unauthorized for expired tokens
     if (error.response?.status === 401 && !originalRequest._retry) {
       useAuthStore.getState().resetAuth()
+      useAuthStore.persist.clearStorage()
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject })

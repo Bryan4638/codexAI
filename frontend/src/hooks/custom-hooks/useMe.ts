@@ -15,10 +15,8 @@ export const useMe = () => {
   useEffect(() => {
     if (query.data) {
       setUser(query.data)
-    } else if (query.isError) {
-      setUser(null)
     }
-  }, [query.data, query.isError, setUser])
+  }, [query.data, setUser])
 
   return query
 }

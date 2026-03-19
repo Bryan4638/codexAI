@@ -37,6 +37,7 @@ export const useAuth = () => {
     onSuccess: () => {
       queryClient.clear()
       resetAuth()
+      useAuthStore.persist.clearStorage()
       navigate('/')
     },
   })
