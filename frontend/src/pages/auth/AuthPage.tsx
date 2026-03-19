@@ -3,15 +3,13 @@ import { useAuth } from '@/hooks/useAuth'
 import { useAuthStore } from '@/store/useAuthStore'
 import { IconExclamationCircle, IconLoader2 } from '@tabler/icons-react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import OAuthButtons from './components/OAuthButtons'
 
 export function AuthPage() {
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
-
-  const navigate = useNavigate()
 
   const otpSent = useAuthStore((s) => s.otpSent)
   const resetAuth = useAuthStore((s) => s.resetAuth)
@@ -50,7 +48,7 @@ export function AuthPage() {
     setError('')
   }
 
-  if (user) navigate('/')
+  if (user) return <Navigate to="/" replace />
   return (
     <section className="min-h-screen bg-primary flex items-center justify-center p-6 relative overflow-hidden">
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-neon-cyan/10 rounded-full blur-3xl" />
