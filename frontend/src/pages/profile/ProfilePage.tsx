@@ -38,17 +38,19 @@ function ProfilePage() {
 
   return (
     <section className="pt-32 pb-16 max-w-3xl mx-auto px-6">
+
       <ProfileHeader />
+      <StreakCounter variant="full" className="mt-6 mb-8 " />
+
       <ProfileStats progress={progress} />
       <ProfileLevelProgressBar progress={progress} />
+
+      <ActivityHeatmap className="mt-6 mb-8" />
 
       <section className="grid grid-cols-2 gap-8 max-md:grid-cols-1">
         <ProfileBadgesSection badges={badges} />
         <ProfileModuleProgress progress={progress} />
       </section>
-
-      <StreakCounter variant="full" className="mt-8" />
-      <ActivityHeatmap className="mt-6" />
 
       {progress.history && progress.history.length > 0 && (
         <ProfileActivityHistory progress={progress} />
