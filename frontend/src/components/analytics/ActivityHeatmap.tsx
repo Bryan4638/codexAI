@@ -131,17 +131,16 @@ export default function ActivityHeatmap({ className }: ActivityHeatmapProps) {
       </div>
 
       {/* Heatmap Grid */}
-      <div className="overflow-x-auto">
-        <div className="inline-flex flex-col gap-0.5 min-w-max">
+      <div className="w-full">
+        <div className="flex flex-col gap-0.5 w-full">
           {/* Month labels */}
-          <div className="flex pl-[28px] overflow-hidden">
+          <div className="relative w-full h-[15px] pl-[28px] overflow-hidden">
             {monthLabels.map((m, i) => (
               <div
                 key={i}
-                className="text-[10px] text-white/30"
+                className="absolute text-[10px] text-white/30"
                 style={{
-                  width: `${m.widthCols * 13}px`,
-                  minWidth: `${m.widthCols * 13}px`,
+                  left: `calc(28px + ${(m.col / weeks.length) * 100}% - ${(m.col / weeks.length) * 28}px)`,
                 }}
               >
                 {m.label}
@@ -150,13 +149,13 @@ export default function ActivityHeatmap({ className }: ActivityHeatmapProps) {
           </div>
 
           {/* Grid rows */}
-          <div className="flex gap-0.5">
+          <div className="flex gap-0.5 w-full">
             {/* Day labels */}
-            <div className="flex flex-col gap-0.5 mr-1 pt-0.5">
+            <div className="flex flex-col gap-0.5 mr-1 pt-0.5 shrink-0">
               {DAYS.map((label, i) => (
                 <div
                   key={i}
-                  className="h-[11px] w-6 text-[9px] text-white/25 leading-[11px] text-right pr-1"
+                  className="w-6 text-[9px] text-white/25 leading-[none] flex-1 flex items-center justify-end pr-1"
                 >
                   {label}
                 </div>
@@ -164,33 +163,38 @@ export default function ActivityHeatmap({ className }: ActivityHeatmapProps) {
             </div>
 
             {/* Week columns */}
-            {weeks.map((week, weekIdx) => (
-              <div key={weekIdx} className="flex flex-col gap-0.5">
-                {Array.from({ length: 7 }).map((_, dayIdx) => {
-                  const day = week[dayIdx] ?? null
-                  if (!day) {
+            <div 
+              className="grid gap-[2px] flex-1"
+              style={{ gridTemplateColumns: `repeat(${weeks.length}, minmax(0, 1fr))` }}
+            >
+              {weeks.map((week, weekIdx) => (
+                <div key={weekIdx} className="flex flex-col gap-[2px]">
+                  {Array.from({ length: 7 }).map((_, dayIdx) => {
+                    const day = week[dayIdx] ?? null
+                    if (!day) {
+                      return (
+                        <div
+                          key={dayIdx}
+                          className="w-full aspect-square rounded-[2px]"
+                        />
+                      )
+                    }
                     return (
                       <div
                         key={dayIdx}
-                        className="h-[11px] w-[11px] rounded-[2px]"
+                        className={clsx(
+                          'w-full aspect-square rounded-[2px] cursor-pointer transition-all duration-150',
+                          LEVEL_COLORS[day.level],
+                          'hover:ring-1 hover:ring-white/40 hover:scale-[1.3]'
+                        )}
+                        onMouseEnter={(e) => handleMouseEnter(day, e)}
+                        onMouseLeave={() => setTooltip(null)}
                       />
                     )
-                  }
-                  return (
-                    <div
-                      key={dayIdx}
-                      className={clsx(
-                        'h-[11px] w-[11px] rounded-[2px] cursor-pointer transition-all duration-150',
-                        LEVEL_COLORS[day.level],
-                        'hover:ring-1 hover:ring-white/40 hover:scale-125'
-                      )}
-                      onMouseEnter={(e) => handleMouseEnter(day, e)}
-                      onMouseLeave={() => setTooltip(null)}
-                    />
-                  )
-                })}
-              </div>
-            ))}
+                  })}
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Legend */}
