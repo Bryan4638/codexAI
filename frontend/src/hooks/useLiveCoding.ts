@@ -68,7 +68,7 @@ export function useLiveCoding() {
     setCopyPasteCount((prev) => {
       const newVal = prev + 1
       sileo.warning({
-        title: `Pegado de código detectado (-${PASTE_PENALTY} pts)`,
+        title: `Pegado de código detectado (-${COPY_PASTE_PENALTY} pts)`,
       })
       return newVal
     })
