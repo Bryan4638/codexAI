@@ -1,5 +1,5 @@
 # docker/sandbox-csharp/Dockerfile
-FROM mcr.microsoft.com/dotnet/sdk:7.0
+FROM docker-io.cuza.dev/mcr.microsoft.com/dotnet/sdk:7.0
 
 # Usuario no-root
 RUN useradd -m -u 1000 csharpuser

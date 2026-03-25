@@ -1,5 +1,5 @@
 # docker/sandbox-java/Dockerfile
-FROM eclipse-temurin:17-jdk-alpine
+FROM docker-io.cuza.dev/library/eclipse-temurin:17-jdk-alpine
 
 # Usuario no-root
 RUN apk add --no-cache bash && adduser -D javauser

@@ -1,5 +1,5 @@
 # docker/sandbox-python/Dockerfile
-FROM python:3.11-slim
+FROM docker-io.cuza.dev/library/python:3.11-slim
 
 # Instalar dependencias mínimas
 RUN apt-get update && apt-get install -y --no-install-recommends \

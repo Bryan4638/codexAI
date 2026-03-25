@@ -71,7 +71,7 @@ services:
   # Sandbox Images (Solo Build)
   sandbox-js-builder:
     build: ./docker/sandbox-js
-    image: code-platform-js
+    #image: code-platform-js
     command: ["true"]
     networks:
       - codex-net
