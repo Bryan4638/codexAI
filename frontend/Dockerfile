@@ -1,5 +1,5 @@
 # Build
-FROM docker-io.cuza.dev/library/node:22-alpine as build
+FROM docker-io.cuza.dev/library/node:25-alpine as build
 
 WORKDIR /app
 
