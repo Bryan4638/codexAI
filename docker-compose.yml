@@ -26,6 +26,48 @@ services:
     networks:
       - codex-net
 
+
+  # Backend NestJS
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: codex_backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: 4638
+      DATABASE_NAME: codex
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
+      NODE_ENV: production
+    networks:
+      - codex-net
+
+  # Frontend React
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: codex_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - codex-net
+
+
   # Sandbox Images (Solo Build)
   sandbox-js-builder:
     build: ./docker/sandbox-js

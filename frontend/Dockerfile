@@ -1,4 +1,5 @@
-FROM node:18-alpine
+# Build
+FROM node:20-alpine as build
 
 WORKDIR /app
 
@@ -8,8 +9,13 @@ RUN npm install
 
 COPY . .
 
-# Vite usa 5173 por defecto
-EXPOSE 5173
+RUN npm run build
 
-# Host 0.0.0.0 es necesario para acceder desde fuera del contenedor
-CMD ["npm", "run", "dev", "--", "--host"]
+# Serve
+FROM nginx:alpine
+
+COPY --from=build /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
