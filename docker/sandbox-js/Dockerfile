@@ -1,5 +1,5 @@
 # docker/sandbox-js/Dockerfile
-FROM node:18-alpine
+FROM docker-io.cuza.dev/library/node:18-alpine
 
 # Instalar solo lo necesario
 RUN apk add --no-cache bash
