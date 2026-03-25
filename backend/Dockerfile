@@ -1,4 +1,4 @@
-FROM docker-io.cuza.dev/library/node:20-alpine
+FROM docker-io.cuza.dev/library/node:22-alpine
 
 WORKDIR /app
 
