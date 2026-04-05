@@ -8,7 +8,7 @@ export default function OAuthButtons() {
 
   const handleOAuthLogin = (provider: 'google' | 'github') => {
     setLoadingOAuth(provider)
-    const url = `${import.meta.env.VITE_API_URL}/auth/${provider}`
+    const url = `${import.meta.env.VITE_API_URL || "http://localhost:3000/api"}/auth/${provider}`
     window.location.href = url
   }
   return (
